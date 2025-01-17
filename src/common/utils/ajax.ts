@@ -14,6 +14,7 @@ interface DefaultConfig {
   method?: 'get' | 'post'
   data?: Record<string, string>
   timeout?: number
+  credentials?: 'include'
 }
 interface TimeoutError {
   status: 408
@@ -21,18 +22,18 @@ interface TimeoutError {
   error: Error
 }
 
-const host = 'http://[::1]:4000'
+const host = 'https://127.0.0.1:4000'
 
 const defaultConfig: Partial<DefaultConfig> = {
   headers: {
     'Content-Type': 'application/json',
-    credentials: 'include',
   },
   timeout: 15e3,
+  credentials: 'include',
 }
 
 async function request<T extends ObjectType>(config: DefaultConfig): Promise<AjaxResponse<T>> {
-  const { url, method = 'get', data, headers = {}, timeout = defaultConfig.timeout } = config
+  const { url, method = 'get', data, headers = {}, timeout = defaultConfig.timeout, credentials } = config
   let _url = host + url
 
   const fetchConfig: RequestInit = {
@@ -41,6 +42,7 @@ async function request<T extends ObjectType>(config: DefaultConfig): Promise<Aja
       ...defaultConfig.headers,
       ...headers,
     },
+    credentials: credentials || defaultConfig.credentials,
   }
 
   switch (method) {
@@ -74,7 +76,7 @@ async function request<T extends ObjectType>(config: DefaultConfig): Promise<Aja
     const result = (await response.json()) as AjaxResponse<T>
     const { flag, msg } = result
     if (flag === 0 && msg) {
-      message.error(msg)      
+      message.error(msg)
     }
     return result
   } catch (err: unknown) {
@@ -88,7 +90,7 @@ async function request<T extends ObjectType>(config: DefaultConfig): Promise<Aja
       return {
         flag: 0,
         msg: '请求失败, 请稍后重试',
-      }      
+      }
     }
   }
 }

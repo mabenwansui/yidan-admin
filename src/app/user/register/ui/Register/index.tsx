@@ -41,7 +41,7 @@ export default function Register() {
   }
   return (
     <div className="bg-white pl-7 pb-4 pt-9 rounded-xl">
-      <div className="text-xl pb-6">易单管理平台 - 注册</div>
+      <div className="text-xl pb-7">易单管理平台 - 注册</div>
       {contextHolder}
       <Form
         form={from}
@@ -63,7 +63,22 @@ export default function Register() {
         <Form.Item name="password" label="密码" rules={[{ required: true, message: '请输入密码' }]}>
           <Input.Password placeholder="请输入密码" />
         </Form.Item>
-        <Form.Item name="confirmPassword" label="重复密码" rules={[{ required: true, message: '请输入密码', min: 6 }]}>
+        <Form.Item
+          name="confirmPassword"
+          label="重复密码"
+          dependencies={['password']}
+          rules={[
+            { required: true, message: '请输入密码' },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (getFieldValue('password') === value) {
+                  return Promise.resolve()
+                }
+                return Promise.reject(new Error('两次密码输入不一致'))
+              },
+            }),
+          ]}
+        >
           <Input.Password placeholder="请输入密码" />
         </Form.Item>
         <Form.Item name="captchaKey" hidden>
@@ -77,7 +92,7 @@ export default function Register() {
             {!isLoading && data?.data?.data && (
               <div
                 onClick={onCaptchaClick}
-                className="*:w-32 *:h-9 absolute -top-1 hover:cursor-pointer"
+                className="*:w-28 *:h-9 absolute -top-1 hover:cursor-pointer"
                 dangerouslySetInnerHTML={{ __html: data.data.data }}
               />
             )}

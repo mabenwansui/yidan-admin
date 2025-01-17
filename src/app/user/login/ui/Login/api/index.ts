@@ -5,7 +5,7 @@ interface LoginParams {
   password: string
 }
 export function useLogin() {
-  const { isLoading, trigger } = useAjaxTrigger<{ accessToken: string }>('/auth/login')
+  const { isLoading, trigger } = useAjaxTrigger<{ accessToken: string }>('/api/auth/login')
   return {
     trigger: async (params: LoginParams) => {
       const { username, password } = params
