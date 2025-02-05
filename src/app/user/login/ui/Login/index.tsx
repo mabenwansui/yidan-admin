@@ -1,8 +1,8 @@
 'use client'
 import '@ant-design/v5-patch-for-react-19'
-import { Form, Button, Input } from 'antd'
-import { useLogin } from './api'
-// import { useAjaxTrigger } from '@/common/hooks/useAjax'
+import { Form, Button, Input, App } from 'antd'
+import { loginApi } from './api'
+import { useRouter } from 'next/navigation'
 
 interface Values {
   username: string
@@ -10,21 +10,18 @@ interface Values {
 }
 
 export default function Login() {
-  const { trigger, isLoading } = useLogin()
-  // const { trigger, isLoading } = useAjaxTrigger('/auth/login')
-  // const result = useAjax<{ username: string; password: string }>('/auth/login', {
-  //   username: 'maben',
-  //   password: 'maben614',
-  // })
-  // console.log('result:::::::::', result)
-  console.log('isLoading:::::::::', isLoading)
+  const { message } = App.useApp()
+  const router = useRouter()
   const onFinish = async (values: Values) => {
     const { username, password } = values
-    const result = await trigger({
+    const { flag } = await loginApi({
       username,
       password,
     })
-    console.log('Received values of form: result:::', result)
+    if (flag === 1) {
+      message.success('登录成功！')
+      router.push('/')
+    }
   }
   return (
     <>

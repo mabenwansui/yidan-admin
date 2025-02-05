@@ -1,4 +1,7 @@
 import type { Config } from "tailwindcss";
+import themeConfig from './src/common/css/theme.config'
+
+const theme = themeConfig()
 
 export default {
   content: [
@@ -9,6 +12,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: theme['color-primary'],
         background: "var(--background)",
         foreground: "var(--foreground)",
       },

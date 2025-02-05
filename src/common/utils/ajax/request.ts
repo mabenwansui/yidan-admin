@@ -1,7 +1,7 @@
-import { message } from 'antd'
 import logger from '@/common/utils/logger'
+import { isServer } from '@/common/utils/env'
 
-type ObjectType = Record<string, unknown>
+export type ObjectType = Record<string, unknown>
 interface AjaxResponse<T extends ObjectType> {
   flag: 0 | 1
   data?: T
@@ -32,10 +32,9 @@ const defaultConfig: Partial<DefaultConfig> = {
   credentials: 'include',
 }
 
-async function request<T extends ObjectType>(config: DefaultConfig): Promise<AjaxResponse<T>> {
+export async function request<T extends ObjectType>(config: DefaultConfig): Promise<AjaxResponse<T>> {
   const { url, method = 'get', data, headers = {}, timeout = defaultConfig.timeout, credentials } = config
   let _url = host + url
-
   const fetchConfig: RequestInit = {
     method,
     headers: {
@@ -43,6 +42,18 @@ async function request<T extends ObjectType>(config: DefaultConfig): Promise<Aja
       ...headers,
     },
     credentials: credentials || defaultConfig.credentials,
+  }
+  if (isServer()) {
+    // eslint-disable-next-line
+    const { cookies } = require('next/headers')
+    
+    const cookieStr = (await cookies()).toString()
+    if (cookieStr) {
+      if (!Array.isArray(fetchConfig.headers)) {
+        fetchConfig.headers = fetchConfig.headers || {}
+        ;(fetchConfig.headers as Record<string, string>).Cookie = cookieStr
+      }
+    }
   }
 
   switch (method) {
@@ -74,10 +85,6 @@ async function request<T extends ObjectType>(config: DefaultConfig): Promise<Aja
       throw new Error(`HTTP 错误! 状态码: ${response.status}`)
     }
     const result = (await response.json()) as AjaxResponse<T>
-    const { flag, msg } = result
-    if (flag === 0 && msg) {
-      message.error(msg)
-    }
     return result
   } catch (err: unknown) {
     logger.error(err)
@@ -93,11 +100,4 @@ async function request<T extends ObjectType>(config: DefaultConfig): Promise<Aja
       }
     }
   }
-}
-
-export async function get<T extends ObjectType>(url: string, params: Record<string, string> = {}) {
-  return await request<T>({ url, method: 'get', data: params })
-}
-export async function post<T extends ObjectType>(url: string, params: Record<string, string> = {}) {
-  return await request<T>({ url, method: 'post', data: params })
 }

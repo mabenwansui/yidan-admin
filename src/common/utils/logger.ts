@@ -1,9 +1,10 @@
+const errorPrefix = ':::::::::::::::'
 class Logger {
   error(error: unknown) {
     if (error instanceof Error) {
-      console.error(error.message)
+      console.error(`${errorPrefix}${error.message}`)
     } else {
-      console.error(error)
+      console.error(`${errorPrefix}${error}`)
     }
   }
   info(message: string) {
