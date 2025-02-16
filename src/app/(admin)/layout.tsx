@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Layout from '@/views/Layout'
 import '@/common/css/index.scss'
-
+import AntAppRoot from '@/components/AntAppRoot'
 
 export const metadata: Metadata = {
   title: '易单1',
@@ -17,6 +17,7 @@ export default function RootLayout({
     <html>
       <body className="antialiased layout-bg">
         <Layout>{children}</Layout>
+        <AntAppRoot />
       </body>
     </html>
   )

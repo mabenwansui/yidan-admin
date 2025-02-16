@@ -13,6 +13,6 @@ export interface RegisterApiProps extends Record<string, string> {
   captchaKey: string
   captchaVal: string
 }
-export function registerApi(props: RegisterApiProps) {
-  return post<Record<string, never>>('/api/user/register-admin', props)
+export async function registerApi(props: RegisterApiProps) {
+  return await post<Record<string, never>>('/api/user/register-admin', props)
 }

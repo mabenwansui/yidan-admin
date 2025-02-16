@@ -1,24 +1,40 @@
 import { request, ObjectType } from './request'
-import { ErrorCode } from '@/common/constants/errorCode'
-import { message } from 'antd'
-import { refreshTokenApi } from '@/common/api/auth'
+import { ERROR_CODE } from '@/common/constants/errorCode'
+import { refreshTokenApi } from '@/common/api'
 import { isClient, isLogin } from '@/common/utils/env'
+import { message } from '@/components/AntAppRoot'
+import { redirect } from 'next/navigation'
+import { ROUTE_PATH } from '@/common/constants/routePath'
+import { SEARCH_PARAMS } from '@/common/constants/routePath'
+import config from '@/config'
 
-async function requestHandle<T extends ObjectType>(type: 'post'|'get', url: string, params: Record<string, string> = {}) {
+export const apiPrefix = config.apiDomain
+
+async function redirectLogin() {
+  const redirectUrl = `${ROUTE_PATH.LOGIN}?${SEARCH_PARAMS.BACK_URL}=${window.encodeURIComponent(window.location.href.split('?')[0])}`
+  if (isClient()) {
+    window.location.href = redirectUrl
+  } else {
+    redirect(redirectUrl)
+  }
+}
+
+async function requestHandle<T extends ObjectType>(type: 'post' | 'get', url: string, params: object | FormData = {}) {
   const result = await request<T>({ url, method: type, data: params })
   const { flag, code, msg } = result
   if (flag === 0) {
-    if (msg && isClient()) {
+    if (msg && isClient() && code !== ERROR_CODE.AUTH_CHECK_FAILED) {
       message.error(msg)
-    }    
-    switch(code) {
-      case ErrorCode.AUTH_CHECK_FAILED: {
-        if (isLogin()) {
+    }
+    switch (code) {
+      case ERROR_CODE.AUTH_CHECK_FAILED: {
+        if (await isLogin()) {
           const { flag: _flag } = await refreshTokenApi()
           if (_flag === 1) {
             return await request<T>({ url, method: 'post', data: params })
           }
         }
+        await redirectLogin()
         break
       }
     }
@@ -26,19 +42,10 @@ async function requestHandle<T extends ObjectType>(type: 'post'|'get', url: stri
   return result
 }
 
-/**
- * 异步获取数据函数
- * 
- * 该函数通过指定的URL和参数，使用GET请求方式异步获取数据
- * 它允许用户从远程服务器获取信息，并以Promise形式返回获取的数据
- * 
- * @param url - 请求的URL地址，用于指定获取数据的接口位置
- * @param params - 请求的参数，以键值对形式提供，用于指定获取数据的具体条件
- * @returns 返回一个Promise，解析为请求的数据结果
- */
-export async function get<T extends ObjectType>(url: string, params: Record<string, string> = {}) {
+export async function get<T extends ObjectType>(url: string, params: object | FormData = {}) {
   return await requestHandle<T>('get', url, params)
 }
-export async function post<T extends ObjectType>(url: string, params: Record<string, string> = {}) {
+
+export async function post<T extends ObjectType>(url: string, params: object | FormData = {}) {
   return await requestHandle<T>('post', url, params)
 }

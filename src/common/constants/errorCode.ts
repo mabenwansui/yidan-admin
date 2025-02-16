@@ -1,4 +1,4 @@
-export enum ErrorCode {
+export enum ERROR_CODE {
   /** 请求资源不存在 */
   NOT_FOUND = '10001',
   /** 请求参数错误 */

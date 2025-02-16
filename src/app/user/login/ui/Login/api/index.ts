@@ -8,10 +8,9 @@ export async function loginApi(props: LoginApiProps) {
   const { username, password } = props
   return await post('/api/auth/login', {
     username,
-    password,
+    password
   })
 }
-
 
 // import { useAjaxTrigger } from '@/common/hooks/useAjax'
 // export function useLogin() {
@@ -24,5 +23,3 @@ export async function loginApi(props: LoginApiProps) {
 //     isLoading,
 //   }
 // }
-
-

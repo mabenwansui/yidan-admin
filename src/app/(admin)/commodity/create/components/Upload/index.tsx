@@ -1,82 +1,99 @@
+'use client'
 import { useState } from 'react'
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
-import { Upload as AntUpload, UploadProps as AntUploadProps, GetProp, App } from 'antd'
-import Image from 'next/image'
+import { PlusOutlined } from '@ant-design/icons'
+import { Upload as AntUpload, UploadProps as AntUploadProps, GetProp, App, UploadFile, Image } from 'antd'
+import { apiPrefix } from '@/common/utils/ajax'
 
 type FileType = Parameters<GetProp<AntUploadProps, 'beforeUpload'>>[0]
-
-const getBase64 = (img: FileType, callback: (url: string) => void) => {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result as string))
-  reader.readAsDataURL(img)
-}
 
 export interface UploadProps {
   /* 发到后台的文件参数名 */
   name: string
   /* default: ['image/jpeg', 'image/jpg', 'image/png'] */
-  accept?: Array<'image/jpeg' | 'image/jpg' | 'image/png'>
+  accept?: Array<'image/jpeg' | 'image/jpg' | 'image/png' | 'image/gif'>
   size?: 'middle' | 'large' | 'small'
   /* 单位: KB */
   maxImageSize?: number
-  onChange?: () => void
+  onChange?: (props: string[]) => void
+}
+interface ResponseData {
+  flag: 1 | 0
+  data: {
+    name: string
+    url: string
+  }
 }
 export default function Upload(props: UploadProps) {
   const { message } = App.useApp()
+  const [fileList, setFileList] = useState<UploadFile[]>([])
+  const [previewImage, setPreviewImage] = useState('')
+  const [previewOpen, setPreviewOpen] = useState(false)
+
   const defaultProps: UploadProps = {
     name: 'file',
-    accept: ['image/jpeg', 'image/jpg', 'image/png'],
-    size: 'middle',
-    maxImageSize: 1024 * 2,
-    onChange: () => {},
+    accept: ['image/jpeg', 'image/png', 'image/gif'],
+    size: 'large',
+    // 5M(单位bye)
+    maxImageSize: 1024 * 1024 * 5
   }
   const _props = { ...defaultProps, ...props } as Required<UploadProps>
 
-  const [imageUrl, setImageUrl] = useState('')
-  const [loading, setLoading] = useState(false)
-
   const beforeUpload = (file: FileType) => {
     const { accept, maxImageSize } = _props
+    const { LIST_IGNORE } = AntUpload
     const isAccept = (accept as Array<string>).includes(file.type)
     if (!isAccept) {
       message.error(`只能上传jpg、png格式的图片`)
-      return false
+      return LIST_IGNORE
     }
-    if (file.size < maxImageSize) {
-      message.error(`图片尺寸超出限制, 当前大小为${file.size}, 不能超过${maxImageSize}`)
-      return false
+    if (file.size > maxImageSize) {
+      const curSize = (file.size / 1024 / 1024).toFixed(2)
+      const maxSize = parseFloat((maxImageSize / 1024 / 1024).toFixed(2))
+      message.error(`图片尺寸超出限制, 当前大小为${curSize}M, 不能超过${maxSize}M`)
+      return LIST_IGNORE
     }
     return true
   }
-
-  const handleChange: AntUploadProps['onChange'] = (info) => {
-    if (info.file.status === 'uploading') {
-      setLoading(true)
-      return
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj as FileType, (url) => {
-        setLoading(false)
-        setImageUrl(url)
-      })
-      _props.onChange()
+  const handleChange: AntUploadProps<ResponseData>['onChange'] = ({ fileList }) => {
+    setFileList(fileList)
+    if (fileList.every((item) => item.status === 'done')) {
+      _props?.onChange(fileList.map((item) => item.response!.data.name))
     }
   }
+  const handlePreview = (file: UploadFile<ResponseData>) => {
+    const { url } = file.response!.data
+    setPreviewImage(url)
+    setPreviewOpen(true)
+  }
   return (
-    <AntUpload
-      name="avatar"
-      listType="picture-card"
-      className="w-24"
-      showUploadList={false}
-      beforeUpload={beforeUpload}
-      onChange={handleChange}
-    >
-      {imageUrl ? (
-        <Image src={imageUrl} alt="图片上传" style={{ width: '100%' }} />
-      ) : (
-        <div className="inline-block">{loading ? <LoadingOutlined /> : <PlusOutlined />}</div>
+    <div className="[&_.ant-upload-list-item-container]:bg-white">
+      <AntUpload
+        name="img"
+        listType="picture-card"
+        accept=".png,.jpg,.jpeg,.gif"
+        withCredentials={true}
+        action={`${apiPrefix}/api/file/upload/img`}
+        fileList={fileList}
+        beforeUpload={beforeUpload}
+        onChange={handleChange}
+        maxCount={30}
+        multiple
+        onPreview={handlePreview}
+      >
+        <div className="inline-block">{<PlusOutlined />}</div>
+      </AntUpload>
+      {previewImage && (
+        <Image
+          wrapperStyle={{ display: 'none' }}
+          preview={{
+            visible: previewOpen,
+            onVisibleChange: (visible) => setPreviewOpen(visible),
+            afterOpenChange: (visible) => !visible && setPreviewImage('')
+          }}
+          src={previewImage}
+          alt="图片上传"
+        />
       )}
-    </AntUpload>
+    </div>
   )
 }

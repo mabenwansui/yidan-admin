@@ -4,16 +4,22 @@ import '@ant-design/v5-patch-for-react-19'
 import { Form, Input, Button, Space, message } from 'antd'
 import useSWR from 'swr'
 import { getCaptchaApi, RegisterApiProps, registerApi } from './api'
-import { ErrorCode } from '@/common/constants/errorCode'
+import { ERROR_CODE } from '@/common/constants/errorCode'
+import { useRouter } from 'next/navigation'
+import { ROUTE_PATH } from '@/common/constants/routePath'
 
 export default function Register() {
   const [from] = Form.useForm()
   const [captchaIndex, setCaptchaIndex] = useState(1)
   const [messageApi, contextHolder] = message.useMessage()
+  const router = useRouter()
   const { data, isLoading } = useSWR(`/api/captcha?index=${captchaIndex}`, getCaptchaApi, {
     revalidateOnFocus: false,
-    refreshInterval: 120 * 1e3,
+    refreshInterval: 120 * 1e3
   })
+  const refreshCaptcha = () => {
+    setCaptchaIndex(captchaIndex + 1)
+  }
   useEffect(() => {
     from.setFieldValue('captchaKey', data?.data?.key)
   }, [data?.data?.key, from])
@@ -23,15 +29,16 @@ export default function Register() {
       username,
       password,
       captchaVal,
-      captchaKey,
+      captchaKey
     }
     const { flag, code } = await registerApi(postData)
     if (flag) {
       messageApi.info('注册成功，请登录')
+      setTimeout(() => router.push(ROUTE_PATH.LOGIN), 1500)
     } else {
       switch (code) {
-        case ErrorCode.CAPTCHA_ERROR:
-          setCaptchaIndex(captchaIndex + 1)
+        case ERROR_CODE.CAPTCHA_ERROR:
+          refreshCaptcha()
           break
       }
     }
@@ -54,7 +61,7 @@ export default function Register() {
         initialValues={{
           username: 'maben1',
           password: 'maben614',
-          confirmPassword: 'maben614',
+          confirmPassword: 'maben614'
         }}
       >
         <Form.Item name="username" label="用户名" rules={[{ required: true, message: '请输入用户名' }]}>
@@ -75,8 +82,8 @@ export default function Register() {
                   return Promise.resolve()
                 }
                 return Promise.reject(new Error('两次密码输入不一致'))
-              },
-            }),
+              }
+            })
           ]}
         >
           <Input.Password placeholder="请输入密码" />

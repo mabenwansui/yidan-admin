@@ -2,7 +2,7 @@
 import '@ant-design/v5-patch-for-react-19'
 import { Form, Button, Input, App } from 'antd'
 import { loginApi } from './api'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 interface Values {
   username: string
@@ -12,15 +12,19 @@ interface Values {
 export default function Login() {
   const { message } = App.useApp()
   const router = useRouter()
+  const params = useSearchParams()
+
+  const backUrl = params.get('backurl')
+
   const onFinish = async (values: Values) => {
     const { username, password } = values
     const { flag } = await loginApi({
       username,
-      password,
+      password
     })
     if (flag === 1) {
-      message.success('登录成功！')
-      router.push('/')
+      message.success('登录成功！跳转中...')
+      setTimeout(() => router.push(backUrl ? backUrl : '/'), 1000)
     }
   }
   return (
@@ -36,7 +40,7 @@ export default function Login() {
           onFinish={onFinish}
           initialValues={{
             username: 'maben',
-            password: 'maben614',
+            password: 'maben614'
           }}
         >
           <Form.Item name="username" label="用户名" rules={[{ required: true, message: '请输入用户名!' }]}>

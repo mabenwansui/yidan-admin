@@ -1,5 +1,6 @@
 import logger from '@/common/utils/logger'
 import { isServer } from '@/common/utils/env'
+import config from '@/config'
 
 export type ObjectType = Record<string, unknown>
 interface AjaxResponse<T extends ObjectType> {
@@ -12,7 +13,7 @@ interface DefaultConfig {
   url: string
   headers?: RequestInit['headers']
   method?: 'get' | 'post'
-  data?: Record<string, string>
+  data?: object | FormData
   timeout?: number
   credentials?: 'include'
 }
@@ -22,14 +23,14 @@ interface TimeoutError {
   error: Error
 }
 
-const host = 'https://127.0.0.1:4000'
+const host = config.apiDomain
 
 const defaultConfig: Partial<DefaultConfig> = {
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json'
   },
   timeout: 15e3,
-  credentials: 'include',
+  credentials: 'include'
 }
 
 export async function request<T extends ObjectType>(config: DefaultConfig): Promise<AjaxResponse<T>> {
@@ -39,14 +40,14 @@ export async function request<T extends ObjectType>(config: DefaultConfig): Prom
     method,
     headers: {
       ...defaultConfig.headers,
-      ...headers,
+      ...headers
     },
-    credentials: credentials || defaultConfig.credentials,
+    credentials: credentials || defaultConfig.credentials
   }
   if (isServer()) {
     // eslint-disable-next-line
     const { cookies } = require('next/headers')
-    
+
     const cookieStr = (await cookies()).toString()
     if (cookieStr) {
       if (!Array.isArray(fetchConfig.headers)) {
@@ -58,10 +59,15 @@ export async function request<T extends ObjectType>(config: DefaultConfig): Prom
 
   switch (method) {
     case 'get':
-      _url += `?${new URLSearchParams(data).toString()}`
+      _url += `?${new URLSearchParams(data as Record<string, string>).toString()}`
       break
     case 'post':
-      fetchConfig.body = JSON.stringify(data)
+      if (data instanceof FormData) {
+        fetchConfig.body = data
+        ;(fetchConfig.headers as Record<string, string>)['Content-Type'] = 'multipart/form-data'
+      } else {
+        fetchConfig.body = JSON.stringify(data)
+      }
       break
     default:
   }
@@ -73,7 +79,7 @@ export async function request<T extends ObjectType>(config: DefaultConfig): Prom
         reject({
           status: 408,
           msg: '请求超时',
-          error: new Error('请求超时'),
+          error: new Error('请求超时')
         }),
       timeout
     )
@@ -91,12 +97,12 @@ export async function request<T extends ObjectType>(config: DefaultConfig): Prom
     if ((err as TimeoutError).status === 408) {
       return {
         flag: 0,
-        msg: '请求超时',
+        msg: '请求超时'
       }
     } else {
       return {
         flag: 0,
-        msg: '请求失败, 请稍后重试',
+        msg: '请求失败, 请稍后重试'
       }
     }
   }

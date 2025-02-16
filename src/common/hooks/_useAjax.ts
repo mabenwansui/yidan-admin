@@ -18,7 +18,7 @@ export function useAjax<T extends ObjectType>(
   const { data, error, isLoading } = useSWR(
     {
       url,
-      params,
+      params
     },
     ({ url, params }: Fetcher) => post<T>(url, params),
     options
@@ -27,7 +27,7 @@ export function useAjax<T extends ObjectType>(
   return {
     flag: data?.flag || 0,
     data: data?.data,
-    isLoading,
+    isLoading
   }
 }
 
