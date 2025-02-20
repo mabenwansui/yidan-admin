@@ -1,4 +1,7 @@
 import { Button, Result } from 'antd'
+import OperateBtn from './ui/OperateBtn'
+import Link from 'next/link'
+
 export default function CommoditySuccessPage() {
   return (
     <div className="bg-white border border-neutral-100 w-3xl m-auto mt-10">
@@ -6,10 +9,10 @@ export default function CommoditySuccessPage() {
         status="success"
         title="创建成功!"
         extra={[
-          <Button type="primary" key="primary" className="!me-3">
-            继续创建
-          </Button>,
-          <Button key="cancel">返回列表查看</Button>
+          <OperateBtn key="primary" />,
+          <Link href="/commodity/list" key="cancel">
+            <Button key="cancel">返回列表查看</Button>
+          </Link>
         ]}
       />
     </div>

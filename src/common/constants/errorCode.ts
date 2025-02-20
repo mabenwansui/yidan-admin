@@ -1,3 +1,10 @@
+export enum ERROR_CLIENT_CODE {
+  /** 请求超时 */
+  TIMEOUT = '101',
+  /** 未知错误 */
+  UNKNOWN = '201'
+}
+
 export enum ERROR_CODE {
   /** 请求资源不存在 */
   NOT_FOUND = '10001',
@@ -18,5 +25,5 @@ export enum ERROR_CODE {
   /** 用户名已存在 */
   USER_ALREADY_USED = '10202',
   /** 请求参数错误DTO */
-  BAD_REQUEST_DTO = '11001',
+  BAD_REQUEST_DTO = '11001'
 }

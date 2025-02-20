@@ -3,5 +3,10 @@ export enum SEARCH_PARAMS {
 }
 
 export enum ROUTE_PATH {
-  LOGIN = '/user/login'
+  LOGIN = '/user/login',
+  REGISTER = '/user/register',
+  HOME = '/',
+  COMMODITY_CREATE = '/commodity/create',
+  COMMODITY_LIST = '/commodity/list',
+  COMMODITY_SUCCESS = '/commodity/success'
 }

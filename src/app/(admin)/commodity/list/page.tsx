@@ -1,3 +1,9 @@
+import List from './ui/List'
+
 export default function CommodityListPage() {
-  return <div>CommodityListPage</div>
+  return (
+    <div>
+      <List />
+    </div>
+  )
 }

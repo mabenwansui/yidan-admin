@@ -1,14 +1,19 @@
-'use client'
-import useSWR from 'swr'
-import { getUserInfoApi, getUserInfoApiUrl } from '@/common/api'
-import logger from '@/common/utils/logger'
-import { UserInfo } from '@/common/interface/user'
-
-export default function useGetUserInfo() {
-  const { data, error, isLoading } = useSWR(getUserInfoApiUrl, getUserInfoApi)
-  if (error) logger.error(error)
-  return {
-    data: data?.data as UserInfo | undefined,
-    isLoading
-  }
+import { useSWR } from '@/common/hooks/useAjax'
+import { post } from '@/common/utils/ajax'
+import { ROLE } from '@/common/constants/user'
+interface GetUserInfoApiResponse {
+  id: string
+  username: string
+  email: string
+  role: ROLE
+}
+export const getUserInfoApiUrl = '/api/user/get-user-info'
+export async function getUserInfoApi() {
+  return await post<GetUserInfoApiResponse>(getUserInfoApiUrl)
+}
+export function useGetUserInfo() {
+  return useSWR(getUserInfoApiUrl, getUserInfoApi, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  })
 }

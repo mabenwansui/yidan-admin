@@ -1,18 +1,22 @@
 import logger from '@/common/utils/logger'
 import { isServer } from '@/common/utils/env'
 import config from '@/config'
+import { ERROR_CLIENT_CODE } from '@/common/constants/errorCode'
 
-export type ObjectType = Record<string, unknown>
-interface AjaxResponse<T extends ObjectType> {
+export type ObjectType = object
+export interface AjaxResponse<T extends ObjectType = ObjectType> {
   flag: 0 | 1
   data?: T
   msg?: string
-  code?: string
+  code: string
 }
+
+export type MethodType = 'get' | 'post'
+
 interface DefaultConfig {
   url: string
   headers?: RequestInit['headers']
-  method?: 'get' | 'post'
+  method?: MethodType
   data?: object | FormData
   timeout?: number
   credentials?: 'include'
@@ -33,7 +37,7 @@ const defaultConfig: Partial<DefaultConfig> = {
   credentials: 'include'
 }
 
-export async function request<T extends ObjectType>(config: DefaultConfig): Promise<AjaxResponse<T>> {
+export async function request<T extends ObjectType = ObjectType>(config: DefaultConfig): Promise<AjaxResponse<T>> {
   const { url, method = 'get', data, headers = {}, timeout = defaultConfig.timeout, credentials } = config
   let _url = host + url
   const fetchConfig: RequestInit = {
@@ -97,11 +101,13 @@ export async function request<T extends ObjectType>(config: DefaultConfig): Prom
     if ((err as TimeoutError).status === 408) {
       return {
         flag: 0,
+        code: ERROR_CLIENT_CODE.TIMEOUT,
         msg: '请求超时'
       }
     } else {
       return {
         flag: 0,
+        code: ERROR_CLIENT_CODE.UNKNOWN,
         msg: '请求失败, 请稍后重试'
       }
     }
