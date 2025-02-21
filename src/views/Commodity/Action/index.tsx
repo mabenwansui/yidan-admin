@@ -5,11 +5,7 @@ import { InfoCircleOutlined } from '@ant-design/icons'
 import { useSWRMutation } from '@/common/hooks/useAjax'
 import { presets } from '@/common/constants/valid'
 import Upload from '@/views/Commodity/Action/ui/Upload'
-import {
-  CreateCommodityProps,
-  createCommodityApiUrl,
-  createCommodityApiMutation
-} from '@/views/Commodity/Action/api'
+import { CreateCommodityProps, createCommodityApiUrl, createCommodityApiMutation } from '@/views/Commodity/Action/api'
 import { useRouter } from 'next/navigation'
 
 export default function CommodityCreatePage() {

@@ -1,14 +1,16 @@
 'use client'
+import { useState } from 'react'
 import { Table, TableProps, Space, Image, Button } from 'antd'
 import { Commodity } from '@/common/interface/commodity'
 import { useSWR } from '@/common/hooks/useAjax'
-import { commoditySearchApiUrl, commoditySearchApi } from '../api'
+import { commoditySearchApiUrl, commoditySearchApi, CommoditySearchApiProps } from '../api'
 import { useRouter } from 'next/navigation'
 
 export default function List() {
-  const { data, isLoading } = useSWR(commoditySearchApiUrl, commoditySearchApi)
+  const [x, setX] = useState('饮料')
+  const { data, isLoading } = useSWR([commoditySearchApiUrl, x], ([url, x]) => commoditySearchApi({ search: x }))
   const router = useRouter()
-  const handleEdit = (id: string) => {router.push()}
+  const handleEdit = (id: string) => {}
   const handleDel = (id: string) => {}
   const columns: TableProps<Commodity>['columns'] = [
     {
@@ -51,6 +53,7 @@ export default function List() {
   ]
   return (
     <section className="m-10">
+      <div onClick={() => setX('出发')}>点击</div>
       <Table<Commodity> columns={columns} loading={isLoading} dataSource={data?.data?.list} />
     </section>
   )

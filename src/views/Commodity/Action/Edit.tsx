@@ -17,7 +17,7 @@ export default function Edit() {
       price
     })
     if (flag === 1) {
-      router.push(`/commodity/sucess?backurl=${encodeURIComponent('/commodity/create')}`)
+      router.push(`/commodity/sucess?backurl=${encodeURIComponent('/commodity/update')}`)
     }
   }
   return (

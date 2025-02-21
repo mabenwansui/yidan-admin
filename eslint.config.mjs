@@ -14,7 +14,8 @@ const eslintConfig = [
     extends: ['next/core-web-vitals', 'next/typescript', 'plugin:prettier/recommended'],
     rules: {
       '@typescript-eslint/no-unused-vars': 'warn',
-      'prettier/prettier': 'warn'
+      'prettier/prettier': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off'
     }
   })
   // ...compat.extends('next/core-web-vitals', 'next/typescript'),
