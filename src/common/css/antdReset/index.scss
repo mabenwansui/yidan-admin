@@ -1,0 +1,16 @@
+$prefix: ant;
+
+.#{$prefix}-tree {
+  .anticon {    
+    position: relative;
+    top: -2px;
+  }
+  .ant-tree-treenode:hover {
+    border-radius: 6px;
+    background: var(--bg-node-hover);
+  }
+  .ant-tree-draggable-icon {
+    position: relative;
+    top: 2px;
+  }
+}

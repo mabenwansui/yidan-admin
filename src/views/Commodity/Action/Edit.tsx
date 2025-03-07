@@ -1,6 +1,6 @@
 'use client'
 import { Form } from 'antd'
-import FormItem from './ui/FormItem'
+import FormItem from './ui/FormItems'
 import { useRouter } from 'next/navigation'
 import { useSWRMutation } from '@/common/hooks/useAjax'
 import { CreateCommodityProps, createCommodityApiUrl, createCommodityApiMutation } from './api'

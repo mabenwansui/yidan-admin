@@ -54,7 +54,6 @@ export default function Nav() {
     const keys = findKey(items, pathname)
     if (keys) {
       const { key, parentKey } = keys
-      console.log('::::', key, parentKey)
       if (key) setSelectedKeys([key])
       if (parentKey) setOpen([parentKey])
     }

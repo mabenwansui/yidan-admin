@@ -1,7 +1,7 @@
 import '@ant-design/v5-patch-for-react-19'
 import { Suspense } from 'react'
 import LoginForm from './ui/LoginForm'
-import Loading from '@/components/Loading'
+import Loading from '@/components/Loading/SuspenseFallBack'
 
 export default function Login() {
   return (

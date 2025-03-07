@@ -1,9 +1,6 @@
-@import "./tailwind.css";
-
-:root {
-  --color-primary: #133188;
-  --color-secondary: #289BFF;
-}
+@use "./theme/cssvar.scss";
+@use "./antdReset/index.scss";
+@import "./theme/tailwind.css";
 
 .layout-bg {
   background-color: #F6F8FA;

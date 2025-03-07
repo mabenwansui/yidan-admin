@@ -1,14 +1,17 @@
 'use client'
-import { useState, useEffect } from 'react'
-import { Form, Input, InputNumber, Space } from 'antd'
+import { useState, useEffect, useRef } from 'react'
+import { Form, Input, InputNumber, Space, Button } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { presets } from '@/common/constants/valid'
 import Upload from '@/views/Commodity/Action/ui/Upload'
+import { TreeSelect, CategoryModal, TreeSelectRefMethods } from '@/components/Form/CommodityCategory'
 
-export default function CommodityCreatePage() {
+export default function FormItems() {
   const [discount, setDiscount] = useState<number>(0)
+  const [showCategoryModal, setShowCategoryModal] = useState(false)
   const originalPrice = Form.useWatch('originalPrice')
   const price = Form.useWatch('price')
+  const categoryRef = useRef<TreeSelectRefMethods | null>(null)
   useEffect(() => {
     if (originalPrice && price && originalPrice > price) {
       const discount = parseFloat((price / originalPrice).toFixed(2))
@@ -18,6 +21,15 @@ export default function CommodityCreatePage() {
     }
   }, [originalPrice, price])
   const { maxTitleLength } = presets
+  const handleCategory = () => {
+    setShowCategoryModal(true)
+  }
+  const handleCategoryModalClose = (isChange: boolean) => {
+    setShowCategoryModal(false)
+    if (isChange) {
+      categoryRef.current?.refresh()
+    }
+  }
   return (
     <>
       <Form.Item
@@ -29,6 +41,19 @@ export default function CommodityCreatePage() {
         ]}
       >
         <Input />
+      </Form.Item>
+      <Form.Item label="商品分类" required>
+        <Space>
+          <div className="w-97">
+            <Form.Item noStyle name="category" rules={[{ required: true, message: '请选择商品分类' }]}>
+              <TreeSelect ref={categoryRef} />
+            </Form.Item>
+          </div>
+          <Button onClick={handleCategory} size="small" type="link">
+            管理分类
+          </Button>
+          <CategoryModal maxLevel={2} open={showCategoryModal} onClose={handleCategoryModalClose} />
+        </Space>
       </Form.Item>
       <Form.Item label="图片上传" name="imgNames">
         <Upload name="imgUpload" />
@@ -53,6 +78,9 @@ export default function CommodityCreatePage() {
       </Form.Item>
       <Form.Item label="标签" name="tags">
         <Input />
+      </Form.Item>
+      <Form.Item label="商品详情" name="">
+        <Input.TextArea rows={10} />
       </Form.Item>
     </>
   )

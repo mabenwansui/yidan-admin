@@ -8,10 +8,19 @@ export interface CommoditySearchApiProps {
 }
 export const commoditySearchApiUrl = '/api/commodity/search'
 export async function commoditySearchApi(props: CommoditySearchApiProps = {}) {
-  return await post<{
+  const result = await post<{
     list: Array<Commodity>
     pageSize: number
     curPage: number
     total: number
   }>(commoditySearchApiUrl, props)
+  if (result?.data?.list) {
+    result.data.list = result.data.list.map((item) => {
+      return {
+        ...item,
+        key: item.id
+      }
+    })
+  }
+  return result
 }

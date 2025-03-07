@@ -1,6 +1,7 @@
 'use client'
-import { Form } from 'antd'
-import FormItem from './ui/FormItem'
+import '@ant-design/v5-patch-for-react-19'
+import { Form, Button } from 'antd'
+import FormItems from './ui/FormItems'
 import { useRouter } from 'next/navigation'
 import { useSWRMutation } from '@/common/hooks/useAjax'
 import { CreateCommodityProps, createCommodityApiUrl, createCommodityApiMutation } from './api'
@@ -8,6 +9,7 @@ import { CreateCommodityProps, createCommodityApiUrl, createCommodityApiMutation
 export default function Create() {
   const router = useRouter()
   const { trigger } = useSWRMutation(createCommodityApiUrl, createCommodityApiMutation)
+
   const handleFinish = async (values: CreateCommodityProps) => {
     const { name, imgNames, originalPrice, price } = values
     const { flag } = await trigger({
@@ -32,7 +34,12 @@ export default function Create() {
         }}
         onFinish={handleFinish}
       >
-        <FormItem />
+        <FormItems />
+        <Form.Item wrapperCol={{ offset: 5 }}>
+          <Button className="w-22" type="primary" htmlType="submit">
+            创建
+          </Button>
+        </Form.Item>
       </Form>
     </div>
   )

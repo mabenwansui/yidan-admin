@@ -19,7 +19,7 @@ export async function ajax<T extends ObjectType>(url: string, params: object | F
   const result = await request<T>({ url, method, data: params })
   if (result.flag === 0) {
     switch (result.code) {
-      case ERROR_CODE.AUTH_CHECK_FAILED: {
+      case ERROR_CODE.AUTH_CHECK_ERROR: {
         const authKey = await getCookie(COOKIE_KEY.TOKEN)
         if (authKey) {
           const refreshResult = await request<{ status: 'ok' }>({
@@ -52,11 +52,11 @@ export async function post<T extends ObjectType>(url: string, params: object | F
 //   const result = await request<T>({ url, method: type, data: params })
 //   const { flag, code, msg } = result
 //   if (flag === 0) {
-//     if (msg && isClient() && code !== ERROR_CODE.AUTH_CHECK_FAILED) {
+//     if (msg && isClient() && code !== ERROR_CODE.AUTH_CHECK_ERROR) {
 //       message.error(msg)
 //     }
 //     switch (code) {
-//       case ERROR_CODE.AUTH_CHECK_FAILED: {
+//       case ERROR_CODE.AUTH_CHECK_ERROR: {
 //         if (await isLogin()) {
 //           const { flag: _flag } = await refreshTokenApi()
 //           if (_flag === 1) {

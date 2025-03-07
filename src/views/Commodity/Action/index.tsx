@@ -1,4 +1,5 @@
 'use client'
+import '@ant-design/v5-patch-for-react-19'
 import { useState } from 'react'
 import { Form, Input, Button, InputNumber, Space } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'

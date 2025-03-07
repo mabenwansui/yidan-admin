@@ -1,3 +1,7 @@
+export enum SERVER_FILE_PREFIX {
+  IMG = 'https://localhost:4000/file/'
+}
+
 export enum SEARCH_PARAMS {
   BACK_URL = 'backurl'
 }
