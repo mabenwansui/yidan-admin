@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Frame from '@/components/Frame'
-import '@/common/css/index.scss'
 
 export const metadata: Metadata = {
   title: '易单后台系统',

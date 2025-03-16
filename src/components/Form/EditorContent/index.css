@@ -1,0 +1,34 @@
+@reference "../../../common/css/theme/tailwind.css";
+
+.bubble-menu-wrapper {
+  @apply leading-1 bg-white p-1 rounded-md border border-gray-300 shadow-sm;
+  /* @apply animate-fade-in-up leading-1 bg-white p-1 rounded-md border border-gray-300 shadow-sm; */
+}
+.bubble-menu-btn {  
+  @apply cursor-pointer p-2.5 rounded-md text-gray-500! hover:bg-gray-100! hover:text-gray-800!;
+  &.active {
+    @apply bg-gray-200 text-gray-800! hover:bg-gray-200!;
+  }
+}
+
+.editorcontent {
+  @apply bg-white [&_.ProseMirror-focused]:outline-none;
+  .tiptap {
+    @apply h-70;
+  }
+  .selection, *::selection {
+    @apply bg-blue-200;
+  }
+  .selection {
+    @apply leading-[22px] inline-block;
+  }
+  s * {
+    @apply line-through;
+  }
+  a {
+    @apply text-blue-600;
+    &:hover {
+      @apply text-blue-500;
+    }
+  }
+}

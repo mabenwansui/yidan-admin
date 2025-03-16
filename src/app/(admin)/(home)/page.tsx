@@ -15,9 +15,13 @@
 //   )
 // }
 
-import { getUserInfoApi } from './api'
-
-export default async function Page() {
-  const { data } = await getUserInfoApi('maben')
-  return <div>home\path2{JSON.stringify(data)}</div>
+export default function HomePage() {
+  return null
 }
+
+// import { getUserInfoApi } from './api'
+
+// export default async function Page() {
+//   const { data } = await getUserInfoApi('maben')
+//   return <div>home\path2{JSON.stringify(data)}</div>
+// }

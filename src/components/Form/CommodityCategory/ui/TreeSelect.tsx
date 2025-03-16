@@ -1,4 +1,4 @@
-import { useImperativeHandle } from 'react'
+import { useImperativeHandle, memo } from 'react'
 import { TreeSelect as AntTreeSelect } from 'antd'
 import useGetList from '../api/useGetList'
 
@@ -10,7 +10,7 @@ export interface Props {
   className?: string
 }
 
-export default function TreeSelect(props: Props) {
+function TreeSelect(props: Props) {
   const { list, refresh } = useGetList()
   useImperativeHandle(props.ref, () => {
     return {
@@ -34,3 +34,4 @@ export default function TreeSelect(props: Props) {
     />
   )
 }
+export default memo(TreeSelect)

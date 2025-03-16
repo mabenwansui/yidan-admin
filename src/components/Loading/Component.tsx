@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { LoadingOutlined } from '@ant-design/icons'
-import cs from 'classnames'
+import cs from 'clsx'
 
 interface Props {
   className?: string

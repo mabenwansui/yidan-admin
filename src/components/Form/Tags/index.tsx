@@ -12,7 +12,7 @@ const App: React.FC = () => {
     console.log('You are interested in: ', nextSelectedTags)
     setSelectedTags(nextSelectedTags)
   }
-  const handleAddFinish = (addTagVal: string) => {}
+  const handleAddFinish = () => {}
   return (
     <div>
       <div>

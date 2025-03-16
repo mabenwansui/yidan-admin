@@ -1,6 +1,5 @@
-@use "./theme/cssvar.scss";
-@use "./antdReset/index.scss";
 @import "./theme/tailwind.css";
+@import "./antdReset/index.css";
 
 .layout-bg {
   background-color: #F6F8FA;

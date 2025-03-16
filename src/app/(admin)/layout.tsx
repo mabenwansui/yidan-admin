@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
+import Frame from '@/components/Frame'
 import Layout from '@/components/Layout'
-import '@/common/css/index.scss'
 
 export const metadata: Metadata = {
   title: '易单1',
@@ -15,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body className="antialiased layout-bg">
-        <Layout>{children}</Layout>
+        <Frame>
+          <Layout>{children}</Layout>
+        </Frame>
       </body>
     </html>
   )

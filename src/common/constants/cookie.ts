@@ -1,3 +1,3 @@
 export enum COOKIE_KEY {
-  TOKEN = 'ak',
+  TOKEN = 'ak'
 }

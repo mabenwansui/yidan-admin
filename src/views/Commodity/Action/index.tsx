@@ -8,6 +8,7 @@ import { presets } from '@/common/constants/valid'
 import Upload from '@/views/Commodity/Action/ui/Upload'
 import { CreateCommodityProps, createCommodityApiUrl, createCommodityApiMutation } from '@/views/Commodity/Action/api'
 import { useRouter } from 'next/navigation'
+import Text from './ui/Text'
 
 export default function CommodityCreatePage() {
   const [discount, setDiscount] = useState<number>(0)
@@ -40,6 +41,7 @@ export default function CommodityCreatePage() {
   const { maxTitleLength } = presets
   return (
     <div className="max-w-xl">
+      <Text />
       <Form
         name="commodityCreate"
         labelCol={{

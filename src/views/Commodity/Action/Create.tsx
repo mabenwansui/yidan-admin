@@ -5,6 +5,7 @@ import FormItems from './ui/FormItems'
 import { useRouter } from 'next/navigation'
 import { useSWRMutation } from '@/common/hooks/useAjax'
 import { CreateCommodityProps, createCommodityApiUrl, createCommodityApiMutation } from './api'
+import Text from './ui/Text'
 
 export default function Create() {
   const router = useRouter()
@@ -24,6 +25,7 @@ export default function Create() {
   }
   return (
     <div className="max-w-xl mt-10">
+      <Text />
       <Form
         name="commodityCreate"
         labelCol={{

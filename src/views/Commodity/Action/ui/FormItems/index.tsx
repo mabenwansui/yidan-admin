@@ -5,6 +5,7 @@ import { InfoCircleOutlined } from '@ant-design/icons'
 import { presets } from '@/common/constants/valid'
 import Upload from '@/views/Commodity/Action/ui/Upload'
 import { TreeSelect, CategoryModal, TreeSelectRefMethods } from '@/components/Form/CommodityCategory'
+import EditorContent from '@/components/Form/EditorContent'
 
 export default function FormItems() {
   const [discount, setDiscount] = useState<number>(0)
@@ -80,7 +81,7 @@ export default function FormItems() {
         <Input />
       </Form.Item>
       <Form.Item label="商品详情" name="">
-        <Input.TextArea rows={10} />
+        <EditorContent />
       </Form.Item>
     </>
   )

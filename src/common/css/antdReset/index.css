@@ -1,0 +1,17 @@
+.ant-tree {
+  .anticon {    
+    position: relative;
+    top: -2px;
+  }
+  .ant-tree-treenode:hover {
+    border-radius: 6px;
+    background: var(--color-indigo-50);
+  }
+  .ant-tree-treenode:not(.ant-tree-treenode-disabled) .ant-tree-node-content-wrapper:not(.ant-tree-node-selected):hover {
+    background: none;
+  }  
+  .ant-tree-draggable-icon {
+    position: relative;
+    top: 2px;
+  }
+}
