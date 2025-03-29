@@ -1,3 +1,4 @@
+import {} from 'react'
 import { useEditor as useTipTapEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TextStyle from '@tiptap/extension-text-style'
@@ -5,7 +6,7 @@ import { Color } from '@tiptap/extension-color'
 import Selection from '../extensions/Selection'
 import { Link } from '../extensions/Link'
 
-export default function useEditor() {
+export default function useEditor(content: string = '') {
   const editor = useTipTapEditor({
     extensions: [
       StarterKit.configure({
@@ -30,7 +31,7 @@ export default function useEditor() {
         autocapitalize: 'off'
       }
     },
-    content: '<p>Hello World!</p>'
+    content
   })
   return editor
 }

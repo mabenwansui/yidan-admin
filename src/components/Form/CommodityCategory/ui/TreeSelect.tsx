@@ -12,7 +12,8 @@ export interface Props {
 
 function TreeSelect(props: Props) {
   const { list, refresh } = useGetList()
-  useImperativeHandle(props.ref, () => {
+  const { className, ref, ...rest } = props
+  useImperativeHandle(ref, () => {
     return {
       refresh() {
         refresh()
@@ -21,6 +22,7 @@ function TreeSelect(props: Props) {
   })
   return (
     <AntTreeSelect
+      labelInValue={true}
       fieldNames={{
         value: 'id',
         label: 'title'
@@ -30,7 +32,8 @@ function TreeSelect(props: Props) {
       allowClear
       treeDefaultExpandAll
       treeData={list}
-      className={props?.className}
+      className={className || ''}
+      {...rest}
     />
   )
 }

@@ -20,3 +20,7 @@ export async function createCommodityApi(props: CreateCommodityProps) {
 export async function createCommodityApiMutation(url: string, { arg }: { arg: CreateCommodityProps }) {
   return await createCommodityApi(arg)
 }
+
+export async function maben() {
+  return await post('/api/commodity/get-info', { id: '67dae985e7901cb84c08ab6c' })
+}

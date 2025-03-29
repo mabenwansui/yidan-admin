@@ -1,9 +1,12 @@
+import { useMemo, memo } from 'react'
 import logger from '@/common/utils/logger'
-import { CirclePlus, Trash2, Pencil, Bold, Italic, Strikethrough, Palette, Link } from 'lucide-react'
+import cs from 'clsx'
+import { CirclePlus, Trash2, Pencil, Bold, Italic, Strikethrough, Palette, Link, Unlink } from 'lucide-react'
 
-interface IconProps {
+interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
   name: string
   color?: string
+  className?: string
   size?: 'middle' | 'large' | 'small'
 }
 
@@ -14,31 +17,41 @@ const sizeMapping = {
 }
 
 /* 图标预览 https://lucide.dev/icons/circle-plus */
-export default function Icon(props: IconProps) {
-  const { name, size = 'middle', color } = props
+function Icon(props: IconProps) {
+  const { name, size = 'middle', color, className, ...rest } = props
   const _size = sizeMapping[size]
-  const _props = { size: _size, color, strokeWidth: '2.5' }
+  const _props = useMemo(() => ({ size: _size, color, strokeWidth: '2.5' }), [_size, color])
+  const renderIcon = (Node: any) => {
+    return (
+      <span className={cs('icon', 'inline-block', className)} {...rest}>
+        <Node {..._props} />
+      </span>
+    )
+  }
   switch (name) {
     // 新增
-    case 'circle-plus':
-      return <CirclePlus {..._props} />
+    case 'add':
+      return renderIcon(CirclePlus)
     // 删除（垃圾桶）
-    case 'trash-2':
-      return <Trash2 {..._props} />
+    case 'delete':
+      return renderIcon(Trash2)
     // 编辑
-    case 'pencil':
-      return <Pencil {..._props} />
+    case 'edit':
+      return renderIcon(Pencil)
     case 'bold':
-      return <Bold {..._props} />
+      return renderIcon(Bold)
     case 'italic':
-      return <Italic {..._props} />
+      return renderIcon(Italic)
     case 'strikethrough':
-      return <Strikethrough {..._props} />
+      return renderIcon(Strikethrough)
     case 'palette':
-      return <Palette {..._props} />
+      return renderIcon(Palette)
     case 'link':
-      return <Link {..._props} />
+      return renderIcon(Link)
+    case 'unlink':
+      return renderIcon(Unlink)
     default:
       logger.error('图标未找到!')
   }
 }
+export default memo(Icon)

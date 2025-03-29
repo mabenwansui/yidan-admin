@@ -10,19 +10,25 @@ export interface EditorStore {
     isItalic: () => boolean
     isStrike: () => boolean
     isLink: () => boolean
+    currentLinkAttributes: () => Record<string, any> | undefined
     currentColor: () => string
     currentHighlight: () => string
     currentFont: () => string
     currentSize: () => string
+    getHtml: () => string
   }
   commands: () => {
+    // unFocus: () => void
+    clearSelectionDecorations: () => reutrnType
+    focus: () => reutrnType
+    focusEnd: () => void
     onBold: () => reutrnType
     onItalic: () => reutrnType
     onStrike: () => reutrnType
-    // unFocus: () => void
     onChangeColor: (color: string) => reutrnType
-    focus: () => reutrnType
-    clearSelectionDecorations: () => reutrnType
     onLink: (url: string) => reutrnType
+    onUnLink: () => reutrnType
+    extendMarkRangeLink: () => void
+    setValue: (value: string) => reutrnType
   }
 }

@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
       }
     ]
   },
-  // reactStrictMode: false,
+  reactStrictMode: false,
   compiler: {
     styledComponents: true
   }

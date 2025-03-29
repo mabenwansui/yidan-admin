@@ -7,7 +7,7 @@ export interface Commodity {
   description?: string // 描述
   category?: string // 分类
   details?: string // 详情
-  imgNames?: [string] // 图片
+  imgNames?: string[] // 图片
   stockConunt?: number // 库存
   soldCount?: number // 已售
   createdAt?: Date // 创建时间

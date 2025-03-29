@@ -1,4 +1,5 @@
-import Create from '@/views/Commodity/Action/Create'
+'use client'
+import Create from '@/views/Commodity/Create'
 
 export default function CreateCommodityPage() {
   return <Create />

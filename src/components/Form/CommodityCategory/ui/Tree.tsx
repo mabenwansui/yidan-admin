@@ -10,7 +10,6 @@ import useUpdate from '../api/useUpdate'
 import useSort from '../api/useSort'
 import Item from './Item'
 import { getNextState } from '../utils'
-import '../css/index.scss'
 
 export interface Props {
   maxLevel?: number
@@ -127,7 +126,7 @@ export default function CommodityCategory(props: Props) {
   }
   const hadleAllowDrop: TreeProps['allowDrop'] = ({ dropNode, dropPosition }) => {
     const _node = dropNode as unknown as ListItem
-    if (_node.id === '0' && dropPosition !== 0) {
+    if (_node.level === 0 && dropPosition !== 0) {
       return false
     } else {
       return _node.level < maxLevel || dropPosition !== 0
@@ -135,7 +134,7 @@ export default function CommodityCategory(props: Props) {
   }
   const handleDraggable: TreeProps['draggable'] = (node) => {
     const _node = node as unknown as ListItem
-    return _node.id !== '0'
+    return _node.level !== 0
   }
   const render = () => {
     if (isLoading === true && treeData.length === 0) {

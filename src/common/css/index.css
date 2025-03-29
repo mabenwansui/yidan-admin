@@ -1,6 +1,15 @@
-@import "./theme/tailwind.css";
-@import "./antdReset/index.css";
+@import './theme/tailwind.css';
+@import './antdReset/index.css';
 
 .layout-bg {
-  background-color: #F6F8FA;
+  background-color: #f6f8fa;
+}
+
+body {
+  a {
+    color: var(--color-blue-600);
+    &:hover {
+      color: var(--color-blue-500);
+    }
+  }
 }

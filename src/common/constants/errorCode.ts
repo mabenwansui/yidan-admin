@@ -5,6 +5,7 @@ export enum ERROR_CLIENT_CODE {
   UNKNOWN = '201'
 }
 
+/** 与后端同步 */
 const COMMON_ERROR_CODE = {
   /** 请求资源不存在 */
   NOT_FOUND: '10001',
@@ -28,7 +29,9 @@ const USER_ERROR_CODE = {
   /** 创建用户失败, 服务器内部错误，请联系管理员 */
   CREATE_USER_ERROR: '11106',
   /** 用户名已存在 */
-  USER_ALREADY_USED: '11107'
+  USER_ALREADY_USED: '11107',
+  /** 用户不存在 */
+  USER_NOT_FOUND: '11108'
 }
 
 const FILE_ERROR_CODE = {
@@ -39,12 +42,20 @@ const FILE_ERROR_CODE = {
 }
 
 const COMMODITY_ERROR_CODE = {
-  /** 创建商品分类错误 */
+  /** 创建失败, 服务器内部错误, 请联系管理员 */
   CREATE_COMMODITY_CATEGORY_ERROR: '13100',
   /** 更新商品分类错误 */
-  UPDATE_COMMODITY_CATEGORY_ERROR: '13101',
+  UPDATE_COMMODITY_CATEGORY_ERROR: '13111',
+  /** 更新错误, 根节点不能修改 */
+  UPDATE_COMMODITY_CATEGORY_ROOT_ERROR: '13112',
   /** 删除商品分类错误 */
-  DELETE_COMMODITY_CATEGORY_ERROR: '13102'
+  DELETE_COMMODITY_CATEGORY_ERROR: '13121',
+  /** 删除错误, 服务器内部错误, 请联系管理员 */
+  DELETE_NOT_FOUND_COMMODITY_CATEGORY: '13122',
+  /** 未查询到父级分类 */
+  NOT_FOUND_COMMODITY_CATEGORY_PARENT: '13501',
+  /** 分类已存在 */
+  COMMODITY_CATEGORY_ALREADY_USED: '13502'
 }
 
 export const ERROR_CODE = {

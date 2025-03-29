@@ -7,7 +7,7 @@ import Bold from './base/Bold'
 import Italic from './base/Italic'
 import Strikehrough from './base/Strikehrough'
 import Palette from './base/Palette'
-import Link from './base/Link'
+import Link from './base/Link/Link'
 import useTextMenuShouldShow from '../hooks/useTextMenuShouldShow'
 import 'tippy.js/animations/perspective-subtle.css'
 

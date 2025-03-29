@@ -6,16 +6,6 @@ import { apiPrefix } from '@/common/utils/ajax'
 
 type FileType = Parameters<GetProp<AntUploadProps, 'beforeUpload'>>[0]
 
-export interface UploadProps {
-  /* 发到后台的文件参数名 */
-  name: string
-  /* default: ['image/jpeg', 'image/jpg', 'image/png'] */
-  accept?: Array<'image/jpeg' | 'image/jpg' | 'image/png' | 'image/gif'>
-  size?: 'middle' | 'large' | 'small'
-  /* 单位: KB */
-  maxImageSize?: number
-  onChange?: (props: string[]) => void
-}
 interface ResponseData {
   flag: 1 | 0
   data: {
@@ -23,62 +13,75 @@ interface ResponseData {
     url: string
   }
 }
+export interface UploadProps extends Omit<AntUploadProps<ResponseData>, 'onChange'> {
+  value?: string[]
+  checkTypes?: string[]
+  /* 单位: KB, default:5M */
+  maxImageSize?: number
+  onChange?: (listItems: UploadFile[]) => void
+}
+
 export default function Upload(props: UploadProps) {
   const { message } = App.useApp()
-  const [fileList, setFileList] = useState<UploadFile[]>([])
   const [previewImage, setPreviewImage] = useState('')
   const [previewOpen, setPreviewOpen] = useState(false)
-
   const defaultProps: UploadProps = {
-    name: 'file',
-    accept: ['image/jpeg', 'image/png', 'image/gif'],
-    size: 'large',
-    // 5M(单位bye)
-    maxImageSize: 1024 * 1024 * 5
+    name: 'img',
+    listType: 'picture-card',
+    withCredentials: true,
+    checkTypes: ['image/jpeg', 'image/png', 'image/gif'],
+    accept: '.png,.jpg,.jpeg,.gif',
+    maxCount: 30,
+    maxImageSize: 1024 * 1024 * 5, // 5M(单位bye)
+    multiple: true
   }
-  const _props = { ...defaultProps, ...props } as Required<UploadProps>
+  const _props = { ...defaultProps, ...props }
+  const { checkTypes, maxImageSize, onChange, ...rest } = _props
 
   const beforeUpload = (file: FileType) => {
-    const { accept, maxImageSize } = _props
     const { LIST_IGNORE } = AntUpload
-    const isAccept = (accept as Array<string>).includes(file.type)
+    const isAccept = (checkTypes as Array<string>).includes(file.type)
     if (!isAccept) {
       message.error(`只能上传jpg、png格式的图片`)
       return LIST_IGNORE
     }
-    if (file.size > maxImageSize) {
+    if (file.size > maxImageSize!) {
       const curSize = (file.size / 1024 / 1024).toFixed(2)
-      const maxSize = parseFloat((maxImageSize / 1024 / 1024).toFixed(2))
+      const maxSize = parseFloat((maxImageSize! / 1024 / 1024).toFixed(2))
       message.error(`图片尺寸超出限制, 当前大小为${curSize}M, 不能超过${maxSize}M`)
       return LIST_IGNORE
     }
     return true
   }
   const handleChange: AntUploadProps<ResponseData>['onChange'] = ({ fileList }) => {
-    setFileList(fileList)
-    if (fileList.every((item) => item.status === 'done')) {
-      _props?.onChange(fileList.map((item) => item.response!.data.name))
-    }
+    const doneArr: UploadFile[] = []
+    const list = fileList.map((item) => {
+      const { response, status } = item
+      if (status === 'done') {
+        if (response?.data) {
+          const { name, url } = response.data
+          item.name = name
+          item.url = url
+        }
+        doneArr.push(item)
+      }
+      return item
+    })
+    onChange?.(list)
   }
   const handlePreview = (file: UploadFile<ResponseData>) => {
-    const { url } = file.response!.data
-    setPreviewImage(url)
+    const { url, thumbUrl } = file
+    setPreviewImage(url || thumbUrl!)
     setPreviewOpen(true)
   }
   return (
     <div className="[&_.ant-upload-list-item-container]:bg-white">
       <AntUpload
-        name="img"
-        listType="picture-card"
-        accept=".png,.jpg,.jpeg,.gif"
-        withCredentials={true}
         action={`${apiPrefix}/api/file/upload/img`}
-        fileList={fileList}
         beforeUpload={beforeUpload}
         onChange={handleChange}
-        maxCount={30}
-        multiple
         onPreview={handlePreview}
+        {...rest}
       >
         <div className="inline-block">{<PlusOutlined />}</div>
       </AntUpload>

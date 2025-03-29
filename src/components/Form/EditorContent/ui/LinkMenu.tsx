@@ -1,8 +1,9 @@
-import { useMemo, useCallback } from 'react'
-import { BubbleMenu, useEditorState } from '@tiptap/react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { BubbleMenu } from '@tiptap/react'
 import { CLASSNAME } from '../constants'
 import useEditorStore from '../store'
-import LinkFormItem from './base/LinkFormItem'
+import LinkFormItem from './base/Link/LinkFormItem'
+import LinkPreviewItem from './base/Link/LinkPreviewItem'
 import 'tippy.js/animations/perspective-subtle.css'
 
 interface MenuProps {
@@ -11,35 +12,48 @@ interface MenuProps {
 }
 
 export default function LinkMenu({ appendTo }: MenuProps) {
+  const [val, setVal] = useState('')
+  const [isShow, setIsShow] = useState(false)
+  const [isEdit, setIsEdit] = useState(false)
   const editor = useEditorStore((state) => state.editor)
   const status = useEditorStore((state) => state.status)
-  const state = useEditorState({
-    editor,
-    selector: (ctx) => {
-      const attrs = ctx?.editor?.getAttributes('link')
-      return { link: attrs?.href, target: attrs?.target }
+  const commands = useEditorStore((state) => state.commands)
+  useEffect(() => {
+    if (isShow) {
+      const linkAttributes = status()?.currentLinkAttributes()
+      const href = linkAttributes?.href
+      setVal(href)
+    } else {
+      setVal('')
     }
-  })
-  console.log('link', state?.link)
-  console.log('target', state?.target)
+  }, [status, isShow])
+  const handleShouldShow = useCallback(() => {
+    return status().isLink()
+  }, [status])
+  const handleChange = (val: string) => setVal(val)
+  const handleSubmit = () => {
+    setIsEdit(false)
+    commands().extendMarkRangeLink()
+    commands().onLink(val)
+  }
+  const handleRemove = () => {
+    commands().onUnLink()
+    commands().focusEnd()
+  }
+  const handleCancel = () => setIsEdit(false)
+  const handleEdit = () => setIsEdit(true)
   const tippyOptions = useMemo(
     () => ({
       duration: 400,
       animation: 'perspective-subtle',
-      appendTo: () => {
-        return appendTo?.current
-      }
-      // trigger: 'mouseenter',
-      // onTirgger: () => {
-
-      // }
+      appendTo: () => appendTo?.current,
+      onShow: () => {
+        setIsShow(true)
+      },
+      onHidden: () => setIsShow(false)
     }),
     [appendTo]
   )
-  const handleShouldShow = useCallback(() => {
-    console.log('amben:::::', status().isLink())
-    return !!status().isLink()
-  }, [status])
   return (
     editor && (
       <BubbleMenu
@@ -50,7 +64,11 @@ export default function LinkMenu({ appendTo }: MenuProps) {
         tippyOptions={tippyOptions}
       >
         <div className={CLASSNAME.BUBBLE_MENU_WRAPPER}>
-          <LinkFormItem onSubmit={() => {}} />
+          {isEdit ? (
+            <LinkFormItem value={val} onCancel={handleCancel} onChange={handleChange} onSubmit={handleSubmit} />
+          ) : (
+            <LinkPreviewItem onEdit={handleEdit} onRemove={handleRemove} href={val} />
+          )}
         </div>
       </BubbleMenu>
     )

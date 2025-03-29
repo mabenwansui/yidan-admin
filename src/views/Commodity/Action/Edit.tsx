@@ -1,39 +1,45 @@
 'use client'
-import { Form } from 'antd'
-import FormItem from './ui/FormItems'
-import { useRouter } from 'next/navigation'
-import { useSWRMutation } from '@/common/hooks/useAjax'
-import { CreateCommodityProps, createCommodityApiUrl, createCommodityApiMutation } from './api'
+import { useMemo, useCallback } from 'react'
+import { useParams } from 'next/navigation'
+import { App } from 'antd'
+import Form, { CommodityFormItems } from '../ui/Form'
+import { useGetInfo } from './api/useGetInfo'
+import useUpdate from './api/useUpdate'
 
 export default function Edit() {
-  const router = useRouter()
-  const { trigger } = useSWRMutation(createCommodityApiUrl, createCommodityApiMutation)
-  const handleFinish = async (values: CreateCommodityProps) => {
-    const { name, imgNames, originalPrice, price } = values
-    const { flag } = await trigger({
-      name,
-      imgNames,
-      originalPrice,
-      price
-    })
-    if (flag === 1) {
-      router.push(`/commodity/sucess?backurl=${encodeURIComponent('/commodity/update')}`)
+  const { id } = useParams()
+  const { data, isLoading } = useGetInfo(id as string)
+  const { trigger: triggerUpdate } = useUpdate()
+  const { message } = App.useApp()
+  const initialValues = useMemo(() => {
+    if (isLoading || !data) {
+      return {}
     }
-  }
+    const { category, ...rest } = data
+    return {
+      category: {
+        value: category.id,
+        label: category.title
+      },
+      ...rest
+    }
+  }, [isLoading, data])
+  const handleFinish = useCallback(
+    async (values: CommodityFormItems) => {
+      const { category, ...rest } = values
+      const { flag } = await triggerUpdate({
+        ...rest,
+        category: category?.value
+      })
+      if (flag === 1) {
+        message.success('更新成功')
+      }
+    },
+    [message, triggerUpdate]
+  )
   return (
     <div className="max-w-xl mt-10">
-      <Form
-        name="commodityCreate"
-        labelCol={{
-          span: 5
-        }}
-        wrapperCol={{
-          span: 19
-        }}
-        onFinish={handleFinish}
-      >
-        <FormItem />
-      </Form>
+      {isLoading === false && <Form initialValues={initialValues} onFinish={handleFinish} submitText="保存并更新" />}
     </div>
   )
 }

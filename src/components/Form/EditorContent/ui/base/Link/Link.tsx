@@ -1,20 +1,18 @@
 import { useState } from 'react'
 import { Popover, PopoverProps } from 'antd'
-import Item from './Item'
+import Item from '../Item'
 import LinkFormItem from './LinkFormItem'
-import useEditorStore from '../../store'
+import useEditorStore from '../../../store'
 
 export default function Link() {
   const [open, setOpen] = useState(false)
-  const editor = useEditorStore((state) => state.editor)
+  const [val, setVal] = useState('')
   const commands = useEditorStore((state) => state.commands)
-  const handleSubmit = (val: string) => {
+  const handleSubmit = () => {
     commands().onLink(val)
+    setVal('')
     setOpen(false)
-    if (editor) {
-      const { selection } = editor.state
-      editor.commands.focus(selection.to)
-    }
+    commands().focusEnd()
   }
   const handleOpenChange: PopoverProps['onOpenChange'] = (open) => {
     setOpen(open)
@@ -22,12 +20,13 @@ export default function Link() {
       // commands().focus()
     }
   }
+  const handleChange = (val: string) => setVal(val)
   return (
     <Popover
       open={open}
       trigger="click"
       onOpenChange={handleOpenChange}
-      content={<LinkFormItem onSubmit={handleSubmit} />}
+      content={<LinkFormItem value={val} onChange={handleChange} onSubmit={handleSubmit} />}
     >
       <span>
         <Item iconName="link" />

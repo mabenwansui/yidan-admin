@@ -1,7 +1,7 @@
 @reference "../../../common/css/theme/tailwind.css";
 
 .bubble-menu-wrapper {
-  @apply leading-1 bg-white p-1 rounded-md border border-gray-300 shadow-sm;
+  @apply leading-1 bg-white p-1 rounded-md border border-gray-300 shadow-sm h-full;
   /* @apply animate-fade-in-up leading-1 bg-white p-1 rounded-md border border-gray-300 shadow-sm; */
 }
 .bubble-menu-btn {  
@@ -12,9 +12,9 @@
 }
 
 .editorcontent {
-  @apply bg-white [&_.ProseMirror-focused]:outline-none;
+  @apply bg-white [&_.ProseMirror-focused]:outline-none h-full;
   .tiptap {
-    @apply h-70;
+    @apply h-full;
   }
   .selection, *::selection {
     @apply bg-blue-200;

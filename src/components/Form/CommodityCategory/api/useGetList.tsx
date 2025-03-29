@@ -17,7 +17,7 @@ const fetcher = async () => await post<{ list: Array<RequestListItem> }>(url)
 
 export default function useGetList() {
   const [key, setKey] = useState(0)
-  const { data, isLoading } = useSWR(`${url}${key}`, fetcher)
+  const { data, isLoading } = useSWR(`${url}${key}`, fetcher, { shouldRetryOnError: false })
   return {
     list: data?.data?.list || empty,
     isLoading,

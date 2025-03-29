@@ -4,7 +4,7 @@ module.exports = {
   useTabs: false, // 使用空格而不是制表符进行缩进
   semi: false, // 在语句末尾添加分号
   singleQuote: true, // 使用单引号而不是双引号
-  trailingComma: 'none', // 尾随逗号的使用方式：none, es5, all
+  trailingComma: 'none' // 尾随逗号的使用方式：none, es5, all
   // quoteProps: "as-needed", // 对象属性的引号使用方式：as-needed, consistent, preserve
   // jsxSingleQuote: false, // 在JSX中使用单引号
   // bracketSpacing: true, // 在对象文字中的括号之间打印空格
