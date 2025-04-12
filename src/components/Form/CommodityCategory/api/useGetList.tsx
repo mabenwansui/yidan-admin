@@ -11,7 +11,7 @@ export interface RequestListItem {
 }
 
 const empty: RequestListItem[] = []
-export const url = '/api/commodity/category/list'
+export const url = '/api/commodity/category/form-list'
 
 const fetcher = async () => await post<{ list: Array<RequestListItem> }>(url)
 

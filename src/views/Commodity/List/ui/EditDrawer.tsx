@@ -1,5 +1,5 @@
 'use client'
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, memo } from 'react'
 import { App, Drawer, DrawerProps, Space, Button } from 'antd'
 import Form, { CommodityFormItems, RefMethods } from '../../ui/Form'
 import { useGetInfo } from '../api/useGetInfo'
@@ -11,7 +11,7 @@ interface Props extends DrawerProps {
   id: string
 }
 
-export default function EditDrawer(props: Props) {
+function EditDrawer(props: Props) {
   const { id, onSubmit, ...rest } = props
   const formRef = useRef<RefMethods>(null)
   const { data, isLoading } = useGetInfo(id as string)
@@ -65,9 +65,11 @@ export default function EditDrawer(props: Props) {
     <Drawer extra={renderAction()} title="编辑" width={650} {...rest}>
       <div className="max-w-xl mt-5">
         {isLoading === false && (
-          <Form ref={formRef} initialValues={initialValues} onFinish={handleFinish} showSubmitBtn={false} />
+          <Form ref={formRef} key={id} initialValues={initialValues} onFinish={handleFinish} showSubmitBtn={false} />
         )}
       </div>
     </Drawer>
   )
 }
+
+export default memo(EditDrawer)
