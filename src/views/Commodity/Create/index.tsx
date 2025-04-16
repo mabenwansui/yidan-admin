@@ -24,8 +24,8 @@ export default function Create() {
     [router, triggerCreate]
   )
   return (
-    <div className="max-w-xl mt-10">
+    <section className="max-w-xl">
       <Form onFinish={handleFinish} submitText="创建" />
-    </div>
+    </section>
   )
 }

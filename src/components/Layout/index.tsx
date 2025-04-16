@@ -11,7 +11,7 @@ export default function Layout(props: Props) {
   return (
     <Frame>
       <div className="flex min-h-screen">
-        <div className="w-64 bg-indigo-800 pl-1.5 pr-1.5">
+        <div className="w-64 min-w-56 bg-indigo-800 pl-1.5 pr-1.5">
           <div className="p-5 flex">
             <Image src={logo} alt="logo" width={200} height={200} style={{ width: 64, height: 64 }} />
             <div className="text-white flex flex-wrap items-center ml-3">
@@ -21,9 +21,9 @@ export default function Layout(props: Props) {
           </div>
           <Nav />
         </div>
-        <div className="flex-1">
+        <div className="flex-1" style={{ minWidth: '960px' }}>
           <Header />
-          <main>{props?.children}</main>
+          <main className="m-10">{props?.children}</main>
         </div>
       </div>
     </Frame>

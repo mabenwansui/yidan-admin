@@ -1,46 +1,22 @@
 'use client'
-import { useState, useEffect, ReactNode } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu, ConfigProvider, MenuProps } from 'antd'
-import Link from 'next/link'
+import { SubMenuType } from 'antd/es/menu/interface'
 import { usePathname } from 'next/navigation'
-import { ROUTE_PATH } from '@/common/constants/routePath'
+import useConfig from './useConfig'
 
-const items = [
-  {
-    key: ROUTE_PATH.HOME,
-    label: <Link href={ROUTE_PATH.HOME}>首页</Link>
-  },
-  {
-    key: 'commodity',
-    label: '商品管理',
-    children: [
-      {
-        key: ROUTE_PATH.COMMODITY_CREATE,
-        label: <Link href={ROUTE_PATH.COMMODITY_CREATE}>商品创建</Link>
-      },
-      {
-        key: ROUTE_PATH.COMMODITY_LIST,
-        label: <Link href={ROUTE_PATH.COMMODITY_LIST}>商品列表</Link>
-      }
-    ]
-  }
-]
-
-interface SourceItem {
-  key: string
-  label: ReactNode
-  children?: Array<SourceItem>
-}
-function findKey(items: Array<SourceItem>, path: string, parentKey?: string) {
+function findKey(items: MenuProps['items'], path: string, parentKey?: string) {
+  if (!items) return false
   for (const item of items) {
-    if (path === item.key) {
+    const _item = item as SubMenuType
+    if (path === _item?.key) {
       return {
-        key: item.key,
+        key: _item.key,
         parentKey
       }
     }
-    if (item.children) {
-      return findKey(item.children, path, item.key)
+    if (_item?.children) {
+      return findKey(_item.children, path, _item.key)
     }
   }
   return false
@@ -50,14 +26,16 @@ export default function Nav() {
   const [open, setOpen] = useState<string[]>([])
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
   const pathname = usePathname()
+  const { config, isLoading } = useConfig()
   useEffect(() => {
-    const keys = findKey(items, pathname)
+    if (isLoading === true || !config) return
+    const keys = findKey(config, pathname)
     if (keys) {
       const { key, parentKey } = keys
       if (key) setSelectedKeys([key])
       if (parentKey) setOpen([parentKey])
     }
-  }, [pathname, setSelectedKeys, setOpen])
+  }, [pathname, setSelectedKeys, setOpen, isLoading, config])
   const handleOpenChange: MenuProps['onOpenChange'] = (openKeys) => {
     setOpen(openKeys)
   }
@@ -68,6 +46,7 @@ export default function Nav() {
     setSelectedKeys(selectKey ? [selectKey] : [])
     setOpen(keys)
   }
+
   return (
     <ConfigProvider
       theme={{
@@ -87,12 +66,12 @@ export default function Nav() {
       }}
     >
       <Menu
-        defaultSelectedKeys={[ROUTE_PATH.HOME]}
+        defaultSelectedKeys={['home']}
         openKeys={open}
         selectedKeys={selectedKeys}
         theme="dark"
         mode="inline"
-        items={items}
+        items={config}
         onOpenChange={handleOpenChange}
         onSelect={handleSelect}
       />

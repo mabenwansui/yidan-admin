@@ -14,7 +14,7 @@ export default function Frame(props: Props) {
       <ConfigProvider
         locale={zhCN}
         theme={{
-          cssVar: false,
+          cssVar: true,
           hashed: false,
           token: {
             colorPrimary: '#372AAC',

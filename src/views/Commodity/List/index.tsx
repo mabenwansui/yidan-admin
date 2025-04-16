@@ -2,11 +2,10 @@
 import '@ant-design/v5-patch-for-react-19'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import NextImage from 'next/image'
-import { Table, TableProps, Space, Image, App, Popconfirm } from 'antd'
+import { Table, TableProps, Space, App, Popconfirm } from 'antd'
 import { Commodity } from '@/common/types/commodity'
-import { SEARCH_PARAMS, SERVER_FILE_PREFIX } from '@/common/constants/routePath'
-import imgCommdityPlaceholder from '@/common/images/commodity_placeholder.svg'
+import { SEARCH_PARAMS } from '@/common/constants/routePath'
+import Image from '@/components/Image'
 import EditDrawer from './ui/EditDrawer'
 import useListSearch from './api/useListSearch'
 import useDelete from './api/useDelete'
@@ -26,10 +25,10 @@ export default function List() {
   const { trigger: deleteTrigger } = useDelete()
   const router = useRouter()
   useEffect(() => {
-    if (curPage > 1 && list && list.length === 0) {
+    if (curPage > 1 && isLoading === false && list && list.length === 0) {
       router.push(getUrl(1))
     }
-  }, [curPage, list, router])
+  }, [curPage, list, router, isLoading])
   const { message } = App.useApp()
   const handleEdit = useCallback((id: string) => {
     setId(id)
@@ -60,21 +59,7 @@ export default function List() {
         dataIndex: 'imgNames',
         width: 106,
         render: (imgUrls: Array<string>, record) => {
-          const img = imgUrls[0]
-          if (img) {
-            return <Image src={`${SERVER_FILE_PREFIX.IMG}/${img}`} width={68} height={68} alt={record.name} />
-          } else {
-            return (
-              <NextImage
-                priority
-                src={imgCommdityPlaceholder}
-                width={128}
-                height={128}
-                style={{ width: 68, height: 68 }}
-                alt={record.name}
-              />
-            )
-          }
+          return <Image imgUrl={imgUrls[0]} alt={record.name} />
         }
       },
       {
@@ -115,7 +100,7 @@ export default function List() {
     [handleEdit, handleDel]
   )
   return (
-    <section className="m-10">
+    <section>
       <Table<Commodity>
         rowKey={(record) => record.id}
         columns={columns}
