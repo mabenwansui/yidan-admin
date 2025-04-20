@@ -33,10 +33,11 @@ export async function ajax<T extends ObjectType>(url: string, params: object | F
             return await ajax<T>(url, params, options)
           }
         }
+        const redirectUrl = `${ROUTE_PATH.LOGIN}?${SEARCH_PARAMS.BACK_URL}=${window.encodeURIComponent(window.location.href.split('?')[0])}`
         if (isServer()) {
-          redirect(
-            `${ROUTE_PATH.LOGIN}?${SEARCH_PARAMS.BACK_URL}=${window.encodeURIComponent(window.location.href.split('?')[0])}`
-          )
+          redirect(redirectUrl)
+        } else {
+          location.href = redirectUrl
         }
         break
       }

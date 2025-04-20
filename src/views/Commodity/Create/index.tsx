@@ -8,7 +8,6 @@ import useCreate from './api/useCreate'
 export default function Create() {
   const router = useRouter()
   const { trigger: triggerCreate } = useCreate()
-
   const handleFinish = useCallback(
     async (values: CommodityFormItems) => {
       const { category, imgNames, ...rest } = values
@@ -24,7 +23,7 @@ export default function Create() {
     [router, triggerCreate]
   )
   return (
-    <section className="max-w-xl">
+    <section className="form-wrap">
       <Form onFinish={handleFinish} submitText="创建" />
     </section>
   )

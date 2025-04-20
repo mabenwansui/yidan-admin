@@ -3,6 +3,7 @@ import Frame from '@/components/Frame'
 import Nav from './ui/Nav'
 import Header from './ui/Header'
 import logo from './images/logo.svg'
+
 interface Props {
   children: React.ReactNode
 }

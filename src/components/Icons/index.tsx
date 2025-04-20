@@ -16,7 +16,7 @@ const sizeMapping = {
   large: '20'
 }
 
-/* 图标预览 https://lucide.dev/icons/circle-plus */
+/* 图标预览 https://lucide.dev/icons */
 function Icon(props: IconProps) {
   const { name, size = 'middle', color, className, ...rest } = props
   const _size = sizeMapping[size]

@@ -9,23 +9,37 @@ export enum SEARCH_PARAMS {
 }
 
 export enum ROUTE_PATH {
-  LOGIN = '/user/login',
-  REGISTER = '/user/register',
+  LOGIN = '/login',
+  LOGIN_OUT = '/logout',
+  REGISTER = '/register',
   HOME = '/',
 
   /** 商品 */
   COMMODITY_CREATE = '/commodity/create',
-  COMMODITY_EDIT = '/commodity/edit',
   COMMODITY_LIST = '/commodity/list',
   COMMODITY_SUCCESS = '/commodity/success',
 
   /** 项目 */
-  PROJECT_CREATE = '/project/create',
-  PROJECT_EDIT = '/project/edit',
-  PROJECT_LIST = '/project/list',
-  PROJECT_SUCCESS = '/project/success',
+  STORE_CREATE = '/store/create',
+  STORE_LIST = '/store/list',
+  STORE_SUCCESS = '/store/success',
 
   /** 用户 */
+  USER_INFO = '/user/info',
   USER_ADMIN_LIST = '/users/admin/list',
   USER_STAFF_LIST = '/users/staff/list'
+}
+
+export const routeTitleMapping: Record<string, string> = {
+  [ROUTE_PATH.LOGIN]: '登录',
+  [ROUTE_PATH.REGISTER]: '注册',
+  [ROUTE_PATH.HOME]: '首页',
+  [ROUTE_PATH.COMMODITY_CREATE]: '商品创建',
+  [ROUTE_PATH.COMMODITY_LIST]: '商品列表',
+  [ROUTE_PATH.COMMODITY_SUCCESS]: '商品操作成功',
+  [ROUTE_PATH.STORE_CREATE]: '项目创建',
+  [ROUTE_PATH.STORE_LIST]: '项目列表',
+  [ROUTE_PATH.STORE_SUCCESS]: '项目操作成功',
+  [ROUTE_PATH.USER_ADMIN_LIST]: '用户管理',
+  [ROUTE_PATH.USER_STAFF_LIST]: '用户管理'
 }

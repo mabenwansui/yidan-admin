@@ -23,7 +23,7 @@ export default function LoginForm() {
   return (
     <>
       <div className="bg-white rounded-lg ps-6 py-2">
-        <div className="text-xl py-4">易单管理平台</div>
+        <div className="text-xl pt-4 pb-6">易单管理平台</div>
         <Form
           className="mt-4"
           requiredMark={false}

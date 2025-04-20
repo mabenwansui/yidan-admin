@@ -6,7 +6,7 @@ import { ERROR_CLIENT_CODE } from '@/common/constants/errorCode'
 export type ObjectType = object
 export interface AjaxResponse<T extends ObjectType = ObjectType> {
   flag: 0 | 1
-  data?: T
+  data: T
   msg?: string
   code: string
 }
@@ -102,12 +102,14 @@ export async function request<T extends ObjectType = ObjectType>(config: Default
       return {
         flag: 0,
         code: ERROR_CLIENT_CODE.TIMEOUT,
+        data: {} as T,
         msg: '请求超时'
       }
     } else {
       return {
         flag: 0,
         code: ERROR_CLIENT_CODE.UNKNOWN,
+        data: {} as T,
         msg: '请求失败, 请稍后重试'
       }
     }

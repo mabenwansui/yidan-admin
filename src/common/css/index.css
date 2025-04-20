@@ -5,6 +5,11 @@
   background-color: #f6f8fa;
 }
 
+.form-wrap {
+  @apply max-w-xl pt-2;
+}
+
+
 body {
   a {
     color: var(--color-blue-600);

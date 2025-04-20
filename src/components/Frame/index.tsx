@@ -35,6 +35,10 @@ export default function Frame(props: Props) {
             Pagination: {
               itemSize: 30,
               itemSizeSM: 20
+            },
+            Table: {
+              headerBorderRadius: 8,
+              headerBg: '#F8FAFB'
             }
           }
         }}

@@ -1,6 +1,6 @@
 import { useImperativeHandle, memo } from 'react'
 import { TreeSelect as AntTreeSelect } from 'antd'
-import useGetList from '../api/useGetList'
+import useGetList from '../hooks/useGetList'
 
 export interface RefMethods {
   refresh: () => void

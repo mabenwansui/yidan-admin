@@ -5,7 +5,11 @@ import { SubMenuType } from 'antd/es/menu/interface'
 import { usePathname } from 'next/navigation'
 import useConfig from './useConfig'
 
-function findKey(items: MenuProps['items'], path: string, parentKey?: string) {
+interface FindKey {
+  key: string
+  parentKey?: string
+}
+function findKey(items: MenuProps['items'], path: string, parentKey?: string): FindKey | false {
   if (!items) return false
   for (const item of items) {
     const _item = item as SubMenuType
@@ -16,7 +20,8 @@ function findKey(items: MenuProps['items'], path: string, parentKey?: string) {
       }
     }
     if (_item?.children) {
-      return findKey(_item.children, path, _item.key)
+      const ret: FindKey | false = findKey(_item.children, path, _item.key)
+      if (ret) return ret
     }
   }
   return false
@@ -28,7 +33,7 @@ export default function Nav() {
   const pathname = usePathname()
   const { config, isLoading } = useConfig()
   useEffect(() => {
-    if (isLoading === true || !config) return
+    if (isLoading === true || config?.length === 0) return
     const keys = findKey(config, pathname)
     if (keys) {
       const { key, parentKey } = keys
@@ -36,9 +41,7 @@ export default function Nav() {
       if (parentKey) setOpen([parentKey])
     }
   }, [pathname, setSelectedKeys, setOpen, isLoading, config])
-  const handleOpenChange: MenuProps['onOpenChange'] = (openKeys) => {
-    setOpen(openKeys)
-  }
+  const handleOpenChange: MenuProps['onOpenChange'] = (openKeys) => setOpen(openKeys)
   const handleSelect: MenuProps['onSelect'] = (arg) => {
     const { keyPath } = arg
     const keys = [...keyPath]
@@ -66,7 +69,6 @@ export default function Nav() {
       }}
     >
       <Menu
-        defaultSelectedKeys={['home']}
         openKeys={open}
         selectedKeys={selectedKeys}
         theme="dark"

@@ -15,7 +15,7 @@ export default function useConfig() {
     if (!role) return
     const menuConfig = [
       {
-        key: 'home',
+        key: ROUTE_PATH.HOME,
         label: <Link href={ROUTE_PATH.HOME}>首页</Link>
       },
       role.includes(ROLE.SUPER_ADMIN) && {
@@ -23,12 +23,12 @@ export default function useConfig() {
         label: '店铺管理',
         children: [
           {
-            key: ROUTE_PATH.PROJECT_CREATE,
-            label: <Link href={ROUTE_PATH.PROJECT_CREATE}>店铺创建</Link>
+            key: ROUTE_PATH.STORE_CREATE,
+            label: <Link href={ROUTE_PATH.STORE_CREATE}>店铺创建</Link>
           },
           {
-            key: ROUTE_PATH.PROJECT_LIST,
-            label: <Link href={ROUTE_PATH.PROJECT_EDIT}>店铺列表</Link>
+            key: ROUTE_PATH.STORE_LIST,
+            label: <Link href={ROUTE_PATH.STORE_LIST}>店铺列表</Link>
           }
         ]
       },
@@ -46,13 +46,13 @@ export default function useConfig() {
           }
         ]
       },
-      (role.includes(ROLE.SUPER_ADMIN) || role.includes(ROLE.SUPER_ADMIN)) && {
+      (role.includes(ROLE.SUPER_ADMIN) || role.includes(ROLE.ADMIN)) && {
         key: 'user',
         label: '用户管理',
         children: [
-          ROLE.SUPER_ADMIN && {
+          role.includes(ROLE.SUPER_ADMIN) && {
             key: ROUTE_PATH.USER_ADMIN_LIST,
-            label: <Link href={ROUTE_PATH.USER_ADMIN_LIST}>管理员列表</Link>
+            label: <Link href={ROUTE_PATH.USER_ADMIN_LIST}>全部列表</Link>
           },
           {
             key: ROUTE_PATH.USER_STAFF_LIST,

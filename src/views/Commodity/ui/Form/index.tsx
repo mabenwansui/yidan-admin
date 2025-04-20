@@ -4,7 +4,7 @@ import { Form, Input, InputNumber, Space, Button, UploadFile } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { presets } from '@/common/constants/valid'
 import { TreeSelect, CategoryModal, TreeSelectRefMethods } from '@/components/Form/CommodityCategory'
-import FormItemDetails from './FormItemDetails'
+import Details from './Details'
 import { Commodity } from '@/common/types/commodity'
 import ImgUpload from '@/components/Form/Upload/ImgUpload'
 
@@ -26,6 +26,8 @@ interface Props {
   onFinish?: (values: any) => void
   initialValues?: CommodityFormItems | Record<never, never>
 }
+
+const { maxTitleLength } = presets
 
 export default function CustomForm(props: Props) {
   const [showCategoryModal, setShowCategoryModal] = useState(false)
@@ -51,7 +53,6 @@ export default function CustomForm(props: Props) {
     }
   }, [originalPrice, price])
 
-  const { maxTitleLength } = presets
   const handleCategory = () => setShowCategoryModal(true)
   const handleCategoryModalClose = (isChange: boolean) => {
     setShowCategoryModal(false)
@@ -78,7 +79,7 @@ export default function CustomForm(props: Props) {
         label="商品名称"
         name="name"
         rules={[
-          { required: true, message: '请输入产品名称' },
+          { required: true, message: '请输入商品名称' },
           { max: maxTitleLength, message: `商品名称不能超过${maxTitleLength}个字` }
         ]}
       >
@@ -115,17 +116,17 @@ export default function CustomForm(props: Props) {
           )}
         </Space>
       </Form.Item>
-      <Form.Item label="商品描述" name="description" rules={[{ required: true, message: '请输入产品名称' }]}>
+      <Form.Item label="商品描述" name="description" rules={[{ required: true, message: '请输入商品描述' }]}>
         <Input.TextArea rows={5} />
       </Form.Item>
       <Form.Item label="已售" name="soldCount">
         <Input />
       </Form.Item>
       <Form.Item label="商品详情" name="details">
-        <FormItemDetails />
+        <Details />
       </Form.Item>
       {showSubmitBtn && (
-        <Form.Item wrapperCol={{ offset: 5 }}>
+        <Form.Item wrapperCol={{ offset: 5 }} className="form-action">
           <Button className="min-w-24" size="large" type="primary" htmlType="submit">
             {submitText}
           </Button>

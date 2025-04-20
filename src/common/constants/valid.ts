@@ -3,5 +3,6 @@ export const presets = {
   maxDescriptionLength: 200,
   maxLength: 2000,
   maxImgLength: 10,
-  maxTagLength: 20
+  maxTagLength: 20,
+  nickNameLength: 10  
 }

@@ -1,5 +1,5 @@
-import AdminList from '@/views/Users/Admin/List'
+import UserList from '@/views/Users/AdminList'
 
 export default function AdminListPage() {
-  return <AdminList />
+  return <UserList />
 }
