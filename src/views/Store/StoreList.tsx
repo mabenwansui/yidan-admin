@@ -16,8 +16,8 @@ export default function List() {
     setCreateOpen(false)
     refresh()
   }
-  const handleDel = () => {
-    
+  const handleDel = (id: string) => {
+
   }
   return (
     <section>
