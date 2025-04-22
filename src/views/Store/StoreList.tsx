@@ -16,6 +16,9 @@ export default function List() {
     setCreateOpen(false)
     refresh()
   }
+  const handleDel = () => {
+    
+  }
   return (
     <section>
       <div className="flex justify-end mb-4">
@@ -30,6 +33,7 @@ export default function List() {
         />
       </div>
       <StoreTableList
+        onDel={handleDel}
         list={list}
         isLoading={isLoading}
         isFirstLoad={isFirstLoad}
