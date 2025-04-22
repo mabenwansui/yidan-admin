@@ -1,11 +1,10 @@
 import { memo } from 'react'
 import { Form, Col, FormProps, SelectProps } from 'antd'
 import TableFilterWrap, { Row } from '@/components/TableFilterWrap'
-import SelectRole from './SelectRole'
-import { SelectRoleType } from '../hooks/useListSearch'
+import SelectRole, { ValueType } from './SelectRole'
 
 export interface FormValues {
-  role: SelectRoleType
+  role: ValueType
 }
 
 function TableFilter(props: FormProps<FormValues>) {

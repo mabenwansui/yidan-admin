@@ -3,30 +3,36 @@ import '@ant-design/v5-patch-for-react-19'
 import { useMemo, useCallback } from 'react'
 import { Button, Tooltip } from 'antd'
 import { RightCircleOutlined } from '@ant-design/icons'
-import useListSearch from './hooks/useListSearch'
 import useDelete from './hooks/useDelete'
 import TableFilter, { FormValues } from './ui/AdminTableFilter'
 import TableList from './ui/AdminTableList'
+import { useGetListSuperAdmin } from '@/common/hooks/useGetUserList'
 
 export default function UserList() {
-  const { index, list, isLoading, refresh, curPage, pageSize, total, filter } = useListSearch()
+  const { index, list, isLoading, refresh, curPage, pageSize, total } = useGetListSuperAdmin()
   const { trigger: deleteUser } = useDelete()
   // 首次加载显示加载动画，避免空数据状态；后续为了避免页面抖动，加载动画显示延迟。新数据加载完成前，会使用旧数据，利用 SWR 的缓存特性
   const isFirstLoad = useMemo(() => (index === 0 ? true : false), [index])
   const handleDel = useCallback(
     () => async (id: string) => {
       await deleteUser({ id })
-      refresh(curPage)
+      refresh({ curPage })
     },
     [deleteUser, curPage, refresh]
   )
-  const handlePageChange = useCallback(() => (curPage: number) => refresh(curPage), [refresh])
+  const handlePageChange = useCallback(() => (curPage: number) => refresh({ curPage }), [refresh])
   const handleFilterFinish = useCallback(
     (values: FormValues) => {
-      filter(values)
-      console.log(values)
+      const { role } = values
+      refresh({
+        curPage: 1,
+        role: role === 'all' ? null : [role]
+      })
+      const param: any = { curPage: 1 }
+      if (role !== 'all') param.role = [role]
+      refresh(param)
     },
-    [filter]
+    [refresh]
   )
   return (
     <section>

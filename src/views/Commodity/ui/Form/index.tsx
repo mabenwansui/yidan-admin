@@ -92,9 +92,9 @@ export default function CustomForm(props: Props) {
               <TreeSelect ref={categoryRef} />
             </Form.Item>
           </div>
-          <Button onClick={handleCategory} size="small" type="link">
+          <a onClick={handleCategory} className="ml-1">
             管理分类
-          </Button>
+          </a>
           <CategoryModal maxLevel={2} open={showCategoryModal} onClose={handleCategoryModalClose} />
         </Space>
       </Form.Item>

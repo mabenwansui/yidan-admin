@@ -42,7 +42,9 @@ export default function CommodityCategory(props: Props) {
       setTreeData(list)
       if (mounted‌Ref.current === false) {
         mounted‌Ref.current = true
-        setExpandedKeys([list[0].id])
+        setTimeout(() => {
+          setExpandedKeys([list[0].id])
+        }, 100)
       }
     }
   }, [list, isLoading])
@@ -137,11 +139,11 @@ export default function CommodityCategory(props: Props) {
     return _node.level !== 0
   }
   const render = () => {
-    if (isLoading === true && treeData.length === 0) {
+    if (isLoading === true) {
       return <Loading />
     } else {
       return (
-        <div className="component-commodity-category mt-4 min-h-20">
+        <div className="component-commodity-category mt-4 min-h-50">
           <Alert className="mb-4!" message="点击 + 号, 创建分类" banner />
           <AntTree
             allowDrop={hadleAllowDrop}

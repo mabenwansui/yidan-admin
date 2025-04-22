@@ -4,12 +4,12 @@ import { useSWR } from '@/common/hooks/useAjax'
 import { User } from '@/common/types/user'
 import { ROLE } from '@/common/constants/role'
 
-export type SelectRoleType = ROLE.ADMIN | ROLE.STAFF | 'all'
+export type SelectRoleType = ROLE.ADMIN | ROLE.STAFF
 
 export interface Search {
   username?: string
   nickname?: string
-  role?: SelectRoleType[]
+  role?: SelectRoleType[] | null
   curPage?: number
   pageSize?: number
 }
@@ -26,26 +26,25 @@ interface ArgsParams {
   args: Search
 }
 
-export const url = '/api/user/search-admin'
-export const staffUrl = '/api/user/search-staff'
-// const fetcher = async ({ args }: ArgsParams) => await post<Response>(url, args)
+export const searchUrl = '/api/user/search-all'
+export const staffUrl = '/api/user/search'
 const empty: User[] = []
-export default function useListSearch(params: Search = {}, type: 'admin' | 'staff' = 'admin') {
+
+function useGetListFn(url: string, params: Search = {}) {
   const [username, setUsername] = useState(params.username)
   const [nickname, setNickname] = useState(params.nickname)
   const [role, setRole] = useState<SelectRoleType[] | undefined | null>(params.role)
   const [index, setIndex] = useState(0)
   const [curPage, setCurPage] = useState(params.curPage || 1)
-  const [pageSize] = useState(params.pageSize || 100)
-  const _url = type === 'admin' ? url : staffUrl
-  const fetcher = async ({ args }: ArgsParams) => await post<Response>(_url, args)
+  const [pageSize, setPageSize] = useState(params.pageSize || 100)
+  const fetcher = async ({ args }: ArgsParams) => await post<Response>(url, args)
   const { data, isLoading } = useSWR(
     {
-      url: `${_url}${index}`,
+      url: `${url}${index}`,
       args: {
         username,
         nickname,
-        role,
+        role: role,
         curPage,
         pageSize
       }
@@ -54,23 +53,13 @@ export default function useListSearch(params: Search = {}, type: 'admin' | 'staf
     { keepPreviousData: true }
   )
 
-  const filter = (params: { username?: string; nickname?: string; role?: SelectRoleType }) => {
-    const { username, nickname, role } = params
-    if (username) setUsername(username)
-    if (nickname) setNickname(nickname)
-    if (role) {
-      if (role === 'all') {
-        setRole(null)
-      } else {
-        setRole([role])
-      }
-    }
-    setCurPage(1)
-    setIndex(index + 1)
-  }
-
-  const refresh = (curPage: number) => {
-    setCurPage(curPage)
+  const refresh = (params: Search) => {
+    const { username, nickname, role, curPage, pageSize } = params
+    if (username !== undefined) setUsername(username)
+    if (nickname !== undefined) setNickname(nickname)
+    if (pageSize !== undefined) setPageSize(pageSize)
+    if (role !== undefined) setRole(role)
+    if (curPage !== undefined) setCurPage(curPage)
     setIndex(index + 1)
   }
 
@@ -80,13 +69,23 @@ export default function useListSearch(params: Search = {}, type: 'admin' | 'staf
     pageSize,
     total: data?.data?.total || 0,
     list: data?.data?.list || empty, // empty需要是一个引用类型
-    filter,
     refresh,
     isLoading
   }
-  if (index > 0 && isLoading === false && data?.data?.list?.length === 0) {
-    refresh(1)
+  // 当访问一个不存在的页面时, 自动跳转到第一页
+  if (curPage > 1 && isLoading === false && data?.data?.list?.length === 0) {
+    refresh({ curPage: 1 })
     response.isLoading = false
   }
   return response
+}
+
+/** 超管身份获取列表 */
+export function useGetListSuperAdmin(params: Search = {}) {
+  return useGetListFn(searchUrl, params)
+}
+
+/** 管理员身份获取列表，只能看到自己权限范围的人 */
+export function useGetStaffList(params: Search = {}) {
+  return useGetListFn(staffUrl, params)
 }

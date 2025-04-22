@@ -1,8 +1,15 @@
+import '@ant-design/v5-patch-for-react-19'
 import { memo, useMemo, Ref, useImperativeHandle, useCallback } from 'react'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, Space, Tooltip, Switch } from 'antd'
+import Link from 'next/link'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 import { presets } from '@/common/constants/valid'
 import ImgUpload from '@/components/Form/Upload/ImgUpload'
 import City from '@/components/Form/City'
+import UserSelect from '@/components/Form/UserSelect'
+import { ROLE } from '@/common/constants/role'
+import { ROUTE_PATH } from '@/common/constants/routePath'
+
 const { maxTitleLength } = presets
 
 const label = {
@@ -48,13 +55,25 @@ function CustomForm(props: Props) {
           { max: maxTitleLength, message: `${label.projectName}名称不能超过${maxTitleLength}个字` }
         ]}
       >
-        <Input />
+        <Input placeholder="请输入" />
       </Form.Item>
-      <Form.Item name="owner" label={`${label.projectName}负责人`}>
-        <Input placeholder="请输入负责人" />
+      <Form.Item name="owner" label={`店长`}>
+        <Space>
+          <Form.Item name="owner" noStyle>
+            <UserSelect className="w-91!" mode="multiple" showSearch role={[ROLE.ADMIN]} placeholder="请选择" />
+          </Form.Item>
+          <div>
+            <Link href={ROUTE_PATH.USER_ADMIN_LIST} target="_blank" className="mr-1.5 ml-2">
+              用户管理
+            </Link>
+            <Tooltip title="通过用户管理将用户设置为管理员, 再设置为店长">
+              <QuestionCircleOutlined className="text-gray-400!" />
+            </Tooltip>
+          </div>
+        </Space>
       </Form.Item>
       <Form.Item label={`${label.projectName}描述`} name="description">
-        <Input.TextArea rows={3} />
+        <Input.TextArea placeholder="请输入" rows={3} />
       </Form.Item>
       <Form.Item label={`${label.projectName}图片`} valuePropName="fileList" name="imgNames">
         <ImgUpload />
@@ -63,7 +82,10 @@ function CustomForm(props: Props) {
         <City />
       </Form.Item>
       <Form.Item label={`详细地址`} name="address">
-        <Input />
+        <Input placeholder="请输入" />
+      </Form.Item>
+      <Form.Item label={`营业状态`} name="open">
+        <Switch />
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 5 }}>
         <Button className="min-w-24" size="large" type="primary" htmlType="submit">
