@@ -1,24 +1,10 @@
 import { post } from '@/common/utils/ajax'
 import { useSWRMutation } from '@/common/hooks/useAjax'
+import { Store } from '@/common/types/store'
 
-export const url = '/api/store/create'
+export const url = '/api/store/update'
 
-export enum OPEN_STATUS {
-  OPEN = 'open',
-  CLOSE = 'close'
-}
-
-export interface Props {
-  id: string
-  name: string
-  owner?: string[]
-  imgNames?: string[]
-  coverImageUrl?: string
-  description?: string
-  city?: string
-  address?: string
-  open?: OPEN_STATUS.OPEN | OPEN_STATUS.CLOSE
-}
+type Props = Store
 
 const fetcher = async (arg: Props) => await post<Record<never, never>>(url, arg)
 export default function useCreate() {

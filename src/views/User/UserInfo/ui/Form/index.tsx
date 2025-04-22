@@ -9,7 +9,7 @@ export interface RefMethods {
   submit: () => void
 }
 
-export type FormValues = Omit<User, 'role' | 'username'>
+export type FormValues = Omit<User, 'role'>
 
 interface Props {
   ref?: Ref<RefMethods>
@@ -51,7 +51,7 @@ function CustomForm(props: Props) {
         <div className="w-30 h-30 ml-4 bg-indigo-200 rounded-full justify-center flex items-center text-2xl">头像</div>
       </Form.Item>
       <Form.Item label="用户名" wrapperCol={{ span: 10 }}>
-        {initialValues?.id}
+        {initialValues?.username}
       </Form.Item>
       <Form.Item
         name="nickname"

@@ -9,6 +9,7 @@ import City from '@/components/Form/City'
 import UserSelect from '@/components/Form/UserSelect'
 import { ROLE } from '@/common/constants/role'
 import { ROUTE_PATH } from '@/common/constants/routePath'
+import { Store } from '@/common/types/store'
 
 const { maxTitleLength } = presets
 
@@ -17,6 +18,7 @@ const label = {
 }
 export interface RefMethods {
   submit: () => void
+  resetFields: () => void
 }
 
 interface Props {
@@ -24,7 +26,7 @@ interface Props {
   submitText?: string
   showSubmitBtn?: boolean
   onFinish?: (values: any) => void
-  // initialValues?: CommodityFormItems | Record<never, never>
+  initialValues?: Store
 }
 
 function CustomForm(props: Props) {
@@ -35,9 +37,8 @@ function CustomForm(props: Props) {
   useImperativeHandle(
     ref,
     () => ({
-      submit: () => {
-        form.submit()
-      }
+      resetFields: () => form.resetFields(),
+      submit: () => form.submit()
     }),
     [form]
   )

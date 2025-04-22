@@ -1,14 +1,9 @@
 import { useSWR } from '@/common/hooks/useAjax'
 import { post } from '@/common/utils/ajax'
-import { ROLE } from '@/common/constants/role'
-interface GetUserInfoApiResponse {
-  id: string
-  username: string
-  email: string
-  role: ROLE
-}
+import { User } from '@/common/types/user'
+
 export const getUserInfoApiUrl = '/api/user/get-userinfo'
-const fetcher = async () => await post<GetUserInfoApiResponse>(getUserInfoApiUrl)
+const fetcher = async () => await post<User>(getUserInfoApiUrl)
 export function useGetUserInfo() {
   return useSWR(getUserInfoApiUrl, fetcher, {
     revalidateOnFocus: false,

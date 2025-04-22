@@ -1,2 +1,2 @@
-import { default as City } from './ui/Cascader'
+import City from './ui/City'
 export default City

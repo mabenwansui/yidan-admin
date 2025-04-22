@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useMemo, useEffect, memo } from 'react'
 import { Cascader as AntCascader, CascaderProps } from 'antd'
 import useGetCityList, { Response } from '../hooks/useGetCityList'
+import { City as ICity } from '@/common/types/city'
 
 interface Option {
   value: string
@@ -19,9 +20,16 @@ function format(data: Response[]): Option[] {
   })
 }
 
-export default function Cascader(props: CascaderProps<any>) {
+type Props = Omit<CascaderProps<Option, any, any>, 'onChange' | 'value'> & {
+  value?: ICity
+  onChange?: (value: Option[]) => void
+}
+
+function City(props: Props) {
+  const { value, onChange, ...restProps } = props
   const [options, setOptions] = useState<Option[]>([])
   const { trigger } = useGetCityList()
+  const val: any = useMemo(() => value?.map((item) => item.value), [value])
   useEffect(() => {
     async function fetcher() {
       const { flag, data } = await trigger({ keyword: '' })
@@ -39,14 +47,26 @@ export default function Cascader(props: CascaderProps<any>) {
       setOptions([...options])
     }
   }
+  const handleChange = (_: string[], selectedOptions: Option[]) => {
+    onChange?.(
+      selectedOptions.map((item) => ({
+        value: item.value,
+        label: item.label
+      }))
+    )
+  }
   return (
     <AntCascader
+      value={val}
       placeholder="请选择"
       changeOnSelect
       options={options}
       loadData={handleLoadData}
       popupClassName="[&_.ant-cascader-menu]:max-h-64 [&_.ant-cascader-menu]:h-auto!"
-      {...props}
+      onChange={handleChange}
+      {...restProps}
     />
   )
 }
+
+export default memo(City)
