@@ -23,10 +23,6 @@ export default function useConfig() {
         label: '店铺管理',
         children: [
           {
-            key: ROUTE_PATH.STORE_CREATE,
-            label: <Link href={ROUTE_PATH.STORE_CREATE}>店铺创建</Link>
-          },
-          {
             key: ROUTE_PATH.STORE_LIST,
             label: <Link href={ROUTE_PATH.STORE_LIST}>店铺列表</Link>
           }

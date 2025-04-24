@@ -12,9 +12,9 @@
 
 body {
   a {
-    color: var(--color-blue-600);
+    color: var(--color-link);
     &:hover {
-      color: var(--color-blue-500);
+      color: var(--color-link-hover);
     }
   }
 }

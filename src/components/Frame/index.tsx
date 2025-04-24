@@ -17,8 +17,8 @@ export default function Frame(props: Props) {
           cssVar: true,
           hashed: false,
           token: {
-            colorPrimary: '#372AAC',
-            colorInfo: '#372AAC',
+            colorPrimary: '#3730a3',
+            colorInfo: '#3730a3',
             borderRadius: 4
             // controlHeight: 38
             // colorFillAlter: 'rgba(255,255,255)'

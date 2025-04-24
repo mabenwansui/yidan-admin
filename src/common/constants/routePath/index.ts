@@ -19,10 +19,9 @@ export enum ROUTE_PATH {
   COMMODITY_LIST = '/commodity/list',
   COMMODITY_SUCCESS = '/commodity/success',
 
-  /** 项目 */
-  STORE_CREATE = '/store/create',
+  /** 店铺 */
   STORE_LIST = '/store/list',
-  STORE_SUCCESS = '/store/success',
+  STORE_COMMODITY = '/store/commodity',
 
   /** 用户 */
   USER_INFO = '/user/info',
@@ -37,9 +36,7 @@ export const routeTitleMapping: Record<string, string> = {
   [ROUTE_PATH.COMMODITY_CREATE]: '商品创建',
   [ROUTE_PATH.COMMODITY_LIST]: '商品列表',
   [ROUTE_PATH.COMMODITY_SUCCESS]: '商品操作成功',
-  [ROUTE_PATH.STORE_CREATE]: '项目创建',
-  [ROUTE_PATH.STORE_LIST]: '项目列表',
-  [ROUTE_PATH.STORE_SUCCESS]: '项目操作成功',
+  [ROUTE_PATH.STORE_LIST]: '店铺列表',
   [ROUTE_PATH.USER_ADMIN_LIST]: '用户管理',
   [ROUTE_PATH.USER_STAFF_LIST]: '用户管理'
 }

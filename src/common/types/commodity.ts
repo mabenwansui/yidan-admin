@@ -1,3 +1,4 @@
+import { Category } from './category'
 export interface Commodity {
   name: string // 名称
   id: string // 商品ID
@@ -5,7 +6,7 @@ export interface Commodity {
   originalPrice?: number // 原价
   price: number // 现价
   description?: string // 描述
-  category?: string // 分类
+  category?: Category // 分类
   details?: string // 详情
   imgNames?: string[] // 图片
   stockConunt?: number // 库存

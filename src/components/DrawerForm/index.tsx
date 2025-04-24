@@ -33,7 +33,7 @@ function FormDrawer(props: Props) {
     </Space>
   )
   return (
-    <Drawer extra={renderAction()} title={titleMapping[type]} width={650} {...rest}>
+    <Drawer closeIcon={false} extra={renderAction()} title={titleMapping[type]} width={650} {...rest}>
       <div className="max-w-xl mt-5">{children}</div>
     </Drawer>
   )

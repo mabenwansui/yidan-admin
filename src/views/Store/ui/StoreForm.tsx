@@ -1,6 +1,6 @@
 import '@ant-design/v5-patch-for-react-19'
 import { memo, useMemo, Ref, useImperativeHandle, useCallback } from 'react'
-import { Form, Input, Button, Space, Tooltip, Switch } from 'antd'
+import { Form, Input, Space, Tooltip, Switch } from 'antd'
 import Link from 'next/link'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { presets } from '@/common/constants/valid'
@@ -33,7 +33,15 @@ function CustomForm(props: Props) {
   const labelCol = useMemo(() => ({ span: 5 }), [])
   const wrapperCol = useMemo(() => ({ span: 19 }), [])
   const [form] = Form.useForm()
-  const { onFinish, submitText = '提交', ref } = props
+  const { onFinish, ref, initialValues } = props
+  const _initialValues = useMemo(() => {
+    if (!initialValues) return {}
+    const { owner, ...rest } = initialValues
+    return {
+      ...rest,
+      owner: owner?.map((item) => item.id) || []
+    }
+  }, [initialValues])
   useImperativeHandle(
     ref,
     () => ({
@@ -44,7 +52,13 @@ function CustomForm(props: Props) {
   )
   const handleFinish = useCallback((values: any) => onFinish?.(values), [onFinish])
   return (
-    <Form name="project-form" form={form} labelCol={labelCol} wrapperCol={wrapperCol} onFinish={handleFinish}>
+    <Form
+      form={form}
+      initialValues={_initialValues}
+      labelCol={labelCol}
+      wrapperCol={wrapperCol}
+      onFinish={handleFinish}
+    >
       <Form.Item name="id" hidden>
         <Input hidden />
       </Form.Item>
@@ -87,11 +101,6 @@ function CustomForm(props: Props) {
       </Form.Item>
       <Form.Item label={`营业状态`} name="open">
         <Switch />
-      </Form.Item>
-      <Form.Item wrapperCol={{ offset: 5 }}>
-        <Button className="min-w-24" size="large" type="primary" htmlType="submit">
-          {submitText}
-        </Button>
       </Form.Item>
     </Form>
   )

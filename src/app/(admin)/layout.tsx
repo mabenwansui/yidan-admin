@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Frame from '@/components/Frame'
 import Layout from '@/components/Layout'
 
 export const metadata: Metadata = {
@@ -15,9 +14,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body className="antialiased layout-bg">
-        <Frame>
-          <Layout>{children}</Layout>
-        </Frame>
+        <Layout>{children}</Layout>
       </body>
     </html>
   )

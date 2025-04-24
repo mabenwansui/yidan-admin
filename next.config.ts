@@ -3,6 +3,7 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   // output: 'export',
   // distDir: 'dist',
+  hotReload: false,
   sassOptions: {
     implementation: 'sass-embedded'
   },
@@ -12,11 +13,11 @@ const nextConfig: NextConfig = {
         hostname: 'localhost'
       }
     ]
-  },
-  // reactStrictMode: false,
-  compiler: {
-    styledComponents: true
   }
+  // reactStrictMode: false,
+  // compiler: {
+  //   styledComponents: true
+  // }
 }
 
 export default nextConfig

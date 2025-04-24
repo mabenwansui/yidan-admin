@@ -2,10 +2,11 @@
 import '@ant-design/v5-patch-for-react-19'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Table, TableProps, Space, App, Popconfirm } from 'antd'
+import { Table, TableProps, App } from 'antd'
 import { Commodity } from '@/common/types/commodity'
 import { SEARCH_PARAMS } from '@/common/constants/routePath'
 import Image from '@/components/Image'
+import TableOperate, { OperateType } from '@/components/TableOperate'
 import EditDrawer from './ui/EditDrawer'
 import useListSearch from './api/useListSearch'
 import useDelete from './api/useDelete'
@@ -79,21 +80,20 @@ export default function List() {
       },
       {
         title: '分类',
-        dataIndex: 'category'
+        dataIndex: 'category',
+        render: (category: Commodity['category']) => category?.title
       },
       {
         title: '操作',
         width: 150,
         key: 'operate',
         render: (_, record) => (
-          <Space align="start" size="small">
-            <a className="mr-4" type="link" onClick={() => handleEdit(record.id)}>
-              编辑
-            </a>
-            <Popconfirm okButtonProps={{ danger: true }} title="确认删除吗?" onConfirm={() => handleDel(record.id)}>
-              <a>删除</a>
-            </Popconfirm>
-          </Space>
+          <TableOperate
+            btnList={[
+              { type: OperateType.EDIT, onTrigger: () => handleEdit(record.id) },
+              { type: OperateType.DEL, onTrigger: () => handleDel(record.id) }
+            ]}
+          />
         )
       }
     ],

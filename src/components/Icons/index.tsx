@@ -1,7 +1,7 @@
 import { useMemo, memo } from 'react'
 import logger from '@/common/utils/logger'
 import cs from 'clsx'
-import { CirclePlus, Trash2, Pencil, Bold, Italic, Strikethrough, Palette, Link, Unlink } from 'lucide-react'
+import { CirclePlus, Trash2, Pencil, Bold, Italic, Strikethrough, Palette, Link, Unlink, Store } from 'lucide-react'
 
 interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
   name: string
@@ -50,6 +50,8 @@ function Icon(props: IconProps) {
       return renderIcon(Link)
     case 'unlink':
       return renderIcon(Unlink)
+    case 'store':
+      return renderIcon(Store)
     default:
       logger.error('图标未找到!')
   }

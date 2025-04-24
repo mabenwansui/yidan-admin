@@ -4,20 +4,37 @@ import { useMemo, useState } from 'react'
 import { Button } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useGetStoreList } from './hooks/useGetStoreList'
+import useDelete from './hooks/useDelete'
 import StoreTableList from './ui/StoreTableList'
 import CreateFormDrawer from './ui/CreateFormDrawer'
+import EditFormDrawer from './ui/EditFormDrawer'
+import { Store } from '@/common/types/store'
 
 export default function List() {
   const [createOpen, setCreateOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
+  const [key, setKey] = useState(1)
+  const [initialValues, setInitialValues] = useState<Store>()
   const { index, list, isLoading, curPage, pageSize, refresh, total } = useGetStoreList()
+  const { trigger: deleteStore } = useDelete()
   const isFirstLoad = useMemo(() => (index === 0 ? true : false), [index])
-  const handleSubmit = () => {
+  const handleCreateSubmit = () => {
     setCreateOpen(false)
     refresh()
+    setKey(key + 1)
   }
-  const handleDel = (id: string) => {
-
+  const handleEditSubmit = () => {
+    setEditOpen(false)
+    refresh()
+    setKey(key + 1)
+  }
+  const handleEdit = (record: Store) => {
+    setInitialValues(record)
+    setEditOpen(true)
+  }
+  const handleDel = async (id: string) => {
+    await deleteStore({ id })
+    refresh()
   }
   return (
     <section>
@@ -26,13 +43,14 @@ export default function List() {
           创建店铺
         </Button>
         <CreateFormDrawer
+          key={key}
           open={createOpen}
-          onSubmit={handleSubmit}
+          onSubmit={handleCreateSubmit}
           onClose={() => setCreateOpen(false)}
-          formKey="create"
         />
       </div>
       <StoreTableList
+        onEdit={handleEdit}
         onDel={handleDel}
         list={list}
         isLoading={isLoading}
@@ -40,6 +58,13 @@ export default function List() {
         curPage={curPage}
         pageSize={pageSize}
         total={total}
+      />
+      <EditFormDrawer
+        key={key}
+        onSubmit={handleEditSubmit}
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
+        initialValues={initialValues}
       />
     </section>
   )
