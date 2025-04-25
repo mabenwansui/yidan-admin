@@ -1,4 +1,3 @@
-import '@ant-design/v5-patch-for-react-19'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { ConfigProvider, App } from 'antd'
 import zhCN from 'antd/es/locale/zh_CN'
