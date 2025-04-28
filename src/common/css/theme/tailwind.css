@@ -2,8 +2,10 @@
 
 @theme {
   --color-text: var(--color-neutral-900);
+  --color-success: var(--color-green-600);
   --color-primary: var(--color-indigo-800);
   --color-primary-light: var(--color-indigo-50);
+  --color-text-secondary: var(--color-neutral-400);
   --color-border: rgb(240, 240, 240);
   --color-link: var(--color-indigo-800);
   --color-link-hover: var(--color-indigo-400);

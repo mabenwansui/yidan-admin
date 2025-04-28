@@ -1,13 +1,18 @@
 import { useImperativeHandle, memo } from 'react'
-import { TreeSelect as AntTreeSelect } from 'antd'
+import { TreeSelect as AntTreeSelect, TreeSelectProps } from 'antd'
 import useGetList from '../hooks/useGetList'
 
 export interface RefMethods {
   refresh: () => void
 }
-export interface Props {
+export interface Props extends TreeSelectProps {
   ref?: React.Ref<RefMethods>
   className?: string
+}
+
+export interface TreeSlectChangeValue {
+  label: string
+  value: string
 }
 
 function TreeSelect(props: Props) {

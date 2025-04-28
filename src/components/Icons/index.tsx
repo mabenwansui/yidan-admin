@@ -1,12 +1,25 @@
 import { useMemo, memo } from 'react'
 import logger from '@/common/utils/logger'
 import cs from 'clsx'
-import { CirclePlus, Trash2, Pencil, Bold, Italic, Strikethrough, Palette, Link, Unlink, Store } from 'lucide-react'
+import {
+  CirclePlus,
+  Trash2,
+  Pencil,
+  Bold,
+  Italic,
+  Strikethrough,
+  Palette,
+  Link,
+  Unlink,
+  Store,
+  ContactRound
+} from 'lucide-react'
 
 interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
   name: string
   color?: string
   className?: string
+  strokeWidth?: number
   size?: 'middle' | 'large' | 'small'
 }
 
@@ -17,10 +30,11 @@ const sizeMapping = {
 }
 
 /* 图标预览 https://lucide.dev/icons */
+// 编辑器 2
 function Icon(props: IconProps) {
-  const { name, size = 'middle', color, className, ...rest } = props
+  const { name, size = 'middle', color, className, strokeWidth = 2, ...rest } = props
   const _size = sizeMapping[size]
-  const _props = useMemo(() => ({ size: _size, color, strokeWidth: '2.5' }), [_size, color])
+  const _props = useMemo(() => ({ size: _size, color, strokeWidth }), [_size, color, strokeWidth])
   const renderIcon = (Node: any) => {
     return (
       <span className={cs('icon', 'inline-block', className)} {...rest}>
@@ -52,6 +66,8 @@ function Icon(props: IconProps) {
       return renderIcon(Unlink)
     case 'store':
       return renderIcon(Store)
+    case 'contact-round':
+      return renderIcon(ContactRound)
     default:
       logger.error('图标未找到!')
   }

@@ -1,13 +1,15 @@
 import Icon from '@/components/Icons'
-import { useGetStoreList } from '../_hooks/useGetStoreList'
-import { ROUTE_PATH } from '@/common/constants/routePath'
-import { useRouter, useParams } from 'next/navigation'
+import { Store } from '@/common/types/store'
 
-export default function CommodityNav() {
-  const { list } = useGetStoreList()
-  const params = useParams()
-  const router = useRouter()
-  const handleClick = (id: string) => router.push(`${ROUTE_PATH.STORE_COMMODITY}/${id}`)
+interface Props {
+  selectId: string
+  list?: Store[]
+  onClick: (id: string) => void
+}
+
+export default function CommodityNav(props: Props) {
+  const { list, selectId, onClick } = props
+  const handleClick = (id: string) => onClick?.(id)
   return (
     <div className="bg-white rounded-lg w-full border border-border">
       <div className="flex border-b-1 border-border p-4 items-center">
@@ -28,7 +30,7 @@ export default function CommodityNav() {
           "
         >
           {list?.map((store) => (
-            <li key={store.id} onClick={() => handleClick(store.id)} className={store.id === params.id ? 'active' : ''}>
+            <li key={store.id} onClick={() => handleClick(store.id)} className={store.id === selectId ? 'active' : ''}>
               {store.name}
             </li>
           ))}

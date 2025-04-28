@@ -9,7 +9,7 @@ interface Props {
   alt?: string
 }
 export default function Image(props: Props) {
-  const { imgUrl, size, alt = '' } = props
+  const { imgUrl, alt = '' } = props
   if (imgUrl) {
     return <AntdImage src={`${SERVER_FILE_PREFIX.IMG}/${imgUrl}`} width={68} height={68} alt={alt} />
   } else {

@@ -10,7 +10,7 @@ interface Props {
 export default function Layout(props: Props) {
   return (
     <div className="flex min-h-screen">
-      <div className="w-46 bg-primary pl-1.5 pr-1.5">
+      <div className="w-46 min-w-46 bg-primary pl-1.5 pr-1.5">
         <div className="p-5 flex">
           <Image src={logo} alt="logo" width={200} height={200} style={{ width: 64, height: 64 }} />
           <div className="text-white flex flex-wrap items-center ml-3">

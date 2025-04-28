@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { ROUTE_PATH } from '@/common/constants/routePath'
 import Link from 'next/link'
-import { useGetUserInfo } from '@/common/hooks/useGetUserInfo'
+import useGetUserInfo from '@/common/hooks/useGetUserInfo'
 import { ROLE } from '@/common/constants/role'
 import { MenuProps } from 'antd'
 
@@ -24,8 +24,14 @@ export default function useConfig() {
         children: [
           {
             key: ROUTE_PATH.STORE_LIST,
-            label: <Link href={ROUTE_PATH.STORE_LIST}>店铺列表</Link>
+            label: <Link href={ROUTE_PATH.STORE_LIST}>店铺列表</Link>,
+            match: new RegExp(`^${ROUTE_PATH.STORE_COMMODITY}\\/.*`, 'gi')
           }
+          // {
+          //   key: ROUTE_PATH.STORE_COMMODITY,
+          //   label: <Link href={ROUTE_PATH.STORE_LIST}>上架商品</Link>,
+          //   match: new RegExp(`^${ROUTE_PATH.STORE_COMMODITY.replace(/\//g, '\\/')}\/[0-9a-zA-Z]+$`)
+          // }
         ]
       },
       role.includes(ROLE.SUPER_ADMIN) && {

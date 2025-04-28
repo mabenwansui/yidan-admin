@@ -8,7 +8,7 @@ export interface Search {
   pageSize?: number
 }
 interface Response {
-  list: Array<Store>
+  list: Store[]
   pageSize: number
   curPage: number
   total: number
@@ -16,6 +16,27 @@ interface Response {
 interface ArgsParams {
   url: string
   args: Search
+}
+
+export interface FormatStore extends Store {
+  ownerFormat: string
+  cityFormat: string
+  openFormat: string
+}
+
+const dataFormat = (list?: Store[]): FormatStore[] | undefined => {
+  return list?.map((item) => {
+    const { city, open, owner, ...rest } = item
+    return {
+      city,
+      cityFormat: city?.map((item) => item.label).join(', ') || '',
+      open,
+      openFormat: open ? '营业中' : '已停业',
+      owner,
+      ownerFormat: owner?.map((item) => item.nickname).join(', ') || '',
+      ...rest
+    }
+  })
 }
 
 export const url = '/api/store/search'
@@ -46,7 +67,7 @@ export function useGetStoreList(params: Search = {}) {
     curPage,
     pageSize,
     total: data?.data?.total || 0,
-    list: data?.data?.list,
+    list: dataFormat(data?.data?.list),
     refresh,
     isLoading
   }

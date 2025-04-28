@@ -12,7 +12,8 @@ function findKey(items: MenuProps['items'], path: string, parentKey?: string): F
   if (!items) return false
   for (const item of items) {
     const _item = item as SubMenuType
-    if (path === _item?.key) {
+    const match = (_item as any)?.match as RegExp
+    if (path === _item?.key || (match && match.test(path))) {
       return {
         key: _item.key,
         parentKey
