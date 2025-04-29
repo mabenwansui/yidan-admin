@@ -25,6 +25,7 @@ export default function useSWRList<Params extends ParamsObject, Response extends
   const { key = '', ..._params } = params
   const [args, setArgs] = useState<Omit<Params, 'key'>>(_params)
   const [index, setIndex] = useState(0)
+  const isFirstLoad = index === 0 ? true : false
   const { data, isLoading } = useSWR(
     {
       url: `${url}${key}${index}`,
@@ -39,9 +40,10 @@ export default function useSWRList<Params extends ParamsObject, Response extends
   }
   return {
     index,
-    curPage: data?.data?.curPage,
-    pageSize: data?.data?.pageSize,
-    total: data?.data?.total,
+    isFirstLoad,
+    curPage: data?.data?.curPage || 1,
+    pageSize: data?.data?.pageSize || 0,
+    total: data?.data?.total || 0,
     list: data?.data?.list,
     refresh,
     isLoading

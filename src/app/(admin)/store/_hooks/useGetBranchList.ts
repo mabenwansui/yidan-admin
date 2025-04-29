@@ -1,4 +1,4 @@
-import useSWRList from '@/common/hooks/useAjax/useSWRList'
+import { useSWRList } from '@/common/hooks/useAjax'
 import { Branch } from '@/common/types/branch'
 import { Page } from '@/common/types/page'
 

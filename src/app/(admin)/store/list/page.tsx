@@ -1,10 +1,10 @@
 'use client'
 import '@ant-design/v5-patch-for-react-19'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Button } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { useGetStoreList } from '../_hooks/useGetStoreList'
-import useDelete from '../_hooks/useDelete'
+import useGetStoreList from '../_hooks/useGetStoreList'
+import useDeleteStore from '../_hooks/useDeleteStore'
 import StoreTableList from '../_ui/StoreTableList'
 import CreateFormDrawer from '../_ui/CreateFormDrawer'
 import EditFormDrawer from '../_ui/EditFormDrawer'
@@ -15,9 +15,8 @@ export default function List() {
   const [editOpen, setEditOpen] = useState(false)
   const [key, setKey] = useState(1)
   const [initialValues, setInitialValues] = useState<Store>()
-  const { index, list, isLoading, curPage, pageSize, refresh, total } = useGetStoreList()
-  const { trigger: deleteStore } = useDelete()
-  const isFirstLoad = useMemo(() => (index === 0 ? true : false), [index])
+  const { isFirstLoad, list, isLoading, curPage, pageSize, refresh, total } = useGetStoreList()
+  const { trigger: deleteStore } = useDeleteStore()
   const handleCreateSubmit = () => {
     setCreateOpen(false)
     refresh()
@@ -43,7 +42,7 @@ export default function List() {
           创建店铺
         </Button>
         <CreateFormDrawer
-          key={key}
+          formKey={key}
           open={createOpen}
           onSubmit={handleCreateSubmit}
           onClose={() => setCreateOpen(false)}
@@ -59,6 +58,7 @@ export default function List() {
         pageSize={pageSize}
         total={total}
       />
+
       <EditFormDrawer
         key={key}
         onSubmit={handleEditSubmit}

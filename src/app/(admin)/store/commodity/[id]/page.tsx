@@ -11,7 +11,7 @@ export default function CreateCommodityPage() {
   const { message } = App.useApp()
   const searchParams = useSearchParams()
   const { trigger: del } = useDeleteBranch()
-  const { isLoading, list, curPage, pageSize, total, refresh } = useGetBranchList({
+  const { isFirstLoad, isLoading, list, curPage, pageSize, total, refresh } = useGetBranchList({
     storeId: id,
     key: searchParams.get('t') || ''
   })
@@ -24,17 +24,15 @@ export default function CreateCommodityPage() {
   }
   return (
     <div>
-      {list && (
-        <CommodityTableList
-          onDel={handleDel}
-          isLoading={isLoading}
-          list={list}
-          curPage={curPage}
-          pageSize={pageSize}
-          total={total}
-          isFirstLoad={false}
-        />
-      )}
+      <CommodityTableList
+        onDel={handleDel}
+        isLoading={isLoading}
+        list={list}
+        curPage={curPage}
+        pageSize={pageSize}
+        total={total}
+        isFirstLoad={isFirstLoad}
+      />
     </div>
   )
 }

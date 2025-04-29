@@ -2,7 +2,7 @@
 import { useMemo, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { ROUTE_PATH } from '@/common/constants/routePath'
-import { useGetStoreList } from '../_hooks/useGetStoreList'
+import useGetStoreList from '../_hooks/useGetStoreList'
 import CommodityNav from '../_ui/CommodityNav'
 import CommodityInfo from '../_ui/CommodityInfo'
 import AddCommodityDrawer from '../_ui/AddBranchFormDrawer'

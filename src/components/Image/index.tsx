@@ -7,15 +7,16 @@ interface Props {
   imgUrl?: string
   size?: 'middle' | 'large' | 'small'
   alt?: string
+  priority?: boolean
 }
 export default function Image(props: Props) {
-  const { imgUrl, alt = '' } = props
+  const { imgUrl, priority, alt = '' } = props
   if (imgUrl) {
     return <AntdImage src={`${SERVER_FILE_PREFIX.IMG}/${imgUrl}`} width={68} height={68} alt={alt} />
   } else {
     return (
       <NextImage
-        priority
+        priority={priority}
         src={imgCommdityPlaceholder}
         width={128}
         height={128}

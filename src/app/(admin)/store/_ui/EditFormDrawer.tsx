@@ -1,7 +1,7 @@
 'use client'
 import { useRef, memo } from 'react'
 import { App, DrawerProps } from 'antd'
-import useUpDate from '../_hooks/useUpdate'
+import useUpdateStore from '../_hooks/useUpdateStore'
 import DrawerForm, { DrawerFormType } from '@/components/DrawerForm'
 import Form, { RefMethods } from './StoreForm'
 import { Store } from '@/common/types/store'
@@ -13,7 +13,7 @@ interface Props extends DrawerProps {
 
 function FormDrawer(props: Props) {
   const { onSubmit, initialValues, ...rest } = props
-  const { trigger } = useUpDate()
+  const { trigger } = useUpdateStore()
   const { message } = App.useApp()
   const formRef = useRef<RefMethods>(null)
   const handleFinish = async (values: Store) => {

@@ -1,80 +1,35 @@
-import { useState } from 'react'
-import { post } from '@/common/utils/ajax'
-import { useSWR } from '@/common/hooks/useAjax'
+import { useSWRList } from '@/common/hooks/useAjax'
+import { Page } from '@/common/types/page'
 import { Store } from '@/common/types/store'
 
-export interface Search {
-  curPage?: number
-  pageSize?: number
-}
-interface Response {
+const url = '/api/store/search'
+
+type Params = Record<never, never>
+interface Response extends Page {
   list: Store[]
-  pageSize: number
-  curPage: number
-  total: number
-}
-interface ArgsParams {
-  url: string
-  args: Search
 }
 
 export interface FormatStore extends Store {
-  ownerFormat: string
   cityFormat: string
   openFormat: string
+  ownerFormat: string
 }
 
-const dataFormat = (list?: Store[]): FormatStore[] | undefined => {
+const dataFormat = (list?: Store[]) => {
   return list?.map((item) => {
-    const { city, open, owner, ...rest } = item
     return {
-      city,
-      cityFormat: city?.map((item) => item.label).join(', ') || '',
-      open,
-      openFormat: open ? '营业中' : '已停业',
-      owner,
-      ownerFormat: owner?.map((item) => item.nickname).join(', ') || '',
-      ...rest
+      cityFormat: item.city?.map((item) => item.label).join(', ') || '',
+      openFormat: item.open ? '营业中' : '已停业',
+      ownerFormat: item.owner?.map((item) => item.nickname).join(', ') || '',
+      ...item
     }
   })
 }
 
-export const url = '/api/store/search'
-export function useGetStoreList(params: Search = {}) {
-  const [index, setIndex] = useState(0)
-  const [curPage, setCurPage] = useState(params.curPage || 1)
-  const [pageSize, setPageSize] = useState(params.pageSize || 100)
-  const fetcher = async ({ args }: ArgsParams) => await post<Response>(url, args)
-  const { data, isLoading } = useSWR(
-    {
-      url: `${url}${index}`,
-      args: {
-        curPage,
-        pageSize
-      }
-    },
-    fetcher,
-    { keepPreviousData: true }
-  )
-  const refresh = (params: Search = {}) => {
-    const { curPage, pageSize } = params
-    if (pageSize !== undefined) setPageSize(pageSize)
-    if (curPage !== undefined) setCurPage(curPage)
-    setIndex(index + 1)
+export default function useGetStoreList(params: Params = {}) {
+  const { list, ...rest } = useSWRList<Params, Response>(url, params)
+  return {
+    list: dataFormat(list),
+    ...rest
   }
-  const response = {
-    index,
-    curPage,
-    pageSize,
-    total: data?.data?.total || 0,
-    list: dataFormat(data?.data?.list),
-    refresh,
-    isLoading
-  }
-  // 当访问一个不存在的页面时, 自动跳转到第一页
-  if (curPage > 1 && isLoading === false && data?.data?.list?.length === 0) {
-    refresh({ curPage: 1 })
-    response.isLoading = false
-  }
-  return response
 }

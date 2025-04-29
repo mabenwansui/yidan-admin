@@ -1,18 +1,19 @@
 'use client'
 import { useRef, memo } from 'react'
 import { App, DrawerProps } from 'antd'
-import useCreate from '../_hooks/useCreate'
+import useCreateStore from '../_hooks/useCreateStore'
 import DrawerForm, { DrawerFormType } from '@/components/DrawerForm'
 import Form, { RefMethods } from './StoreForm'
 import { Store } from '@/common/types/store'
 
 interface Props extends DrawerProps {
+  formKey: string | number
   onSubmit?: () => void
 }
 
 function FormDrawer(props: Props) {
-  const { onSubmit, ...rest } = props
-  const { trigger } = useCreate()
+  const { formKey, onSubmit, ...rest } = props
+  const { trigger } = useCreateStore()
   const { message } = App.useApp()
   const formRef = useRef<RefMethods>(null)
   const handleFinish = async (values: Store) => {
@@ -28,7 +29,7 @@ function FormDrawer(props: Props) {
 
   return (
     <DrawerForm type={DrawerFormType.CREATE} onClose={props.onClose} onSubmit={handleDrawerSubmit} {...rest}>
-      <Form ref={formRef} onFinish={handleFinish} showSubmitBtn={false} />
+      <Form key={formKey} ref={formRef} onFinish={handleFinish} showSubmitBtn={false} />
     </DrawerForm>
   )
 }
