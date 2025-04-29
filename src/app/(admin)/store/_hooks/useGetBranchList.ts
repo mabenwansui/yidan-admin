@@ -1,31 +1,17 @@
-import { useState } from 'react'
-import { post } from '@/common/utils/ajax'
-import { useSWR } from '@/common/hooks/useAjax'
+import useSWRList from '@/common/hooks/useAjax/useSWRList'
 import { Branch } from '@/common/types/branch'
 import { Page } from '@/common/types/page'
 
-export interface Search {
-  key?: string | null
+interface Params extends Page {
+  key?: string
   storeId: string
-  curPage?: number
-  pageSize?: number
 }
+
 interface Response extends Page {
   list: Branch[]
 }
-interface ArgsParams {
-  url: string
-  args: Search
-}
 
-export interface FormatStore extends Omit<Branch, 'storeId' | 'commodityId' | 'store' | 'commodity'> {
-  commodityName?: string
-  commodityId?: string
-  commodityCategory?: string
-  isOnShelfFormat?: string
-}
-
-const dataFormat = (list?: Branch[]): FormatStore[] | undefined => {
+function dataFormat(list: Branch[]) {
   return list?.map((item) => {
     const { commodity, ...rest } = item
     return {
@@ -38,33 +24,10 @@ const dataFormat = (list?: Branch[]): FormatStore[] | undefined => {
   })
 }
 
-export const url = '/api/branch/search-commodity'
-const fetcher = async ({ args }: ArgsParams) => await post<Response>(url, args)
-export function useGetBranchList(params: Search) {
-  const { key = '', ..._params } = params
-  const [search, setSearch] = useState<Search>(_params)
-  const [index, setIndex] = useState(0)
-  console.log('search:', `${url}${key}${index}`)
-  const { data, isLoading } = useSWR(
-    {
-      url: `${url}${key}${index}`,
-      args: search
-    },
-    fetcher,
-    { keepPreviousData: true }
-  )
-  const refresh = (params?: Partial<Search>) => {
-    if (params) setSearch({ ...search, ...params })
-    setIndex(index + 1)
+export default function useGetBranchList(params: Params) {
+  const { list, ...rest } = useSWRList<Params, Response>('/api/branch/search-commodity', params)
+  return {
+    list: dataFormat(list),
+    ...rest
   }
-  const response = {
-    index,
-    curPage: data?.data?.curPage,
-    pageSize: data?.data?.pageSize,
-    total: data?.data?.total,
-    list: dataFormat(data?.data?.list),
-    refresh,
-    isLoading
-  }
-  return response
 }
