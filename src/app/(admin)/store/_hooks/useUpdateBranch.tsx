@@ -1,9 +1,9 @@
 import { useSWRTrigger } from '@/common/hooks/useAjax'
-import { Store } from '@/common/types/store'
+import { Branch } from '@/common/types/branch'
 
-export const url = '/api/store/update'
+export const url = '/api/branch/update'
 
-type Props = Store
+type Props = Branch
 
 export default function useUpdateStore() {
   return useSWRTrigger<Props, Record<never, never>>(url)

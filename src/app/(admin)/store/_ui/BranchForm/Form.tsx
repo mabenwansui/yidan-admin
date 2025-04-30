@@ -91,7 +91,6 @@ function CustomForm(props: Props) {
             <p>显示的销售量 = 最小值 + 实际销售量</p>
           </div>
         }
-        initialValue={0}
       >
         <InputNumber placeholder="请输入" className="w-34!" />
       </Form.Item>

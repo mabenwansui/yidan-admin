@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Icon from '@/components/Icons'
 import { Divider, Button, Tooltip } from 'antd'
 import Image from '@/components/Image'
@@ -9,7 +10,7 @@ interface Props {
   isLoading: boolean
 }
 
-export default function CommodityInfo(props: Props) {
+function BranchInfo(props: Props) {
   const { store, isLoading } = props
   const handleAddList = (storeId?: string) => {
     if (!storeId) return
@@ -49,3 +50,5 @@ export default function CommodityInfo(props: Props) {
     </section>
   )
 }
+
+export default memo(BranchInfo)

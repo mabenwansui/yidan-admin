@@ -21,7 +21,7 @@ export enum ROUTE_PATH {
 
   /** 店铺 */
   STORE_LIST = '/store/list',
-  STORE_COMMODITY = '/store/commodity',
+  STORE_COMMODITY = '/store/branch',
 
   /** 用户 */
   USER_INFO = '/user/info',

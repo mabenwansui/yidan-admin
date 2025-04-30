@@ -25,11 +25,11 @@ export default function Frame(props: Props) {
           components: {
             Tree: {
               nodeSelectedBg: '#c6d2ff',
-              indentSize: 20
+              indentSize: 12
             },
             TreeSelect: {
               nodeSelectedBg: '#c6d2ff',
-              indentSize: 20
+              indentSize: 12
             },
             Pagination: {
               itemSize: 30,

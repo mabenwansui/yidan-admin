@@ -1,10 +1,16 @@
 import { useSWRList } from '@/common/hooks/useAjax'
 import { Branch } from '@/common/types/branch'
 import { Page } from '@/common/types/page'
+import { OnShelfStatus } from '@/common/constants/fields'
+
+const url = '/api/branch/search-commodity'
 
 interface Params extends Page {
   key?: string
   storeId: string
+  commodityId?: string
+  isOnShelf?: boolean
+  categoryId?: string
 }
 
 interface Response extends Page {
@@ -18,14 +24,14 @@ function dataFormat(list: Branch[]) {
       commodityName: commodity?.name,
       commodityId: commodity?.id,
       commodityCategory: commodity?.category?.title,
-      isOnShelfFormat: item.isOnShelf ? '上架中' : '已下架',
+      isOnShelfFormat: item.isOnShelf ? OnShelfStatus.On : OnShelfStatus.Off,
       ...rest
     }
   })
 }
 
 export default function useGetBranchList(params: Params) {
-  const { list, ...rest } = useSWRList<Params, Response>('/api/branch/search-commodity', params)
+  const { list, ...rest } = useSWRList<Params, Response>(url, params)
   return {
     list: dataFormat(list),
     ...rest

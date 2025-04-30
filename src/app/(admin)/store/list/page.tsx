@@ -1,39 +1,54 @@
 'use client'
 import '@ant-design/v5-patch-for-react-19'
 import { useState } from 'react'
-import { Button } from 'antd'
+import { Button, App } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
+import { Store } from '@/common/types/store'
 import useGetStoreList from '../_hooks/useGetStoreList'
+import useCreateStore from '../_hooks/useCreateStore'
+import useUpdateStore from '../_hooks/useUpdateStore'
 import useDeleteStore from '../_hooks/useDeleteStore'
 import StoreTableList from '../_ui/StoreTableList'
-import CreateFormDrawer from '../_ui/CreateFormDrawer'
-import EditFormDrawer from '../_ui/EditFormDrawer'
-import { Store } from '@/common/types/store'
+import { Drawer, DrawerFormType } from '../_ui/StoreForm'
 
 export default function List() {
   const [createOpen, setCreateOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
-  const [key, setKey] = useState(1)
+  const [createKey, setCreateKey] = useState(1)
+  const [editKey, setEditKey] = useState(1)
   const [initialValues, setInitialValues] = useState<Store>()
   const { isFirstLoad, list, isLoading, curPage, pageSize, refresh, total } = useGetStoreList()
   const { trigger: deleteStore } = useDeleteStore()
-  const handleCreateSubmit = () => {
-    setCreateOpen(false)
-    refresh()
-    setKey(key + 1)
+  const { trigger: createStore } = useCreateStore()
+  const { trigger: updateStore } = useUpdateStore()
+  const { message } = App.useApp()
+  const handleCreateSubmit = async (values: Store) => {
+    const { flag } = await createStore(values)
+    if (flag === 1) {
+      message.success('创建成功')
+      setCreateOpen(false)
+      refresh()
+      setCreateKey(createKey + 1)
+    }
   }
-  const handleEditSubmit = () => {
-    setEditOpen(false)
-    refresh()
-    setKey(key + 1)
+  const handleEditSubmit = async (values: Store) => {
+    const { flag } = await updateStore(values)
+    if (flag === 1) {
+      message.success('更新成功')
+      setEditOpen(false)
+      refresh()
+      setEditKey(editKey + 1)
+    }
   }
-  const handleEdit = (record: Store) => {
+  const handleOpenEdit = (record: Store) => {
     setInitialValues(record)
     setEditOpen(true)
   }
   const handleDel = async (id: string) => {
-    await deleteStore({ id })
-    refresh()
+    const { flag } = await deleteStore({ id })
+    if (flag === 1) {
+      refresh()
+    }
   }
   return (
     <section>
@@ -41,15 +56,16 @@ export default function List() {
         <Button size="large" type="primary" icon={<PlusOutlined />} onClick={() => setCreateOpen(true)}>
           创建店铺
         </Button>
-        <CreateFormDrawer
-          formKey={key}
+        <Drawer
+          type={DrawerFormType.CREATE}
+          formKey={createKey}
           open={createOpen}
           onSubmit={handleCreateSubmit}
           onClose={() => setCreateOpen(false)}
         />
       </div>
       <StoreTableList
-        onEdit={handleEdit}
+        onEdit={handleOpenEdit}
         onDel={handleDel}
         list={list}
         isLoading={isLoading}
@@ -58,13 +74,13 @@ export default function List() {
         pageSize={pageSize}
         total={total}
       />
-
-      <EditFormDrawer
-        key={key}
-        onSubmit={handleEditSubmit}
-        open={editOpen}
-        onClose={() => setEditOpen(false)}
+      <Drawer
+        type={DrawerFormType.EDIT}
         initialValues={initialValues}
+        formKey={editKey}
+        open={editOpen}
+        onSubmit={handleEditSubmit}
+        onClose={() => setEditOpen(false)}
       />
     </section>
   )

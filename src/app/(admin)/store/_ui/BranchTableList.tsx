@@ -15,7 +15,7 @@ interface Props {
   onPageChange?: (curPage: number) => void
 }
 
-function TableList(props: Props) {
+function BranchTableList(props: Props) {
   const { list, isLoading, curPage, pageSize, total, isFirstLoad, onEdit, onDel, onPageChange } = props
   const renderOperate = (_: any, record: Branch) => (
     <TableOperate
@@ -45,4 +45,4 @@ function TableList(props: Props) {
     </Table>
   )
 }
-export default memo(TableList)
+export default memo(BranchTableList)
