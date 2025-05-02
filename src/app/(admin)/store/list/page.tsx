@@ -1,9 +1,9 @@
 'use client'
 import '@ant-design/v5-patch-for-react-19'
 import { useState } from 'react'
-import { Button, App } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
+import { App } from 'antd'
 import { Store } from '@/common/types/store'
+import { CreateBtn } from '@/components/Button'
 import useGetStoreList from '../_hooks/useGetStoreList'
 import useCreateStore from '../_hooks/useCreateStore'
 import useUpdateStore from '../_hooks/useUpdateStore'
@@ -53,9 +53,7 @@ export default function List() {
   return (
     <section>
       <div className="flex justify-end mb-4">
-        <Button size="large" type="primary" icon={<PlusOutlined />} onClick={() => setCreateOpen(true)}>
-          创建店铺
-        </Button>
+        <CreateBtn onClick={() => setCreateOpen(true)}>创建店铺</CreateBtn>
         <Drawer
           type={DrawerFormType.CREATE}
           formKey={createKey}

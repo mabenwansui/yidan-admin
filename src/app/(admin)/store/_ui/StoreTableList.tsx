@@ -6,6 +6,7 @@ import { User } from '@/common/types/user'
 import { City } from '@/common/types/city'
 import { ROUTE_PATH } from '@/common/constants/routePath'
 import Image from '@/components/Image'
+import TableOperate, { OperateType } from '@/components/TableOperate'
 
 interface Props {
   list?: Store[]
@@ -28,20 +29,13 @@ function TableList(props: Props) {
   const renderOwner = (owner: User[]) => owner.map((item) => item.nickname).join()
   const renderOpen = (open: boolean) => (open ? '营业中' : '已停业')
   const renderCity = (city: City) => city.map((item) => item.label).join()
-  const renderOperate = useCallback(
-    (_: any, record: Store) => {
-      return (
-        <Space align="start" size="small">
-          <a className="mr-1.5" onClick={() => onEdit?.(record)}>
-            编辑
-          </a>
-          <Popconfirm okButtonProps={{ danger: true }} title="确认删除吗?" onConfirm={() => onDel?.(record.id)}>
-            <a>删除</a>
-          </Popconfirm>
-        </Space>
-      )
-    },
-    [onDel, onEdit]
+  const renderOperate = (_: any, record: Store) => (
+    <TableOperate
+      btnList={[
+        { type: OperateType.EDIT, onTrigger: () => onEdit?.(record) },
+        { type: OperateType.DEL, onTrigger: () => onDel?.(record.id) }
+      ]}
+    />
   )
   return (
     <Table<Store>

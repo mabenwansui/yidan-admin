@@ -8,13 +8,19 @@ import Details from './Details'
 import { Commodity } from '@/common/types/commodity'
 import ImgUpload from '@/components/Form/Upload/ImgUpload'
 
-export type CommodityForm = Omit<Commodity, 'category' | 'imgNames'> & {
-  imgNames: UploadFile[]
-  category: {
-    value: string
-    label: string
-  }
+interface SelectOption {
+  value: string
+  label: string
 }
+export type CommodityForm = Omit<Commodity, 'category' | 'imgNames'> & {
+  imgNames?: UploadFile[]
+  category?: SelectOption
+}
+
+export type CommoditySubmitValues = Omit<Commodity, 'category'> & {
+  category?: SelectOption
+}
+
 export interface RefMethods {
   submit: () => void
 }
@@ -60,18 +66,11 @@ export default function CustomForm(props: Props) {
       categoryRef.current?.refresh()
     }
   }
-  const handleFinish = useCallback((values: CommodityForm) => onFinish?.(values), [onFinish])
+  const handleFinish = useCallback((values: CommoditySubmitValues) => onFinish?.(values), [onFinish])
   const labelCol = useMemo(() => ({ span: 5 }), [])
   const wrapperCol = useMemo(() => ({ span: 19 }), [])
   return (
-    <Form
-      name="commodity-form"
-      initialValues={initialValues}
-      labelCol={labelCol}
-      wrapperCol={wrapperCol}
-      form={form}
-      onFinish={handleFinish}
-    >
+    <Form initialValues={initialValues} labelCol={labelCol} wrapperCol={wrapperCol} form={form} onFinish={handleFinish}>
       <Form.Item name="id" hidden>
         <Input hidden />
       </Form.Item>

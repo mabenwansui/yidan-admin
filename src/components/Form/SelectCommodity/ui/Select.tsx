@@ -41,6 +41,7 @@ function Select(props: Props) {
     <AntSelect
       showSearch
       placeholder="请选择"
+      allowClear
       options={options}
       onSearch={handleSearch}
       filterOption={false}

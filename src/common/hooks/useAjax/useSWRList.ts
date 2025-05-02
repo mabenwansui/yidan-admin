@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useSWR } from '@/common/hooks/useAjax'
 import { post } from '@/common/utils/ajax'
 
@@ -22,6 +22,7 @@ export default function useSWRList<Params extends ParamsObject, Response extends
   params: Params
 ) {
   const fetcher = async ({ args }: { url: string; args: Params }) => await post<Response>(url, args)
+  const paramsRef = useRef<Params | Record<never, never>>({})
   const { key = '', ..._params } = params
   const [args, setArgs] = useState<Omit<Params, 'key'>>(_params)
   const [index, setIndex] = useState(0)
@@ -38,6 +39,12 @@ export default function useSWRList<Params extends ParamsObject, Response extends
     if (params) setArgs({ ...args, ...params })
     setIndex(index + 1)
   }
+  // useEffect(() => {
+  //   if (lastParams.current !== undefined && lastParams.current !== JSON.stringify(params)) {
+  //     refresh(params)
+  //   }
+  //   lastParams.current = JSON.stringify(params)
+  // }, [params])
   return {
     index,
     isFirstLoad,

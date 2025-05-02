@@ -1,7 +1,7 @@
 'use client'
 import { useMemo, useRef, memo } from 'react'
 import { App, Drawer, DrawerProps, Space, Button } from 'antd'
-import Form, { CommodityFormItems, RefMethods } from '../../ui/Form'
+import Form, { CommodityForm, RefMethods } from '../../ui/Form'
 import { useGetInfo } from '../api/useGetInfo'
 import useUpdate from '../api/useUpdate'
 import { SERVER_FILE_PREFIX } from '@/common/constants/routePath'
@@ -37,7 +37,7 @@ function EditDrawer(props: Props) {
     }
   }, [isLoading, data])
   const { onClose } = rest
-  const handleFinish = async (values: CommodityFormItems) => {
+  const handleFinish = async (values: CommodityForm) => {
     const { category, imgNames, ...rest } = values
     const { flag } = await triggerUpdate({
       ...rest,

@@ -1,7 +1,7 @@
 'use client'
 import '@ant-design/v5-patch-for-react-19'
 import { useCallback } from 'react'
-import Form, { CommodityFormItems } from '../ui/Form'
+import Form, { CommodityForm } from '../ui/Form'
 import { useRouter } from 'next/navigation'
 import useCreate from './api/useCreate'
 
@@ -9,7 +9,7 @@ export default function Create() {
   const router = useRouter()
   const { trigger: triggerCreate } = useCreate()
   const handleFinish = useCallback(
-    async (values: CommodityFormItems) => {
+    async (values: CommodityForm) => {
       const { category, imgNames, ...rest } = values
       const { flag } = await triggerCreate({
         ...rest,
