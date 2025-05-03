@@ -10,7 +10,7 @@ import useUpdateCommodity from '../_hooks/useUpdateCommodity'
 import CommodityTableList from '../_ui/CommodityTableList'
 import CommoditySearch from '../_ui/CommoditySearch'
 import { Drawer, DrawerFormType, CommodityForm, CommoditySubmitValues } from '../_ui/CommodityForm'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 const formatDrawer = (record: Commodity): CommodityForm => {
   const { category, imgNames, ...rest } = record
@@ -33,12 +33,7 @@ function changeUrl(curPage: string | number) {
 }
 
 export default function CommodityListPage() {
-  const searchParams = useSearchParams()
-  const searchCurPage = Number(searchParams.get(SEARCH_PARAMS.CUR_PAGE) ?? 1)
-  console.log('searchCurPage:::', searchCurPage)
-  const { isFirstLoad, list, isLoading, curPage, pageSize, refresh, total } = useGetCommodityList({
-    curPage: searchCurPage
-  })
+  const { isFirstLoad, list, isLoading, curPage, pageSize, refresh, total } = useGetCommodityList()
   const [updateDrawerKey, setUpdateDrawerKey] = useState<string>()
   const [createDrawerKey, setCreateDrawerKey] = useState<string>()
   const [updateOpen, setUpdateOpen] = useState(false)
@@ -56,6 +51,7 @@ export default function CommodityListPage() {
     //
   }
   const handlePageChange = (curPage: number) => {
+    // refresh({ curPage })
     router.push(changeUrl(curPage))
   }
   const handleOpentCreateCommodity = () => {
@@ -78,7 +74,7 @@ export default function CommodityListPage() {
   }
   return (
     <section>
-      <CommoditySearch onCreate={handleOpentCreateCommodity} />
+      {/* <CommoditySearch onCreate={handleOpentCreateCommodity} /> */}
       <Drawer
         formKey={createDrawerKey}
         type={DrawerFormType.CREATE}

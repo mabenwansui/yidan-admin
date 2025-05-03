@@ -1,4 +1,4 @@
-// 'use client'
+'use client'
 // import { getUserInfoApi } from './api'
 // import { useEffect } from 'react'
 

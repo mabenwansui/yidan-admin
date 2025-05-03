@@ -3,8 +3,8 @@ export enum SERVER_FILE_PREFIX {
 }
 
 export enum SEARCH_PARAMS {
-  CUR_PAGE = 'curpage',
-  PAGE_SIZE = 'pagesize',
+  CUR_PAGE = 'curPage',
+  PAGE_SIZE = 'pageSize',
   BACK_URL = 'backurl'
 }
 

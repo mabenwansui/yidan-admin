@@ -1,6 +1,7 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { useSWR } from '@/common/hooks/useAjax'
 import { post } from '@/common/utils/ajax'
+import { useSearchParams } from 'next/navigation'
 
 interface ParamsObject {
   key?: string
@@ -22,10 +23,16 @@ export default function useSWRList<Params extends ParamsObject, Response extends
   params: Params
 ) {
   const fetcher = async ({ args }: { url: string; args: Params }) => await post<Response>(url, args)
-  const paramsRef = useRef<Params | Record<never, never>>({})
   const { key = '', ..._params } = params
-  const [args, setArgs] = useState<Omit<Params, 'key'>>(_params)
   const [index, setIndex] = useState(0)
+  const searchParamsObjRef = useRef<Record<string, any> | null>(null)
+  const searchParams = useSearchParams()
+  const searchParamsObj = useMemo(() => {
+    const o: Record<string, any> = {}
+    for (const [key, value] of searchParams) o[key] = Number(value)
+    return o
+  }, [searchParams])
+  const [args, setArgs] = useState<Omit<Params, 'key'>>({ ..._params, ...searchParamsObj })
   const isFirstLoad = index === 0 ? true : false
   const { data, isLoading } = useSWR(
     {
@@ -35,16 +42,20 @@ export default function useSWRList<Params extends ParamsObject, Response extends
     fetcher,
     { keepPreviousData: true }
   )
-  const refresh = (params?: Partial<Params>) => {
-    if (params) setArgs({ ...args, ...params })
-    setIndex(index + 1)
-  }
-  // useEffect(() => {
-  //   if (lastParams.current !== undefined && lastParams.current !== JSON.stringify(params)) {
-  //     refresh(params)
-  //   }
-  //   lastParams.current = JSON.stringify(params)
-  // }, [params])
+  const refresh = useCallback(
+    (params?: Partial<Params>) => {
+      if (params) setArgs({ ...args, ...params })
+      setIndex(index + 1)
+    },
+    [index, args]
+  )
+  useEffect(() => {
+    if (Object.keys(searchParamsObj).length === 0) return
+    if (searchParamsObjRef.current !== null && searchParamsObjRef.current !== searchParamsObj) {
+      refresh(searchParamsObj as any)
+    }
+    searchParamsObjRef.current = searchParamsObj
+  }, [searchParamsObj, searchParamsObjRef.current])
   return {
     index,
     isFirstLoad,
