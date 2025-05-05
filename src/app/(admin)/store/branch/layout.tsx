@@ -13,7 +13,7 @@ import { Drawer, DrawerFormType } from '../_ui/BranchForm'
 interface Props {
   children: React.ReactNode
 }
-export default function Commodity(props: Props) {
+export default function BranchLayout(props: Props) {
   const [addOpen, setAddOpen] = useState(false)
   const params = useParams<{ id: string }>()
   const router = useRouter()

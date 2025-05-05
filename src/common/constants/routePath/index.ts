@@ -3,8 +3,6 @@ export enum SERVER_FILE_PREFIX {
 }
 
 export enum SEARCH_PARAMS {
-  CUR_PAGE = 'curPage',
-  PAGE_SIZE = 'pageSize',
   BACK_URL = 'backurl'
 }
 
@@ -16,8 +14,10 @@ export enum ROUTE_PATH {
 
   /** 商品 */
   COMMODITY_CREATE = '/commodity/create',
+  COMMODITY_EDIT = '/commodity/edit',
   COMMODITY_LIST = '/commodity/list',
-  COMMODITY_SUCCESS = '/commodity/success',
+  COMMODITY_SUCCESS_EDIT = '/commodity/success/edit',
+  COMMODITY_SUCCESS_CREATE = '/commodity/success/create',
 
   /** 店铺 */
   STORE_LIST = '/store/list',
@@ -35,7 +35,7 @@ export const routeTitleMapping: Record<string, string> = {
   [ROUTE_PATH.HOME]: '首页',
   [ROUTE_PATH.COMMODITY_CREATE]: '商品创建',
   [ROUTE_PATH.COMMODITY_LIST]: '商品列表',
-  [ROUTE_PATH.COMMODITY_SUCCESS]: '商品操作成功',
+  [ROUTE_PATH.COMMODITY_SUCCESS_EDIT]: '商品操作成功',
   [ROUTE_PATH.STORE_LIST]: '店铺列表',
   [ROUTE_PATH.USER_ADMIN_LIST]: '用户管理',
   [ROUTE_PATH.USER_STAFF_LIST]: '用户管理'

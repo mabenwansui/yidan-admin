@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useSWRList } from '@/common/hooks/useAjax'
 import { Page } from '@/common/types/page'
 import { Commodity } from '@/common/types/commodity'
@@ -28,8 +29,9 @@ const dataFormat = (list?: Commodity[]) => {
 
 export default function useGetCommodityList(params: Params = {}) {
   const { list, ...rest } = useSWRList<Params, Response>(url, params)
+  const listMemo = useMemo(() => dataFormat(list), [list])
   return {
-    list: dataFormat(list),
+    list: listMemo,
     ...rest
   }
 }

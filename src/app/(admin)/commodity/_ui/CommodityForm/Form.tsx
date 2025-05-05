@@ -17,7 +17,8 @@ export type CommodityForm = Omit<Commodity, 'category' | 'imgNames'> & {
   category?: SelectOption
 }
 
-export type CommoditySubmitValues = Omit<Commodity, 'category'> & {
+export type CommoditySubmitValues = Omit<Commodity, 'category' | 'imgNames'> & {
+  imgNames?: UploadFile[]
   category?: SelectOption
 }
 

@@ -13,7 +13,7 @@ export default function Loading(props: Props) {
   return (
     <div
       className={cs(
-        'w-full flex justify-center p-20 primary opacity-0 transition delay-300 duration-1500 ease-in-out',
+        'w-full flex justify-center p-20 text-primary opacity-0 transition delay-300 duration-1500 ease-in-out',
         show ? 'opacity-100' : '',
         props?.className
       )}

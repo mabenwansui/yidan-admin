@@ -13,7 +13,7 @@ import useDelete from './api/useDelete'
 
 function getUrl(curPage: string | number) {
   const newSearchParams = new URLSearchParams(window.location.search)
-  newSearchParams.set(SEARCH_PARAMS.CUR_PAGE, String(curPage))
+  newSearchParams.set('curPage', String(curPage))
   return `${window.location.pathname}?${newSearchParams.toString()}`
 }
 
@@ -21,7 +21,7 @@ export default function List() {
   const [id, setId] = useState<string | null>(null)
   const [open, setOpen] = useState<boolean>(false)
   const searchParams = useSearchParams()
-  const curPage = Number(searchParams.get(SEARCH_PARAMS.CUR_PAGE) ?? 1)
+  const curPage = Number(searchParams.get('curPage') ?? 1)
   const { list, isLoading, refresh } = useListSearch({ curPage })
   const { trigger: deleteTrigger } = useDelete()
   const router = useRouter()

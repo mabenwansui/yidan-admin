@@ -1,12 +1,10 @@
-import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { useSWR } from '@/common/hooks/useAjax'
 import { post } from '@/common/utils/ajax'
-import { useSearchParams } from 'next/navigation'
+import { Page } from '@/common/types/page'
 
-interface ParamsObject {
+interface ParamsObject extends Page {
   key?: string
-  curPage?: number
-  pageSize?: number
   [key: string]: any
 }
 
@@ -25,14 +23,8 @@ export default function useSWRList<Params extends ParamsObject, Response extends
   const fetcher = async ({ args }: { url: string; args: Params }) => await post<Response>(url, args)
   const { key = '', ..._params } = params
   const [index, setIndex] = useState(0)
-  const searchParamsObjRef = useRef<Record<string, any> | null>(null)
-  const searchParams = useSearchParams()
-  const searchParamsObj = useMemo(() => {
-    const o: Record<string, any> = {}
-    for (const [key, value] of searchParams) o[key] = Number(value)
-    return o
-  }, [searchParams])
-  const [args, setArgs] = useState<Omit<Params, 'key'>>({ ..._params, ...searchParamsObj })
+
+  const [args, setArgs] = useState<Omit<Params, 'key'>>({ ..._params })
   const isFirstLoad = index === 0 ? true : false
   const { data, isLoading } = useSWR(
     {
@@ -42,28 +34,19 @@ export default function useSWRList<Params extends ParamsObject, Response extends
     fetcher,
     { keepPreviousData: true }
   )
-  const refresh = useCallback(
-    (params?: Partial<Params>) => {
-      if (params) setArgs({ ...args, ...params })
-      setIndex(index + 1)
-    },
-    [index, args]
-  )
-  useEffect(() => {
-    if (Object.keys(searchParamsObj).length === 0) return
-    if (searchParamsObjRef.current !== null && searchParamsObjRef.current !== searchParamsObj) {
-      refresh(searchParamsObj as any)
-    }
-    searchParamsObjRef.current = searchParamsObj
-  }, [searchParamsObj, searchParamsObjRef.current])
+  const refresh = useCallback((params?: Partial<Params>) => {
+    if (params) setArgs({ ...args, ...params })
+    setIndex(index + 1)
+    //  eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return {
     index,
     isFirstLoad,
-    curPage: data?.data?.curPage || 1,
-    pageSize: data?.data?.pageSize || 0,
-    total: data?.data?.total || 0,
-    list: data?.data?.list,
     refresh,
-    isLoading
+    isLoading,
+    curPage: 1,
+    pageSize: 30,
+    total: 0,
+    ...(data?.data as Response)
   }
 }

@@ -1,8 +1,8 @@
-import { useMemo, memo } from 'react'
+import { useMemo, memo, useState } from 'react'
 import { Select as AntSelect, SelectProps as AntSelectProps } from 'antd'
 import { useDebouncedCallback } from 'use-debounce'
 import { Commodity } from '@/common/types/commodity'
-import useCommoditySearch from '@/common/hooks/useGetCommodityList'
+import { useTriggerGetCommodityList } from '@/common/hooks/useGetCommodityList'
 
 export interface Option {
   label: string
@@ -20,8 +20,15 @@ export interface Props extends Omit<AntSelectProps, 'onChange'> {
 
 function Select(props: Props) {
   const { categoryId, onChange, ...restProps } = props
-  const { list, isLoading, refresh } = useCommoditySearch({ categoryId, pageSize: 100 })
-  const handleSearch = useDebouncedCallback((value) => refresh({ name: value }), 500)
+  const [list, setList] = useState<Commodity[] | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { trigger } = useTriggerGetCommodityList()
+  const handleSearch = useDebouncedCallback(async (value) => {
+    const { flag, data } = await trigger({ categoryId, name: value, pageSize: 80 })
+    if (flag === 1) {
+      setList(data.list)
+    }
+  }, 350)
   const options = useMemo(
     () =>
       list?.map((item) => ({
@@ -37,6 +44,16 @@ function Select(props: Props) {
       list?.find((item) => item.id === value)
     )
   }
+  const handleVisibleChange = async (visible: boolean) => {
+    if (visible === true && list === null) {
+      setIsLoading(true)
+      const { flag, data } = await trigger({ categoryId, pageSize: 80 })
+      if (flag === 1) {
+        setIsLoading(false)
+        setList(data.list)
+      }
+    }
+  }
   return (
     <AntSelect
       showSearch
@@ -46,6 +63,7 @@ function Select(props: Props) {
       onSearch={handleSearch}
       filterOption={false}
       loading={isLoading}
+      onDropdownVisibleChange={handleVisibleChange}
       onChange={handleChange}
       {...restProps}
     />

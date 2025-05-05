@@ -2,6 +2,11 @@ import { useState } from 'react'
 import { post } from '@/common/utils/ajax'
 import { useSWR } from '@/common/hooks/useAjax'
 
+export const url = '/api/commodity/category/form-list'
+
+interface Props {
+  hasRootCategory?: boolean
+}
 export interface RequestListItem {
   id: string
   title: string
@@ -9,15 +14,20 @@ export interface RequestListItem {
   level: number
   children: RequestListItem[]
 }
-
 const empty: RequestListItem[] = []
-export const url = '/api/commodity/category/form-list'
 
-const fetcher = async () => await post<{ list: Array<RequestListItem> }>(url)
-
-export default function useGetList() {
+const fetcher = async ({ args }: { url: string; args: Props }) => await post<{ list: RequestListItem[] }>(url, args)
+export default function useGetList(props: Props = {}) {
+  const { hasRootCategory = true } = props
   const [key, setKey] = useState(0)
-  const { data, isLoading } = useSWR(`${url}${key}`, fetcher, { shouldRetryOnError: false })
+  const { data, isLoading } = useSWR(
+    {
+      url: `${url}${key}`,
+      args: { hasRootCategory }
+    },
+    fetcher,
+    { shouldRetryOnError: false }
+  )
   return {
     list: data?.data?.list || empty,
     isLoading,

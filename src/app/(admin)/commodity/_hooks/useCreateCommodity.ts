@@ -4,7 +4,7 @@ import { Commodity } from '@/common/types/commodity'
 const url = '/api/commodity/create'
 
 interface Props extends Omit<Commodity, 'category'> {
-  category: string
+  category?: string
 }
 
 export default function useCreateCommodity() {
