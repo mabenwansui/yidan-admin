@@ -8,6 +8,7 @@ import { COOKIE_KEY } from '@/common/constants/cookie'
 import { getCookie } from '@/common/utils/cookie'
 import { request, ObjectType, MethodType } from './request'
 export type { AjaxResponse, ObjectType, MethodType } from './request'
+export { default as sse } from './sse'
 
 export const apiPrefix = config.apiDomain
 
@@ -48,35 +49,3 @@ export async function ajax<T extends ObjectType>(url: string, params: object | F
 export async function post<T extends ObjectType>(url: string, params: object | FormData = {}) {
   return await ajax<T>(url, params, { method: 'post' })
 }
-
-// async function requestHandle<T extends ObjectType>(type: 'post' | 'get', url: string, params: object | FormData = {}) {
-//   const result = await request<T>({ url, method: type, data: params })
-//   const { flag, code, msg } = result
-//   if (flag === 0) {
-//     if (msg && isClient() && code !== ERROR_CODE.AUTH_CHECK_ERROR) {
-//       message.error(msg)
-//     }
-//     switch (code) {
-//       case ERROR_CODE.AUTH_CHECK_ERROR: {
-//         if (await isLogin()) {
-//           const { flag: _flag } = await refreshTokenApi()
-//           if (_flag === 1) {
-//             const authKey = await getCookie(COOKIE_KEY.TOKEN)
-//             return await request<T>({ url, method: 'post', data: params })
-//           }
-//         }
-//         await redirectLogin()
-//         break
-//       }
-//     }
-//   }
-//   return result
-// }
-
-// export async function get<T extends ObjectType>(url: string, params: object | FormData = {}) {
-//   return await requestHandle<T>('get', url, params)
-// }
-
-// export async function post<T extends ObjectType>(url: string, params: object | FormData = {}) {
-//   return await requestHandle<T>('post', url, params)
-// }

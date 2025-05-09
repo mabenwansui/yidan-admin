@@ -13,6 +13,7 @@ export enum ROUTE_PATH {
   HOME = '/',
 
   /** 商品 */
+  COMMODITY = '/commodity',
   COMMODITY_CREATE = '/commodity/create',
   COMMODITY_EDIT = '/commodity/edit',
   COMMODITY_LIST = '/commodity/list',
@@ -33,7 +34,7 @@ export const routeTitleMapping: Record<string, string> = {
   [ROUTE_PATH.LOGIN]: '登录',
   [ROUTE_PATH.REGISTER]: '注册',
   [ROUTE_PATH.HOME]: '首页',
-  [ROUTE_PATH.COMMODITY_CREATE]: '商品创建',
+  [ROUTE_PATH.COMMODITY_EDIT]: '商品编辑',
   [ROUTE_PATH.COMMODITY_LIST]: '商品列表',
   [ROUTE_PATH.COMMODITY_SUCCESS_EDIT]: '商品操作成功',
   [ROUTE_PATH.STORE_LIST]: '店铺列表',

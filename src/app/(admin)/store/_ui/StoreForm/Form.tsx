@@ -6,7 +6,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons'
 import { presets } from '@/common/constants/valid'
 import ImgUpload from '@/components/Form/Upload/ImgUpload'
 import City from '@/components/Form/City'
-import UserSelect from '@/components/Form/SelectUser'
+import SelectUser from '@/components/Form/SelectUser'
 import { ROLE } from '@/common/constants/role'
 import { ROUTE_PATH } from '@/common/constants/routePath'
 import { Store } from '@/common/types/store'
@@ -72,10 +72,10 @@ function CustomForm(props: Props) {
       >
         <Input placeholder="请输入" />
       </Form.Item>
-      <Form.Item name="owner" label={`店长`}>
+      <Form.Item label={`店长`}>
         <Space>
           <Form.Item name="owner" noStyle>
-            <UserSelect className="w-91!" mode="multiple" showSearch role={[ROLE.ADMIN]} placeholder="请选择" />
+            <SelectUser className="w-91!" role={[ROLE.ADMIN]} />
           </Form.Item>
           <div>
             <Link href={ROUTE_PATH.USER_ADMIN_LIST} target="_blank" className="mr-1.5 ml-2">

@@ -35,18 +35,9 @@ export default function useConfig() {
         ]
       },
       role.includes(ROLE.SUPER_ADMIN) && {
-        key: 'commodity',
-        label: '商品管理',
-        children: [
-          {
-            key: ROUTE_PATH.COMMODITY_CREATE,
-            label: <Link href={ROUTE_PATH.COMMODITY_CREATE}>商品创建</Link>
-          },
-          {
-            key: ROUTE_PATH.COMMODITY_LIST,
-            label: <Link href={ROUTE_PATH.COMMODITY_LIST}>商品列表</Link>
-          }
-        ]
+        key: ROUTE_PATH.COMMODITY_LIST,
+        label: <Link href={ROUTE_PATH.COMMODITY_LIST}>商品管理</Link>,
+        match: new RegExp(`^${ROUTE_PATH.COMMODITY}\\/.*`, 'gi')
       },
       (role.includes(ROLE.SUPER_ADMIN) || role.includes(ROLE.ADMIN)) && {
         key: 'user',

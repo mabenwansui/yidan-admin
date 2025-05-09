@@ -14,6 +14,7 @@ interface Props extends DrawerProps {
 }
 
 export { DrawerFormType }
+export type { CommoditySubmitValues }
 
 function FormDrawer(props: Props) {
   const { onSubmit, initialValues, type, formKey, isLoading = false, ...rest } = props

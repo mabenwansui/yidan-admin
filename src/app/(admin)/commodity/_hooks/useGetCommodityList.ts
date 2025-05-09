@@ -3,7 +3,7 @@ import { useSWRList } from '@/common/hooks/useAjax'
 import { Page } from '@/common/types/page'
 import { Commodity } from '@/common/types/commodity'
 
-const url = '/api/commodity/search'
+export const url = '/api/commodity/search'
 
 interface Params {
   key?: string

@@ -3,7 +3,6 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   // output: 'export',
   // distDir: 'dist',
-  hotReload: false,
   sassOptions: {
     implementation: 'sass-embedded'
   },
@@ -14,6 +13,17 @@ const nextConfig: NextConfig = {
       }
     ]
   }
+  // turbopack: {
+  //   rules: {
+  //     '*.worker.js': {
+  //       loaders: ['worker-loader'],
+  //       // options: {
+  //       //   worker: 'SharedWorker',
+  //       //   publicPath: '/_next/static/workers/'
+  //       // }
+  //     }
+  //   }
+  // }
   // reactStrictMode: false
 }
 

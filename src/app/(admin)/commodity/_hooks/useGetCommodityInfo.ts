@@ -37,7 +37,7 @@ const format4Form = (data: Response) => {
 const fetcher = async ({ arg }: { arg: Props }) => await post<Response>(url, arg)
 export default function useGetCommodityInfo(params: Props) {
   const { commodityId, format } = params
-  const { data, isLoading } = useSWR(
+  const { data, isLoading, mutate } = useSWR(
     {
       url: `${url}`,
       arg: { id: commodityId }
@@ -54,6 +54,7 @@ export default function useGetCommodityInfo(params: Props) {
     }
   }
   return {
+    mutate,
     data: formatData,
     isLoading
   }

@@ -12,7 +12,8 @@ import {
   Link,
   Unlink,
   Store,
-  ContactRound
+  ContactRound,
+  MessageSquareMore
 } from 'lucide-react'
 
 interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
@@ -32,7 +33,7 @@ const sizeMapping = {
 /* 图标预览 https://lucide.dev/icons */
 // 编辑器 2
 function Icon(props: IconProps) {
-  const { name, size = 'middle', color, className, strokeWidth = 2, ...rest } = props
+  const { name, size = 'middle', color, className, strokeWidth = 1.6, ...rest } = props
   const _size = sizeMapping[size]
   const _props = useMemo(() => ({ size: _size, color, strokeWidth }), [_size, color, strokeWidth])
   const renderIcon = (Node: any) => {
@@ -68,6 +69,8 @@ function Icon(props: IconProps) {
       return renderIcon(Store)
     case 'contact-round':
       return renderIcon(ContactRound)
+    case 'message-square-more':
+      return renderIcon(MessageSquareMore)
     default:
       logger.error('图标未找到!')
   }

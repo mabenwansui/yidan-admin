@@ -17,6 +17,16 @@ function Select(props: Props) {
       })),
     [list]
   )
-  return <AntSelect options={options} loading={isLoading} {...restProps} />
+  return (
+    <AntSelect
+      placeholder="请选择"
+      optionFilterProp="label"
+      showSearch
+      mode="multiple"
+      options={options}
+      loading={isLoading}
+      {...restProps}
+    />
+  )
 }
 export default memo(Select)

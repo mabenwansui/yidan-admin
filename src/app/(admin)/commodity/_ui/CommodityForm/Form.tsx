@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef, useMemo, useCallback, useImperativeHandle, Ref } from 'react'
+import { useState, useRef, useMemo, useEffect, useCallback, useImperativeHandle, Ref } from 'react'
 import { Form, Input, InputNumber, Space, Button, UploadFile } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { presets } from '@/common/constants/valid'
@@ -43,6 +43,11 @@ export default function CustomForm(props: Props) {
   const price = Form.useWatch('price', form)
   const categoryRef = useRef<TreeSelectRefMethods | null>(null)
   const { initialValues, showSubmitBtn = true, onFinish, submitText = '提交', ref } = props
+  useEffect(() => {
+    if (initialValues) {
+      form.setFieldsValue(initialValues)
+    }
+  }, [initialValues, form])
   useImperativeHandle(
     ref,
     () => ({
@@ -71,7 +76,7 @@ export default function CustomForm(props: Props) {
   const labelCol = useMemo(() => ({ span: 5 }), [])
   const wrapperCol = useMemo(() => ({ span: 19 }), [])
   return (
-    <Form initialValues={initialValues} labelCol={labelCol} wrapperCol={wrapperCol} form={form} onFinish={handleFinish}>
+    <Form labelCol={labelCol} wrapperCol={wrapperCol} form={form} onFinish={handleFinish}>
       <Form.Item name="id" hidden>
         <Input hidden />
       </Form.Item>

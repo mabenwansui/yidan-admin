@@ -1,4 +1,0 @@
-{
-  "tailwindCSS.emmetCompletions": true,
-  "tailwindCSS.experimental.configFile": "src/common/css/theme/tailwind.css"
-}

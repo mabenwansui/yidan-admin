@@ -20,13 +20,12 @@ function BranchNav(props: Props) {
       <div className="pt-2 pb-2">
         <ul
           className="
-          *:hover:bg-gray-50
+          *:hover:bg-primary-light
             *:p-4 
             *:truncate
             *:pt-2 
             *:pb-2 
             *:cursor-pointer
-            [&_.active]:bg-primary-light!
             [&_.active]:text-link!
           "
         >
