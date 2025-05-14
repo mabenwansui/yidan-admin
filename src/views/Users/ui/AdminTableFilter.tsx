@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { Form, Col, FormProps, SelectProps } from 'antd'
-import TableFilterWrap, { Row } from '@/components/TableFilterWrap'
+import TableFilterWrap, { Row } from '@/components/Table/TableFilterWrap'
 import SelectRole, { ValueType } from './SelectRole'
 
 export interface FormValues {

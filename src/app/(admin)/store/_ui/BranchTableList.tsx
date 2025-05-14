@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { Table } from 'antd'
 import { Branch } from '@/common/types/branch'
-import TableOperate, { OperateType } from '@/components/TableOperate'
+import TableOperate, { OperateType } from '@/components/Table/TableOperate'
 
 interface Props {
   list?: Branch[]

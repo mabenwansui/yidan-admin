@@ -6,7 +6,7 @@ import { User } from '@/common/types/user'
 import { City } from '@/common/types/city'
 import { ROUTE_PATH } from '@/common/constants/routePath'
 import Image from '@/components/Image'
-import TableOperate, { OperateType } from '@/components/TableOperate'
+import TableOperate, { OperateType } from '@/components/Table/TableOperate'
 
 interface Props {
   list?: Store[]

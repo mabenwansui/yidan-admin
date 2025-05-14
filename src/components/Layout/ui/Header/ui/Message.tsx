@@ -7,8 +7,6 @@ import { useSSE } from '@/common/hooks/useAjax'
 export default function Message() {
   const { data } = useSSE()
 
-  console.log('data:::::::::::::::::::::::::::', data)
-
   const handleClick = async () => {
     const { flag } = await post('/api/order/test')
     if (flag === 1) {

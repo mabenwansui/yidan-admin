@@ -2,7 +2,7 @@
 import { Table } from 'antd'
 import { Commodity } from '@/common/types/commodity'
 import Image from '@/components/Image'
-import TableOperate, { OperateType } from '@/components/TableOperate'
+import TableOperate, { OperateType } from '@/components/Table/TableOperate'
 
 interface Props {
   list?: Commodity[]

@@ -1,4 +1,4 @@
-const errorPrefix = ':::::::::::::::'
+const errorPrefix = ''
 class Logger {
   error(error: unknown) {
     if (error instanceof Error) {
