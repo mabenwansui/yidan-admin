@@ -22,13 +22,12 @@ export default function useSWRList<Params extends ParamsObject, Response extends
 ) {
   const fetcher = async ({ args }: { url: string; args: Params }) => await post<Response>(url, args)
   const { key = '', ..._params } = params
-  const [index, setIndex] = useState(0)
+  const [isFirstLoad, setIsFirstLoad] = useState(true)
 
   const [args, setArgs] = useState<Omit<Params, 'key'>>({ ..._params })
-  const isFirstLoad = index === 0 ? true : false
-  const { data, isLoading } = useSWR(
+  const { mutate, data, isLoading } = useSWR(
     {
-      url: `${url}${key}${index}`,
+      url: `${url}${key}`,
       args
     },
     fetcher,
@@ -37,12 +36,12 @@ export default function useSWRList<Params extends ParamsObject, Response extends
   const refresh = useCallback(
     (params?: Partial<Params>) => {
       if (params) setArgs({ ...args, ...params })
-      setIndex(index + 1)
+      setIsFirstLoad(false)
+      mutate()
     },
-    [index, args]
+    [mutate, args]
   )
   return {
-    index,
     isFirstLoad,
     refresh,
     isLoading,

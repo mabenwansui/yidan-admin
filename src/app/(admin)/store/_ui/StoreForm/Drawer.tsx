@@ -19,10 +19,11 @@ function FormDrawer(props: Props) {
   const formRef = useRef<RefMethods>(null)
   const handleFinish = async (values: StoreForm) => onSubmit?.(values)
   const handleDrawerSubmit = () => formRef.current?.submit()
-  console.log('ambenw::', props.type, formKey, initialValues)
   return (
     <DrawerForm type={type} onClose={props.onClose} onSubmit={handleDrawerSubmit} {...rest}>
-      <Form ref={formRef} key={formKey} initialValues={initialValues} onFinish={handleFinish} showSubmitBtn={false} />
+      {formKey && (
+        <Form ref={formRef} key={formKey} initialValues={initialValues} onFinish={handleFinish} showSubmitBtn={false} />
+      )}
     </DrawerForm>
   )
 }

@@ -1,7 +1,7 @@
 import { useSWRTrigger } from '@/common/hooks/useAjax'
 import { BranchForm } from '@/common/types/branch'
 
-export const createUrl = '/api/sbranchtore/create'
+export const createUrl = '/api/branch/create'
 export const updateUrl = '/api/branch/update'
 export const deleteUrl = '/api/branch/delete'
 

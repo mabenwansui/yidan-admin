@@ -16,7 +16,7 @@ export interface TreeSlectChangeValue {
 }
 
 function TreeSelect(props: Props) {
-  const { list, refresh } = useGetList({ hasRootCategory: false })
+  const { list, refresh } = useGetList({ hasRootCategory: true })
   const { className, ref, ...rest } = props
   useImperativeHandle(ref, () => {
     return {

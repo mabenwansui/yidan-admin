@@ -13,7 +13,7 @@ import { Drawer, DrawerFormType } from '../_ui/StoreForm'
 export default function List() {
   const [createOpen, setCreateOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
-  const [createKey, setCreateKey] = useState(1)
+  const [createKey, setCreateKey] = useState<string>()
   const [editKey, setEditKey] = useState<string>()
   const [initialValues, setInitialValues] = useState<StoreForm>()
   const { isFirstLoad, list, isLoading, curPage, pageSize, refresh, total } = useGetStoreList()
@@ -27,8 +27,8 @@ export default function List() {
     if (flag === 1) {
       message.success('创建成功')
       setCreateOpen(false)
+      setCreateKey('')
       refresh()
-      setCreateKey(createKey + 1)
     }
   }
   const handleEditSubmit = async (values: StoreForm) => {
@@ -36,9 +36,13 @@ export default function List() {
     if (flag === 1) {
       message.success('更新成功')
       setEditOpen(false)
-      setEditKey(Date.now().toString())
+      setEditKey('')
       refresh()
     }
+  }
+  const handleOpenCreate = () => {
+    setCreateKey('create-ready')
+    setCreateOpen(true)
   }
   const handleOpenEdit = (record: Store) => {
     setInitialValues(StoreToStoreForm(record))
@@ -52,7 +56,7 @@ export default function List() {
   return (
     <section>
       <div className="flex justify-end mb-4">
-        <CreateBtn onClick={() => setCreateOpen(true)}>创建店铺</CreateBtn>
+        <CreateBtn onClick={handleOpenCreate}>创建店铺</CreateBtn>
         <Drawer
           type={DrawerFormType.CREATE}
           formKey={createKey}
