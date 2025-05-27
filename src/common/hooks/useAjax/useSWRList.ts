@@ -34,11 +34,13 @@ export default function useSWRList<Params extends ParamsObject, Response extends
     fetcher,
     { keepPreviousData: true }
   )
-  const refresh = useCallback((params?: Partial<Params>) => {
-    if (params) setArgs({ ...args, ...params })
-    setIndex(index + 1)
-    //  eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const refresh = useCallback(
+    (params?: Partial<Params>) => {
+      if (params) setArgs({ ...args, ...params })
+      setIndex(index + 1)
+    },
+    [index, args]
+  )
   return {
     index,
     isFirstLoad,

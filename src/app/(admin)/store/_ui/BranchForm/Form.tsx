@@ -2,7 +2,7 @@ import '@ant-design/v5-patch-for-react-19'
 import { memo, useState, useMemo, Ref, useImperativeHandle, useCallback } from 'react'
 import { Form, Input, Space, InputNumber, Switch } from 'antd'
 import Link from 'next/link'
-import { Branch } from '@/common/types/branch'
+import { BranchForm } from '@/common/types/branch'
 import { Commodity } from '@/common/types/commodity'
 import { ROUTE_PATH } from '@/common/constants/routePath'
 import { useGetCommodityInfoMutation } from '@/common/hooks/useGetCommodityInfo'
@@ -18,7 +18,7 @@ interface Props {
   submitText?: string
   showSubmitBtn?: boolean
   onFinish?: (values: any) => void
-  initialValues?: Branch
+  initialValues?: BranchForm
 }
 
 function CustomForm(props: Props) {
@@ -39,7 +39,7 @@ function CustomForm(props: Props) {
   )
   const handleFinish = useCallback((values: any) => onFinish?.(values), [onFinish])
   const handleValuesChange = useCallback(
-    async (changedValues: Branch) => {
+    async (changedValues: BranchForm) => {
       const { commodityId } = changedValues
       if (commodityId) {
         const { flag, data } = await getCommodityInfo({ id: commodityId })

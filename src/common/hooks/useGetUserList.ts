@@ -26,7 +26,7 @@ interface ArgsParams {
   args: Search
 }
 
-export const searchUrl = '/api/user/search-all'
+export const searchUrl = '/api/user/superadmin/search'
 export const staffUrl = '/api/user/search'
 const empty: User[] = []
 

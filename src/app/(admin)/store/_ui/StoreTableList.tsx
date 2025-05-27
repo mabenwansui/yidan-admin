@@ -1,9 +1,8 @@
-import { useCallback, memo } from 'react'
-import { Table, Space, Popconfirm } from 'antd'
+import { memo } from 'react'
+import { Table, Divider } from 'antd'
 import Link from 'next/link'
 import { Store } from '@/common/types/store'
 import { User } from '@/common/types/user'
-import { City } from '@/common/types/city'
 import { ROUTE_PATH } from '@/common/constants/routePath'
 import Image from '@/components/Image'
 import TableOperate, { OperateType } from '@/components/Table/TableOperate'
@@ -28,7 +27,14 @@ function TableList(props: Props) {
   const renderImage = (url: string, record: Store) => <Image imgUrl={url} alt={record.name} />
   const renderOwner = (owner: User[]) => owner.map((item) => item.nickname).join()
   const renderOpen = (open: boolean) => (open ? '营业中' : '已停业')
-  const renderCity = (city: City) => city.map((item) => item.label).join()
+  const renderAddress = (_: any, record: Store) => (
+    <>
+      <div>
+        {record?.city} <Divider type="vertical" /> {record?.poiName}
+      </div>
+      <div className="text-text-secondary mt-0.5">{record.details}</div>
+    </>
+  )
   const renderOperate = (_: any, record: Store) => (
     <TableOperate
       btnList={[
@@ -50,7 +56,7 @@ function TableList(props: Props) {
       <Table.Column title="封面图" width={160} dataIndex="coverImageUrl" render={renderImage} />
       <Table.Column title="店铺名" width={200} dataIndex="name" render={renderName} />
       <Table.Column title="店长" width={130} dataIndex="owner" render={renderOwner} />
-      <Table.Column title="店铺地址" dataIndex="city" render={renderCity} />
+      <Table.Column title="店铺地址" dataIndex="city" render={renderAddress} />
       <Table.Column title="营业状态" width={140} dataIndex="open" render={renderOpen} />
       <Table.Column title="操作" width={114} key="operate" render={renderOperate} />
     </Table>

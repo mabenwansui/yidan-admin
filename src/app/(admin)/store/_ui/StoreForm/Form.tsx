@@ -1,21 +1,19 @@
 import '@ant-design/v5-patch-for-react-19'
 import { memo, useMemo, Ref, useImperativeHandle, useCallback } from 'react'
-import { Form, Input, Space, Tooltip, Switch } from 'antd'
 import Link from 'next/link'
+import { Form, Input, Space, Tooltip, Switch } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { presets } from '@/common/constants/valid'
-import ImgUpload from '@/components/Form/Upload/ImgUpload'
-import City from '@/components/Form/City'
-import SelectUser from '@/components/Form/SelectUser'
 import { ROLE } from '@/common/constants/role'
 import { ROUTE_PATH } from '@/common/constants/routePath'
-import { Store } from '@/common/types/store'
+import { StoreForm } from '@/common/types/store'
+import ImgUpload from '@/components/Form/Upload/ImgUpload'
+import SelectUser from '@/components/Form/SelectUser'
+import SelectMapLocation from '@/components/Form/SelectMapLocation'
 
 const { maxTitleLength } = presets
 
-const label = {
-  projectName: '店铺'
-}
+const label = { projectName: '店铺' }
 export interface RefMethods {
   submit: () => void
   resetFields: () => void
@@ -26,7 +24,7 @@ interface Props {
   submitText?: string
   showSubmitBtn?: boolean
   onFinish?: (values: any) => void
-  initialValues?: Store
+  initialValues?: StoreForm
 }
 
 function CustomForm(props: Props) {
@@ -34,14 +32,6 @@ function CustomForm(props: Props) {
   const wrapperCol = useMemo(() => ({ span: 19 }), [])
   const [form] = Form.useForm()
   const { onFinish, ref, initialValues } = props
-  const _initialValues = useMemo(() => {
-    if (!initialValues) return {}
-    const { owner, ...rest } = initialValues
-    return {
-      ...rest,
-      owner: owner?.map((item) => item.id) || []
-    }
-  }, [initialValues])
   useImperativeHandle(
     ref,
     () => ({
@@ -52,9 +42,9 @@ function CustomForm(props: Props) {
   )
   const handleFinish = useCallback((values: any) => onFinish?.(values), [onFinish])
   return (
-    <Form
+    <Form<StoreForm>
       form={form}
-      initialValues={_initialValues}
+      initialValues={initialValues}
       labelCol={labelCol}
       wrapperCol={wrapperCol}
       onFinish={handleFinish}
@@ -93,10 +83,20 @@ function CustomForm(props: Props) {
       <Form.Item label={`${label.projectName}图片`} valuePropName="fileList" name="imgNames">
         <ImgUpload />
       </Form.Item>
-      <Form.Item label={`所在城市`} name="city">
-        <City />
+      <Form.Item
+        tooltip={`（不对用户显示）店铺的经纬度坐标, 用于计算店铺和用户之间的距离`}
+        label={`${label.projectName}位置`}
+        name="addressLocation"
+        rules={[{ required: true, message: `请选择${label.projectName}位置` }]}
+      >
+        <SelectMapLocation />
       </Form.Item>
-      <Form.Item label={`详细地址`} name="address">
+      <Form.Item
+        tooltip={`用户界面上显示的店铺地址`}
+        label={`地址`}
+        name="details"
+        rules={[{ required: true, message: `请输入地址` }]}
+      >
         <Input placeholder="请输入" />
       </Form.Item>
       <Form.Item label={`营业状态`} name="open">

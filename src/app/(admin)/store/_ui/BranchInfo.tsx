@@ -2,11 +2,11 @@ import { memo } from 'react'
 import Icon from '@/components/Icons'
 import { Divider, Button, Tooltip } from 'antd'
 import Image from '@/components/Image'
-import { FormatStore } from '../_hooks/useGetStoreList'
+import { listItemProps } from '../_hooks/useGetStoreList'
 
 interface Props {
   onAddList?: (storeId: string) => void
-  store?: FormatStore
+  store?: listItemProps
   isLoading: boolean
 }
 
@@ -37,7 +37,13 @@ function BranchInfo(props: Props) {
               <div className="ml-5 text-green-500">{store?.openFormat}</div>
             </section>
             <section className="flex w-full mt-1.5">
-              <div>{store?.cityFormat}</div>
+              <div className="text-text-secondary">
+                {store?.city}
+                <Divider type="vertical" />
+                {store?.poiName}
+                <Divider type="vertical" />
+                {store?.details}
+              </div>
             </section>
           </>
         )}

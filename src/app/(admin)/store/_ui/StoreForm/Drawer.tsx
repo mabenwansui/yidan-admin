@@ -3,13 +3,13 @@ import { useRef, memo } from 'react'
 import { DrawerProps } from 'antd'
 import DrawerForm, { DrawerFormType } from '@/components/DrawerForm'
 import Form, { RefMethods } from './Form'
-import { Store } from '@/common/types/store'
+import { StoreForm } from '@/common/types/store'
 
 interface Props extends DrawerProps {
   type: DrawerFormType
   formKey?: string | number
-  initialValues?: Store
-  onSubmit?: (values: Store) => void
+  initialValues?: StoreForm
+  onSubmit?: (values: StoreForm) => void
 }
 
 export { DrawerFormType }
@@ -17,8 +17,9 @@ export { DrawerFormType }
 function FormDrawer(props: Props) {
   const { onSubmit, initialValues, type, formKey, ...rest } = props
   const formRef = useRef<RefMethods>(null)
-  const handleFinish = async (values: Store) => onSubmit?.(values)
+  const handleFinish = async (values: StoreForm) => onSubmit?.(values)
   const handleDrawerSubmit = () => formRef.current?.submit()
+  console.log('ambenw::', props.type, formKey, initialValues)
   return (
     <DrawerForm type={type} onClose={props.onClose} onSubmit={handleDrawerSubmit} {...rest}>
       <Form ref={formRef} key={formKey} initialValues={initialValues} onFinish={handleFinish} showSubmitBtn={false} />

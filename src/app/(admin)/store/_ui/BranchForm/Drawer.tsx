@@ -3,13 +3,13 @@ import { useRef, memo } from 'react'
 import { DrawerProps } from 'antd'
 import DrawerForm, { DrawerFormType } from '@/components/DrawerForm'
 import Form, { RefMethods } from './Form'
-import { Branch } from '@/common/types/branch'
+import { BranchForm } from '@/common/types/branch'
 
 interface Props extends DrawerProps {
   type: DrawerFormType
   formKey?: string | number
-  initialValues?: Branch
-  onSubmit?: (values: Branch) => void
+  initialValues?: BranchForm
+  onSubmit?: (values: BranchForm) => void
 }
 
 export { DrawerFormType }
@@ -17,7 +17,7 @@ export { DrawerFormType }
 function FormDrawer(props: Props) {
   const { onSubmit, initialValues, type, formKey, ...rest } = props
   const formRef = useRef<RefMethods>(null)
-  const handleFinish = async (values: Branch) => onSubmit?.(values)
+  const handleFinish = async (values: BranchForm) => onSubmit?.(values)
   const handleDrawerSubmit = () => formRef.current?.submit()
   return (
     <DrawerForm type={type} onClose={props.onClose} onSubmit={handleDrawerSubmit} {...rest}>

@@ -2,10 +2,9 @@
 import { useState } from 'react'
 import { useParams, useSearchParams } from 'next/navigation'
 import { App } from 'antd'
-import { Branch } from '@/common/types/branch'
+import { Branch, BranchForm } from '@/common/types/branch'
 import useGetBranchList from '../../_hooks/useGetBranchList'
-import useUpdateBranch from '../../_hooks/useUpdateBranch'
-import useDeleteBranch from '../../_hooks/useDeleteBranch'
+import { useUpdateBranch, useDeleteBranch } from '../../_hooks/useUpsertBranch'
 import BranchSearch, { Values as SearchValues } from '../../_ui/BranchSearch'
 import BranchTableList from '../../_ui/BranchTableList'
 import { Drawer, DrawerFormType } from '../../_ui/BranchForm'
@@ -13,7 +12,7 @@ import { Drawer, DrawerFormType } from '../../_ui/BranchForm'
 export default function CreateBranchPage() {
   const params = useParams<{ id: string }>()
   const [open, setOpen] = useState(false)
-  const [initialValues, setInitialValues] = useState<Branch>()
+  const [initialValues, setInitialValues] = useState<BranchForm>()
   const [drawerKey, setDrawerKey] = useState(0)
   const { message } = App.useApp()
   const searchParams = useSearchParams()
@@ -24,10 +23,12 @@ export default function CreateBranchPage() {
     key: searchParams.get('t') || ''
   })
   const handleOpenEdit = (record: Branch) => {
+    const { commodity, ...rest } = record
     setDrawerKey(drawerKey + 1)
     setInitialValues({
       storeId: params.id,
-      ...record
+      commodityId: commodity?.id,
+      ...rest
     })
     setOpen(true)
   }
@@ -37,7 +38,7 @@ export default function CreateBranchPage() {
       categoryId: values?.category?.value
     })
   }
-  const handleSubmit = async (values: Branch) => {
+  const handleSubmit = async (values: BranchForm) => {
     const { flag } = await update(values)
     if (flag === 1) {
       message.success('更新成功')

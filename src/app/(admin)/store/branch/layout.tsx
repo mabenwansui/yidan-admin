@@ -3,9 +3,9 @@ import { useMemo, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { App } from 'antd'
 import { ROUTE_PATH } from '@/common/constants/routePath'
-import { Branch } from '@/common/types/branch'
+import { BranchForm } from '@/common/types/branch'
 import useGetStoreList from '../_hooks/useGetStoreList'
-import useCreateBranch from '../_hooks/useCreateBranch'
+import { useCreateBranch } from '../_hooks/useUpsertBranch'
 import BranchNav from '../_ui/BranchNav'
 import BranchInfo from '../_ui/BranchInfo'
 import { Drawer, DrawerFormType } from '../_ui/BranchForm'
@@ -25,7 +25,7 @@ export default function BranchLayout(props: Props) {
   const { message } = App.useApp()
   const handleNavClick = (id: string) => router.push(`${ROUTE_PATH.STORE_COMMODITY}/${id}`)
   const handleOpenCreate = () => setAddOpen(true)
-  const handleCreateSubmit = async (values: Branch) => {
+  const handleCreateSubmit = async (values: BranchForm) => {
     const { id: _, ...rest } = values
     const { flag } = await createBranch(rest)
     if (flag === 1) {

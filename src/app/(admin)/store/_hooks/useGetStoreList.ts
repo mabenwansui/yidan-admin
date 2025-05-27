@@ -9,8 +9,7 @@ interface Response extends Page {
   list: Store[]
 }
 
-export interface FormatStore extends Store {
-  cityFormat: string
+export interface listItemProps extends Store {
   openFormat: string
   ownerFormat: string
 }
@@ -18,7 +17,6 @@ export interface FormatStore extends Store {
 const dataFormat = (list?: Store[]) => {
   return list?.map((item) => {
     return {
-      cityFormat: item.city?.map((item) => item.label).join(', ') || '',
       openFormat: item.open ? '营业中' : '已停业',
       ownerFormat: item.owner?.map((item) => item.nickname).join(', ') || '',
       ...item
