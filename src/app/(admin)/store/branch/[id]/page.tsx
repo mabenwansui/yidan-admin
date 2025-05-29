@@ -13,7 +13,7 @@ export default function CreateBranchPage() {
   const params = useParams<{ id: string }>()
   const [open, setOpen] = useState(false)
   const [initialValues, setInitialValues] = useState<BranchForm>()
-  const [drawerKey, setDrawerKey] = useState(0)
+  const [drawerKey, setDrawerKey] = useState<string | null>(null)
   const { message } = App.useApp()
   const searchParams = useSearchParams()
   const { trigger: del } = useDeleteBranch()
@@ -24,10 +24,14 @@ export default function CreateBranchPage() {
   })
   const handleOpenEdit = (record: Branch) => {
     const { commodity, ...rest } = record
-    setDrawerKey(drawerKey + 1)
+    const { id, name } = commodity!
+    setDrawerKey(record.id)
     setInitialValues({
       storeId: params.id,
-      commodityId: commodity?.id,
+      commodity: {
+        value: id,
+        label: name
+      },
       ...rest
     })
     setOpen(true)
@@ -43,7 +47,7 @@ export default function CreateBranchPage() {
     if (flag === 1) {
       message.success('更新成功')
       setOpen(false)
-      setDrawerKey(drawerKey + 1)
+      setDrawerKey(null)
       refresh()
     }
   }

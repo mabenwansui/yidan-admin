@@ -22,13 +22,12 @@ interface Props {
 }
 
 function CustomForm(props: Props) {
-  const { onFinish, ref, initialValues } = props
+  const { onFinish, ref, initialValues = {} } = props
   const [curCommodity, setCurCommodity] = useState<Commodity>()
   const labelCol = useMemo(() => ({ span: 5 }), [])
   const wrapperCol = useMemo(() => ({ span: 19 }), [])
   const [form] = Form.useForm()
   const { trigger: getCommodityInfo } = useGetCommodityInfoMutation()
-  const _initialValues = useMemo(() => initialValues || {}, [initialValues])
   useImperativeHandle(
     ref,
     () => ({
@@ -40,9 +39,9 @@ function CustomForm(props: Props) {
   const handleFinish = useCallback((values: any) => onFinish?.(values), [onFinish])
   const handleValuesChange = useCallback(
     async (changedValues: BranchForm) => {
-      const { commodityId } = changedValues
-      if (commodityId) {
-        const { flag, data } = await getCommodityInfo({ id: commodityId })
+      const { commodity } = changedValues
+      if (commodity) {
+        const { flag, data } = await getCommodityInfo({ id: commodity.value })
         if (flag == 1) {
           setCurCommodity(data)
         }
@@ -53,7 +52,7 @@ function CustomForm(props: Props) {
   return (
     <Form
       form={form}
-      initialValues={_initialValues}
+      initialValues={initialValues}
       labelCol={labelCol}
       wrapperCol={wrapperCol}
       onFinish={handleFinish}
@@ -67,7 +66,7 @@ function CustomForm(props: Props) {
       </Form.Item>
       <Form.Item label={`上架商品`} required>
         <Space>
-          <Form.Item name="commodityId" noStyle rules={[{ required: true, message: '请选择商品' }]}>
+          <Form.Item name="commodity" noStyle rules={[{ required: true, message: '请选择商品' }]}>
             <WithCategory />
           </Form.Item>
           <Link href={ROUTE_PATH.COMMODITY_LIST} target="_blank" className="mr-1.5 ml-2">

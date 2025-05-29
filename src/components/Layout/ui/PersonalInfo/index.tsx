@@ -6,8 +6,8 @@ import { Popover } from 'antd'
 import { ROLE } from '@/common/constants/role'
 import useGetUserInfo from '@/common/hooks/useGetUserInfo'
 import { ROUTE_PATH } from '@/common/constants/routePath'
-import superAvatar from '../images/super-admin-avatar.svg'
-import adminAvatar from '../images/admin-avatar.svg'
+import superAvatar from './images/super-admin-avatar.svg'
+import adminAvatar from './images/admin-avatar.svg'
 
 export default function Header() {
   const { data } = useGetUserInfo()

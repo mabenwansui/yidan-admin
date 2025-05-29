@@ -35,8 +35,8 @@ function BranchTableList(props: Props) {
       dataSource={list}
       pagination={{ current: curPage, pageSize, total, onChange: onPageChange }}
     >
-      <Table.Column title="商品名称" className="min-w-40" dataIndex="commodityName" />
-      <Table.Column title="分类" className="min-w-30 w-35" dataIndex="commodityCategory" />
+      <Table.Column title="商品名称" className="min-w-40" dataIndex={['commodity', 'name']} />
+      <Table.Column title="分类" className="min-w-30 w-35" dataIndex={['commodity', 'category', 'title']} />
       <Table.Column title="库存" className="min-w-25 w-33" dataIndex="stockConunt" />
       <Table.Column title="已售" className="min-w-25 w-33" dataIndex="soldCount" />
       <Table.Column title="价格" className="min-w-25 w-33" dataIndex="price" />

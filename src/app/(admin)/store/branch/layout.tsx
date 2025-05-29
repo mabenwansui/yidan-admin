@@ -1,5 +1,5 @@
 'use client'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { App } from 'antd'
 import { ROUTE_PATH } from '@/common/constants/routePath'
@@ -17,12 +17,17 @@ export default function BranchLayout(props: Props) {
   const [addOpen, setAddOpen] = useState(false)
   const params = useParams<{ id: string }>()
   const router = useRouter()
-  const [createKey, setCreateKey] = useState(0)
+  const [createKey, setCreateKey] = useState('create')
   const { list, isLoading } = useGetStoreList()
   const { trigger: createBranch } = useCreateBranch()
   const storeId = params?.id
   const curStore = useMemo(() => list?.find((item) => item.id === params.id), [list, params.id])
   const { message } = App.useApp()
+  useEffect(() => {
+    if (!storeId && list && list.length > 0) {
+      router.push(`${ROUTE_PATH.STORE_COMMODITY}/${list[0].id}`)
+    }
+  }, [list, router, storeId])
   const handleNavClick = (id: string) => router.push(`${ROUTE_PATH.STORE_COMMODITY}/${id}`)
   const handleOpenCreate = () => setAddOpen(true)
   const handleCreateSubmit = async (values: BranchForm) => {

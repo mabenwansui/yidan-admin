@@ -2,7 +2,6 @@ import { Store } from '@/common/types/store'
 import { Commodity } from '@/common/types/commodity'
 
 interface Base {
-  id?: string
   stockConunt?: number // 库存
   soldCount?: number // 已售
   price?: number // 现价
@@ -10,11 +9,16 @@ interface Base {
 }
 
 export interface Branch extends Base {
+  id: string
   store?: Store
   commodity?: Commodity
 }
 
 export interface BranchForm extends Base {
+  id?: string
   storeId: string
-  commodityId?: string
+  commodity?: {
+    value: string
+    label: string
+  }
 }

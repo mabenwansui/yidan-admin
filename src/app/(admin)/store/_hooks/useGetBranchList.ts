@@ -19,13 +19,9 @@ interface Response extends Page {
 
 function dataFormat(list: Branch[]) {
   return list?.map((item) => {
-    const { commodity, ...rest } = item
     return {
-      commodityName: commodity?.name,
-      commodityId: commodity?.id,
-      commodityCategory: commodity?.category?.title,
       isOnShelfFormat: item.isOnShelf ? OnShelfStatus.On : OnShelfStatus.Off,
-      ...rest
+      ...item
     }
   })
 }

@@ -1,29 +1,16 @@
 'use client'
-import { usePathname } from 'next/navigation'
-import { Divider } from 'antd'
-import { routeTitleMapping } from '@/common/constants/routePath'
-import PersonalInfo from './ui/PersonalInfo'
-import Message from './ui/Message'
+import { Divider, Breadcrumb } from 'antd'
+import PersonalInfo from '../PersonalInfo'
+import Message from '../Message'
+import useBreadcrumbConfig from '../../hooks/useBreadcrumbConfig'
 
 export default function Header() {
-  const pathname = usePathname()
+  const [breadcrumbList] = useBreadcrumbConfig()
   return (
     <div className="bg-white shadow-sm h-11 flex items-center justify-between pr-4">
       <div className="pl-4 text-sm font-medium text-gray-500">
-        {routeTitleMapping[pathname]}
-        {/* <Breadcrumb
-          items={[
-            {
-              title: '首页'
-            },
-            {
-              title: <a href="">商品管理</a>
-            },
-            {
-              title: '编辑'
-            }
-          ]}
-        /> */}
+        {/* {routeTitleMapping[pathname]} */}
+        <Breadcrumb items={breadcrumbList} />
       </div>
       <div className="flex items-center">
         <Message />

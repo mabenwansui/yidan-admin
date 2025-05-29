@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { Menu, ConfigProvider, MenuProps } from 'antd'
 import { SubMenuType } from 'antd/es/menu/interface'
-import useConfig from './useConfig'
+import useConfig from '../../hooks/useNavConfig'
 
 interface FindKey {
   key: string
@@ -57,7 +57,7 @@ export default function Nav() {
             darkItemSelectedBg: '#0F2468',
             darkSubMenuItemBg: 'opacity(0)',
             itemHeight: 36,
-            itemMarginInline: 2
+            itemPaddingInline: 0
           }
         }
       }}

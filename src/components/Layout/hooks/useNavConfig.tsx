@@ -19,25 +19,43 @@ export default function useConfig() {
         label: <Link href={ROUTE_PATH.HOME}>首页</Link>
       },
       role.includes(ROLE.SUPER_ADMIN) && {
+        key: ROUTE_PATH.COMMODITY_LIST,
+        label: <Link href={ROUTE_PATH.COMMODITY_LIST}>商品管理</Link>,
+        match: new RegExp(`^${ROUTE_PATH.COMMODITY}\\/.*`, 'gi')
+      },
+      role.includes(ROLE.SUPER_ADMIN) && {
         key: 'project',
         label: '店铺管理',
         children: [
           {
             key: ROUTE_PATH.STORE_LIST,
-            label: <Link href={ROUTE_PATH.STORE_LIST}>店铺列表</Link>,
-            match: new RegExp(`^${ROUTE_PATH.STORE_COMMODITY}\\/.*`, 'gi')
+            label: <Link href={ROUTE_PATH.STORE_LIST}>店铺列表</Link>
+            // match: new RegExp(`^${ROUTE_PATH.STORE_COMMODITY}\\/.*`, 'gi')
+          },
+          {
+            key: ROUTE_PATH.STORE_COMMODITY,
+            label: <Link href={ROUTE_PATH.STORE_COMMODITY}>上架商品</Link>,
+            match: new RegExp(`^${ROUTE_PATH.STORE_COMMODITY.replace(/\//g, '\\/')}\/[0-9a-zA-Z]+$`)
           }
-          // {
-          //   key: ROUTE_PATH.STORE_COMMODITY,
-          //   label: <Link href={ROUTE_PATH.STORE_LIST}>上架商品</Link>,
-          //   match: new RegExp(`^${ROUTE_PATH.STORE_COMMODITY.replace(/\//g, '\\/')}\/[0-9a-zA-Z]+$`)
-          // }
         ]
       },
-      role.includes(ROLE.SUPER_ADMIN) && {
-        key: ROUTE_PATH.COMMODITY_LIST,
-        label: <Link href={ROUTE_PATH.COMMODITY_LIST}>商品管理</Link>,
-        match: new RegExp(`^${ROUTE_PATH.COMMODITY}\\/.*`, 'gi')
+      {
+        key: 'order',
+        label: '订单管理',
+        children: [
+          {
+            key: ROUTE_PATH.ORDER_PAID,
+            label: <Link href={ROUTE_PATH.ORDER_PAID}>待接单</Link>
+          },
+          {
+            key: ROUTE_PATH.ORDER_PROCESSING,
+            label: <Link href={ROUTE_PATH.ORDER_PROCESSING}>进行中</Link>
+          },
+          {
+            key: ROUTE_PATH.ORDER_READY,
+            label: <Link href={ROUTE_PATH.ORDER_READY}>已完成</Link>
+          }
+        ]
       },
       (role.includes(ROLE.SUPER_ADMIN) || role.includes(ROLE.ADMIN)) && {
         key: 'user',

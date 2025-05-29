@@ -32,7 +32,7 @@ function TableList(props: Props) {
       <div>
         {record?.city} <Divider type="vertical" /> {record?.poiName}
       </div>
-      <div className="text-text-secondary mt-0.5">{record.details}</div>
+      <div className="mt-0.5">{record.details}</div>
     </>
   )
   const renderOperate = (_: any, record: Store) => (

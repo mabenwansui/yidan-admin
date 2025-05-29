@@ -7,7 +7,7 @@ import { BranchForm } from '@/common/types/branch'
 
 interface Props extends DrawerProps {
   type: DrawerFormType
-  formKey?: string | number
+  formKey?: string | number | null
   initialValues?: BranchForm
   onSubmit?: (values: BranchForm) => void
 }
@@ -21,7 +21,9 @@ function FormDrawer(props: Props) {
   const handleDrawerSubmit = () => formRef.current?.submit()
   return (
     <DrawerForm type={type} onClose={props.onClose} onSubmit={handleDrawerSubmit} {...rest}>
-      <Form ref={formRef} key={formKey} initialValues={initialValues} onFinish={handleFinish} showSubmitBtn={false} />
+      {formKey && (
+        <Form ref={formRef} key={formKey} initialValues={initialValues} onFinish={handleFinish} showSubmitBtn={false} />
+      )}
     </DrawerForm>
   )
 }

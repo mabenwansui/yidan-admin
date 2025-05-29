@@ -7,7 +7,7 @@ import { StoreForm } from '@/common/types/store'
 
 interface Props extends DrawerProps {
   type: DrawerFormType
-  formKey?: string | number
+  formKey?: string | number | null
   initialValues?: StoreForm
   onSubmit?: (values: StoreForm) => void
 }

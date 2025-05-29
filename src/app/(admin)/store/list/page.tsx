@@ -13,8 +13,8 @@ import { Drawer, DrawerFormType } from '../_ui/StoreForm'
 export default function List() {
   const [createOpen, setCreateOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
-  const [createKey, setCreateKey] = useState<string>()
-  const [editKey, setEditKey] = useState<string>()
+  const [createKey, setCreateKey] = useState<string | null>()
+  const [editKey, setEditKey] = useState<string | null>()
   const [initialValues, setInitialValues] = useState<StoreForm>()
   const { isFirstLoad, list, isLoading, curPage, pageSize, refresh, total } = useGetStoreList()
   const { trigger: deleteStore } = useDeleteStore()
@@ -27,7 +27,7 @@ export default function List() {
     if (flag === 1) {
       message.success('创建成功')
       setCreateOpen(false)
-      setCreateKey('')
+      setCreateKey(null)
       refresh()
     }
   }
@@ -36,7 +36,7 @@ export default function List() {
     if (flag === 1) {
       message.success('更新成功')
       setEditOpen(false)
-      setEditKey('')
+      setEditKey(null)
       refresh()
     }
   }

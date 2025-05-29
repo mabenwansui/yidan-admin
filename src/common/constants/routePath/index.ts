@@ -24,20 +24,22 @@ export enum ROUTE_PATH {
   STORE_LIST = '/store/list',
   STORE_COMMODITY = '/store/branch',
 
+  /** 订单 */
+  ORDER_LIST = '/order/list',
+  /** 用户已支付，等待商家接单 */
+  ORDER_PAID = '/order/paid',
+  /** 商家已确认并开始准备 */
+  ORDER_ACCEPTED = '/order/accepted',
+  /** 处理中, 出餐中 */
+  ORDER_PROCESSING = '/order/processing',
+  /** 餐已备好, 待取 */
+  ORDER_READY = '/order/ready',
+
+  ORDER_LIST_PROCESSING = '/order/detail',
+  ORDER_SUCCESS = '/order/success',
+
   /** 用户 */
   USER_INFO = '/user/info',
-  USER_ADMIN_LIST = '/users/admin/list',
-  USER_STAFF_LIST = '/users/staff/list'
-}
-
-export const routeTitleMapping: Record<string, string> = {
-  [ROUTE_PATH.LOGIN]: '登录',
-  [ROUTE_PATH.REGISTER]: '注册',
-  [ROUTE_PATH.HOME]: '首页',
-  [ROUTE_PATH.COMMODITY_EDIT]: '商品编辑',
-  [ROUTE_PATH.COMMODITY_LIST]: '商品列表',
-  [ROUTE_PATH.COMMODITY_SUCCESS_EDIT]: '商品操作成功',
-  [ROUTE_PATH.STORE_LIST]: '店铺列表',
-  [ROUTE_PATH.USER_ADMIN_LIST]: '用户管理',
-  [ROUTE_PATH.USER_STAFF_LIST]: '用户管理'
+  USER_ADMIN_LIST = '/user/users/admin/list',
+  USER_STAFF_LIST = '/user/users/staff/list'
 }

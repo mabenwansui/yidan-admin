@@ -1,8 +1,7 @@
-import { useMemo, memo, useState } from 'react'
+import { memo } from 'react'
 import { Select as AntSelect, SelectProps as AntSelectProps } from 'antd'
 import { useDebouncedCallback } from 'use-debounce'
-import { Commodity } from '@/common/types/commodity'
-import { useTriggerGetCommodityList } from '@/common/hooks/useGetCommodityList'
+import useGetCommodityList from '../hooks/useGetCommodityList'
 
 export interface Option {
   label: string
@@ -10,52 +9,34 @@ export interface Option {
 }
 
 export interface ChangeProps {
-  (value: string, option: Option, item?: Commodity): void
+  (value: Option): void
 }
 
-export interface Props extends Omit<AntSelectProps, 'onChange'> {
+export interface Props extends Omit<AntSelectProps, 'onChange' | 'value'> {
+  value?: Option
   onChange?: ChangeProps
   categoryId?: string
 }
 
 function Select(props: Props) {
-  const { categoryId, onChange, ...restProps } = props
-  const [list, setList] = useState<Commodity[] | null>(null)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { trigger } = useTriggerGetCommodityList()
+  const { value, categoryId, onChange, ...restProps } = props
+  const { isLoading, options, fetch } = useGetCommodityList(value ? [value] : [])
+
   const handleSearch = useDebouncedCallback(async (value) => {
-    const { flag, data } = await trigger({ categoryId, name: value, pageSize: 80 })
-    if (flag === 1) {
-      setList(data.list)
-    }
+    fetch({ categoryId, name: value })
   }, 350)
-  const options = useMemo(
-    () =>
-      list?.map((item) => ({
-        label: item.name,
-        value: item.id
-      })),
-    [list]
-  )
+
   const handleChange: AntSelectProps['onChange'] = (value, item) => {
-    onChange?.(
-      value,
-      item as Option,
-      list?.find((item) => item.id === value)
-    )
+    onChange?.(item as Option)
   }
   const handleVisibleChange = async (visible: boolean) => {
-    if (visible === true && list === null) {
-      setIsLoading(true)
-      const { flag, data } = await trigger({ categoryId, pageSize: 80 })
-      if (flag === 1) {
-        setIsLoading(false)
-        setList(data.list)
-      }
+    if (visible === true) {
+      fetch({ categoryId })
     }
   }
   return (
     <AntSelect
+      value={value?.value}
       showSearch
       placeholder="请选择"
       allowClear
