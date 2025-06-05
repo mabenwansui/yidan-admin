@@ -57,6 +57,16 @@ export default function useConfig() {
           }
         ]
       },
+      {
+        key: 'tag',
+        label: '标签管理',
+        children: [
+          {
+            key: ROUTE_PATH.TAG_REMARK,
+            label: <Link href={ROUTE_PATH.TAG_REMARK}>订单备注</Link>
+          }
+        ]
+      },
       (role.includes(ROLE.SUPER_ADMIN) || role.includes(ROLE.ADMIN)) && {
         key: 'user',
         label: '用户管理',

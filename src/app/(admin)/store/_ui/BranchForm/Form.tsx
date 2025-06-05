@@ -1,7 +1,8 @@
 import '@ant-design/v5-patch-for-react-19'
 import { memo, useState, useMemo, Ref, useImperativeHandle, useCallback } from 'react'
-import { Form, Input, Space, InputNumber, Switch } from 'antd'
 import Link from 'next/link'
+import { Form, Input, Space, InputNumber, Switch } from 'antd'
+import { InfoCircleOutlined } from '@ant-design/icons'
 import { BranchForm } from '@/common/types/branch'
 import { Commodity } from '@/common/types/commodity'
 import { ROUTE_PATH } from '@/common/constants/routePath'
@@ -23,10 +24,12 @@ interface Props {
 
 function CustomForm(props: Props) {
   const { onFinish, ref, initialValues = {} } = props
-  const [curCommodity, setCurCommodity] = useState<Commodity>()
+  const [_, setCurCommodity] = useState<Commodity>()
   const labelCol = useMemo(() => ({ span: 5 }), [])
   const wrapperCol = useMemo(() => ({ span: 19 }), [])
   const [form] = Form.useForm()
+  const originalPrice = Form.useWatch('originalPrice', form)
+  const price = Form.useWatch('price', form)
   const { trigger: getCommodityInfo } = useGetCommodityInfoMutation()
   useImperativeHandle(
     ref,
@@ -36,6 +39,21 @@ function CustomForm(props: Props) {
     }),
     [form]
   )
+  const mergeInitialValues = useMemo(() => {
+    return {
+      ...{ soldCount: 0 },
+      ...initialValues
+    }
+  }, [initialValues])
+
+  const discount = useMemo(() => {
+    if (originalPrice && price && originalPrice > price) {
+      return parseFloat((price / originalPrice).toFixed(2))
+    } else {
+      return 0
+    }
+  }, [originalPrice, price])
+
   const handleFinish = useCallback((values: any) => onFinish?.(values), [onFinish])
   const handleValuesChange = useCallback(
     async (changedValues: BranchForm) => {
@@ -52,7 +70,7 @@ function CustomForm(props: Props) {
   return (
     <Form
       form={form}
-      initialValues={initialValues}
+      initialValues={mergeInitialValues}
       labelCol={labelCol}
       wrapperCol={wrapperCol}
       onFinish={handleFinish}
@@ -93,13 +111,18 @@ function CustomForm(props: Props) {
       >
         <InputNumber placeholder="请输入" className="w-34!" />
       </Form.Item>
-      <Form.Item label="实际售价">
+      <Form.Item label="商品原价" name="originalPrice" rules={[{ required: true, message: '商品原价' }]}>
+        <InputNumber className="!w-36" min={0} addonAfter="元" />
+      </Form.Item>
+      <Form.Item label="实际售价" required>
         <Space>
-          <Form.Item name="price" noStyle>
-            <InputNumber placeholder="请输入" className="w-34!" />
+          <Form.Item noStyle name="price" rules={[{ required: true, message: '请输入商品实际售价' }]}>
+            <InputNumber className="!w-36" min={0} addonAfter="元" />
           </Form.Item>
-          {curCommodity?.originalPrice && (
-            <div className="ml-2 text-text-secondary">(原价:{curCommodity.originalPrice})</div>
+          {discount > 0 && (
+            <span className="text-zinc-500 ml-2">
+              <InfoCircleOutlined /> {discount}折
+            </span>
           )}
         </Space>
       </Form.Item>

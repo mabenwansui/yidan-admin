@@ -36,6 +36,10 @@ function configFn() {
     {
       path: ROUTE_PATH.USER_STAFF_LIST,
       render: [{ title: '用户管理' }]
+    },
+    {
+      path: ROUTE_PATH.TAG_REMARK,
+      render: [{ title: '订单备注' }]
     }
   ]
 }

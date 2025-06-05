@@ -4,6 +4,7 @@ import { Commodity } from '@/common/types/commodity'
 interface Base {
   stockConunt?: number // 库存
   soldCount?: number // 已售
+  originalPrice?: number // 原价
   price?: number // 现价
   isOnShelf?: boolean // 上架
 }

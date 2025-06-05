@@ -23,10 +23,11 @@ function BranchNav(props: Props) {
           *:hover:bg-primary-light
             *:p-4 
             *:truncate
-            *:pt-2 
+            *:pt-2
             *:pb-2 
             *:cursor-pointer
             [&_.active]:text-link!
+            [&_.active]:font-bold!
           "
         >
           {list?.map((store) => (

@@ -1,7 +1,6 @@
 'use client'
 import { useState, useRef, useMemo, useEffect, useCallback, useImperativeHandle, Ref } from 'react'
-import { Form, Input, InputNumber, Space, Button, UploadFile } from 'antd'
-import { InfoCircleOutlined } from '@ant-design/icons'
+import { Form, Input, Space, Button, UploadFile } from 'antd'
 import { presets } from '@/common/constants/valid'
 import { TreeSelect, CategoryModal, TreeSelectRefMethods } from '@/components/Form/CommodityCategory'
 import Details from './Details'
@@ -39,8 +38,6 @@ const { maxTitleLength } = presets
 export default function CustomForm(props: Props) {
   const [showCategoryModal, setShowCategoryModal] = useState(false)
   const [form] = Form.useForm()
-  const originalPrice = Form.useWatch('originalPrice', form)
-  const price = Form.useWatch('price', form)
   const categoryRef = useRef<TreeSelectRefMethods | null>(null)
   const { initialValues, showSubmitBtn = true, onFinish, submitText = '提交', ref } = props
   useEffect(() => {
@@ -57,13 +54,6 @@ export default function CustomForm(props: Props) {
     }),
     [form]
   )
-  const discount = useMemo(() => {
-    if (originalPrice && price && originalPrice > price) {
-      return parseFloat((price / originalPrice).toFixed(2))
-    } else {
-      return 0
-    }
-  }, [originalPrice, price])
 
   const handleCategory = () => setShowCategoryModal(true)
   const handleCategoryModalClose = (isChange: boolean) => {
@@ -106,26 +96,8 @@ export default function CustomForm(props: Props) {
       <Form.Item label="图片上传" valuePropName="fileList" name="imgNames">
         <ImgUpload />
       </Form.Item>
-      <Form.Item label="商品原价" name="originalPrice" rules={[{ required: true, message: '商品原价' }]}>
-        <InputNumber className="!w-36" min={0} addonAfter="元" />
-      </Form.Item>
-      <Form.Item label="商品现价" required>
-        <Space>
-          <Form.Item noStyle name="price" rules={[{ required: true, message: '请输入商品现价' }]}>
-            <InputNumber className="!w-36" min={0} addonAfter="元" />
-          </Form.Item>
-          {discount > 0 && (
-            <span className="text-zinc-500 ml-2">
-              <InfoCircleOutlined /> {discount}折
-            </span>
-          )}
-        </Space>
-      </Form.Item>
       <Form.Item label="商品描述" name="description" rules={[{ required: true, message: '请输入商品描述' }]}>
         <Input.TextArea rows={5} />
-      </Form.Item>
-      <Form.Item label="已售" name="soldCount">
-        <Input />
       </Form.Item>
       <Form.Item label="商品详情" name="details">
         <Details />

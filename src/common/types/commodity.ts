@@ -3,7 +3,6 @@ export interface Commodity {
   id: string // 商品ID
   name: string // 名称
   tags?: [string] // 标签
-  originalPrice?: number // 原价
   description?: string // 描述
   category?: Category // 分类
   details?: string // 详情

@@ -1,7 +1,6 @@
-import './index.css'
 import { useState } from 'react'
 import { Tag } from 'antd'
-import Add from './Add'
+import Add from './AddBtn'
 
 const tagsData = ['Movies', 'Books', 'Music', 'Sports']
 

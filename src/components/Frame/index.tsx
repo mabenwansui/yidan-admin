@@ -38,6 +38,9 @@ export default function Frame(props: Props) {
             Table: {
               headerBorderRadius: 8,
               headerBg: '#F8FAFB'
+            },
+            Tag: {
+              defaultBg: '#fff'
             }
           }
         }}
