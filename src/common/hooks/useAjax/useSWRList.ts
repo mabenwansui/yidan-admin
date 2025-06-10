@@ -43,6 +43,7 @@ export default function useSWRList<Params extends ParamsObject, Response extends
   )
   return {
     isFirstLoad,
+    mutate,
     refresh,
     isLoading,
     curPage: 1,

@@ -8,6 +8,7 @@ export interface Tag {
   id: string
   type: TagType
   name: string
+  sort: number
   isSystem: boolean
   creator: User
 }
