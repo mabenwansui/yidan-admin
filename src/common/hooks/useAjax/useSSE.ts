@@ -1,38 +1,26 @@
 import { useState, useEffect } from 'react'
 import { sse } from '@/common/utils/ajax'
-import { App } from 'antd'
+import { Message } from '@/common/types/message'
 
-export enum MessageType {
-  SYSTEM_MESSAGE = 'system'
-}
-
-interface SystemData {
-  title: string
-  message: string
-}
-
-interface AjaxResponse {
-  type: MessageType
-  data: SystemData
-}
+// export interface MessageEvent<DATA = Message> {
+//   id?: string
+//   data: DATA
+//   type?: string
+//   retry?: number
+// }
 
 export default function useSSE() {
-  const [data, setData] = useState<AjaxResponse>()
-  const { notification } = App.useApp()
+  const [data, setData] = useState<Message>()
   useEffect(() => {
     const worker = sse()
-    worker.port.addEventListener('message', (event) => {
-      const data: AjaxResponse = JSON.parse(event.data as string)
+    const handleMessage = (event: MessageEvent) => {
+      const data: { data: Message } = JSON.parse(event.data as string)
       if (data !== undefined) {
-        if (data.type === MessageType.SYSTEM_MESSAGE) {
-          notification.open({
-            message: data?.data?.title || '系统消息',
-            description: data.data.message
-          })
-        }
-        setData(data)
+        setData(data.data)
       }
-    })
-  }, [notification])
-  return { data }
+    }
+    worker.port.addEventListener('message', handleMessage)
+    return () => worker.port.removeEventListener('message', handleMessage)
+  })
+  return [data]
 }

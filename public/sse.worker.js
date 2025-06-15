@@ -1,4 +1,8 @@
 'use client'
+
+// 通过 chrome://inspect/#workers 进行调试
+// 在/src/common/utils/sse.js 中使用
+
 var eventSource = null
 var eventSourceUrl = null
 
@@ -7,7 +11,15 @@ function initSSEConnection(url, ports) {
     return
   }
   eventSourceUrl = url
-  eventSource = new EventSource(url, { withCredentials: true })
+  eventSource = new EventSource(url, {
+    withCredentials: true
+  })
+
+  fetch('https://localhost:4000/api/user/get-userinfo', {
+    method: 'POST',
+    credentials: 'include'
+  })
+
   eventSource.onmessage = function (event) {
     if (ports) {
       ports.forEach((p) => p.postMessage(event.data))
@@ -41,7 +53,6 @@ onconnect = function (e) {
   })
 }
 
-// 通过 chrome://inspect/#workers 进行调试
 // let eventSource = null
 // onconnect = function (e) {
 //   const ports = e.ports

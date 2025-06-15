@@ -13,17 +13,6 @@ const nextConfig: NextConfig = {
       }
     ]
   }
-  // turbopack: {
-  //   rules: {
-  //     '*.worker.js': {
-  //       loaders: ['worker-loader'],
-  //       // options: {
-  //       //   worker: 'SharedWorker',
-  //       //   publicPath: '/_next/static/workers/'
-  //       // }
-  //     }
-  //   }
-  // }
   // reactStrictMode: false
 }
 
