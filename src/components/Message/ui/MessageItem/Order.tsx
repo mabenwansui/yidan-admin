@@ -48,8 +48,8 @@ export default function Order(props: Props) {
         </div>
         <aside className="shrink-0 p-4">
           <Button onClick={handleView}>查看</Button>
-          <div className="pt-1.5">
-            金额 <span className="text-error font-bold text-base">{data.actualAmount}</span>
+          <div className="pt-2">
+            金额 <span className="font-bold text-base">{data.actualAmount}</span>
           </div>
         </aside>
       </div>

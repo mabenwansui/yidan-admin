@@ -7,5 +7,5 @@ interface Response {
 }
 export default function useUnRead() {
   const { mutate, isLoading, data } = useSWR(url, async (url) => await post<Response>(url, {}))
-  return { mutate, isLoading, data }
+  return { mutate, isLoading, total: data?.data.total }
 }

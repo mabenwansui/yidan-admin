@@ -1,19 +1,16 @@
 import { useEffect } from 'react'
-import { App, NotificationArgsProps } from 'antd'
-import { MessageType, Content_Order, Message } from '@/common/types/message'
 import Link from 'next/link'
+import { App, NotificationArgsProps } from 'antd'
+import { MessageType, Content_Order } from '@/common/types/message'
+import useStore from '../../store/index'
 
-interface Props {
-  message?: Message
-}
-
-export default function Notification(props: Props) {
+export default function Notification() {
   const { notification } = App.useApp()
-  const { message } = props
+  const receiveMessage = useStore((state) => state.receiveMessage)
   useEffect(() => {
-    if (!message) return
+    if (!receiveMessage) return
     let option: Partial<NotificationArgsProps> = {}
-    const { messageType, title, content } = message
+    const { messageType, title, content } = receiveMessage
     switch (messageType) {
       case MessageType.ORDER: {
         option = {
@@ -26,7 +23,7 @@ export default function Notification(props: Props) {
         break
     }
     notification?.info(option as NotificationArgsProps)
-  }, [message, notification])
+  }, [receiveMessage, notification])
   const renderOrder = (orderId: string) => <Link href={`/order/${orderId}`}>查看订单</Link>
   return null
 }

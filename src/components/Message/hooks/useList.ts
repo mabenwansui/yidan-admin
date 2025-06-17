@@ -7,12 +7,20 @@ export const url = '/api/message/list'
 interface Response {
   list: Message[]
 }
-export function useSystemList(shouldFetch: boolean) {
+interface Params {
+  curPage?: number
+  pageSize?: number
+}
+interface FetcherArg {
+  url: string
+  arg: Params
+}
+export function useSystemList(params: Params, shouldFetch: boolean) {
   const [fetch, setFetch] = useState(shouldFetch)
-  useEffect(() => setFetch(shouldFetch), [shouldFetch])
   const { mutate, isLoading, data } = useSWR(
-    fetch ? url : null,
-    async (url) => await post<Response>(url, { senderType: SenderType.SYSTEM })
+    fetch ? { url, arg: params } : null,
+    async (params: FetcherArg) => await post<Response>(params.url, { ...params.arg, senderType: SenderType.SYSTEM })
   )
+  useEffect(() => setFetch(shouldFetch), [shouldFetch])
   return { mutate, isLoading, list: data?.data?.list }
 }
