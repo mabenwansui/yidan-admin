@@ -5,7 +5,7 @@ export const url = '/api/message/unread-total'
 interface Response {
   total: number
 }
-export default function useUnRead() {
+export default function useGetUnReadTotal() {
   const { mutate, isLoading, data } = useSWR(url, async (url) => await post<Response>(url, {}))
   return { mutate, isLoading, total: data?.data.total }
 }

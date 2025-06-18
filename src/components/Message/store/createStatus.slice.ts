@@ -32,12 +32,17 @@ export const createStatusSlice: StateCreator<MergeState, [], [], StatusState> = 
         return { list: _list, unReadTotal: 0 }
       }
     }),
-  setUnReadTotal: (newTotal) => set(() => ({ unReadTotal: newTotal })),
+  setUnReadTotal: (newTotal) => set(() => ({ unReadTotal: Math.max(newTotal, 0) })),
   setRefreshUnReadTotal: (fn) => set(() => ({ refreshUnReadTotal: fn })),
   setReceiveMessage: (newMessage: Message) =>
-    set((state) => ({
-      receiveMessage: newMessage,
-      unReadTotal: state.unReadTotal + 1,
-      list: [newMessage, ...state.list]
-    }))
+    set((state) => {
+      const total = state.total! + 1
+      state.computeHasMore(state.curPage, total)
+      return {
+        receiveMessage: newMessage,
+        unReadTotal: state.unReadTotal + 1,
+        total: state.total! + 1,
+        list: [newMessage, ...state.list]
+      }
+    })
 })

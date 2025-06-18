@@ -1,5 +1,6 @@
 export { default as useSWR } from './useSWR'
 export { default as useSWRMutation } from './useSWRMutation'
+export { default as useSWRInfinite } from './useSWRInfinite'
 export { default as useSSE } from './useSSE'
 
 /** 表单列表 */

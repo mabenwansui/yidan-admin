@@ -1,5 +1,6 @@
 import { Tag, Button, Tooltip } from 'antd'
 import { DeleteOutlined } from '@ant-design/icons'
+import cs from 'clsx'
 
 interface WrapProps {
   read: boolean
@@ -10,8 +11,19 @@ interface WrapProps {
 }
 export default function Wrap(props: WrapProps) {
   const { title, children, read, onRead, onDelete } = props
+  const handleRead = () => {
+    if (!read) onRead()
+  }
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    onDelete()
+  }
   return (
-    <div onClick={onRead} className="border border-border rounded-md cursor-pointer mb-4">
+    // 假设调整是将类名分开传入 cs 函数，并且去掉多余逗号
+    <div
+      onClick={handleRead}
+      className={cs('border', 'border-border', 'rounded-md', !read && 'cursor-pointer', 'mb-4')}
+    >
       <div className="bg-gray-100 pl-3 pr-1 font-bold relative flex justify-between items-center min-h-9">
         <div>
           {!read && (
@@ -23,7 +35,7 @@ export default function Wrap(props: WrapProps) {
         </div>
         <aside>
           <Tooltip title="删除">
-            <Button onClick={onDelete} type="text" icon={<DeleteOutlined />}></Button>
+            <Button onClick={handleDelete} type="text" icon={<DeleteOutlined />}></Button>
           </Tooltip>
         </aside>
       </div>

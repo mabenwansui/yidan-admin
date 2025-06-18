@@ -4,7 +4,7 @@ import Icon from '@/components/Icons'
 import useStore from './store/index'
 import useInitStore from './store/useInitStore'
 import Notification from './ui/Notification'
-import MessageListDrawer from './ui/MessageList/Drawer'
+import MessageList from './ui/MessageList'
 
 export default function Message() {
   const [open, setOpen] = useState(false)
@@ -14,7 +14,7 @@ export default function Message() {
   return (
     <>
       <Notification />
-      <MessageListDrawer open={open} onClose={() => handleTriggerOpen(false)} />
+      <MessageList open={open} onClose={() => handleTriggerOpen(false)} />
       <div
         onClick={() => handleTriggerOpen(true)}
         className="cursor-pointer hover:bg-gray-100 p-2 pt-1.5 pb-0 rounded-md"
