@@ -10,7 +10,7 @@ interface Props {
 export default function Layout(props: Props) {
   return (
     <div className="flex min-h-screen">
-      <div className="w-46 min-w-46">
+      <div className="w-46 min-w-46 relative z-10">
         <div className="fixed w-46 bg-primary pl-1.5 pr-1.5 h-screen">
           <div className="p-5 flex">
             <Image src={logo} alt="logo" width={200} height={200} style={{ width: 64, height: 64 }} />
@@ -22,7 +22,7 @@ export default function Layout(props: Props) {
           <Nav />
         </div>
       </div>
-      <div className="flex-1" style={{ minWidth: '960px' }}>
+      <div className="flex-auto" style={{ minWidth: '960px' }}>
         <Header />
         <main className="m-10">{props?.children}</main>
       </div>

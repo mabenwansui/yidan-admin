@@ -44,8 +44,8 @@ export default function useConfig() {
         label: '订单管理',
         children: [
           {
-            key: ROUTE_PATH.ORDER_PAID,
-            label: <Link href={ROUTE_PATH.ORDER_PAID}>待接单</Link>
+            key: ROUTE_PATH.ORDER_LIST,
+            label: <Link href={ROUTE_PATH.ORDER_LIST}>待接单</Link>
           },
           {
             key: ROUTE_PATH.ORDER_PROCESSING,

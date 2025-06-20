@@ -18,7 +18,7 @@ interface Props {
 
 export default function List(props: Props) {
   const { list, isLoading, curPage = 1, pageSize, total, isFirstLoad, onEdit, onDel, onPageChange } = props
-  const renderImage = (imgUrls: string, record: Commodity) => <Image imgUrl={imgUrls} alt={record.name} />
+  const renderImage = (imgUrls: string, record: Commodity) => <Image src={imgUrls} alt={record.name} />
   const renderName = (name: string) => <a>{name}</a>
   const renderOperate = (_: any, record: Commodity) => (
     <TableOperate

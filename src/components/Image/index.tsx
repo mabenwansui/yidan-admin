@@ -4,15 +4,23 @@ import { SERVER_FILE_PREFIX } from '@/common/constants/routePath'
 import { Image as AntdImage } from 'antd'
 
 interface Props {
-  imgUrl?: string
+  src?: string
   size?: 'middle' | 'large' | 'small'
   alt?: string
   priority?: boolean
 }
+
+const sizeMap = {
+  middle: 68,
+  large: 128,
+  small: 32
+}
+
 export default function Image(props: Props) {
-  const { imgUrl, priority, alt = '' } = props
-  if (imgUrl) {
-    return <AntdImage src={`${SERVER_FILE_PREFIX.IMG}/${imgUrl}`} width={68} height={68} alt={alt} />
+  const { src, priority, size = 'middle', alt = '' } = props
+  const _size = sizeMap[size]
+  if (src) {
+    return <AntdImage src={`${SERVER_FILE_PREFIX.IMG}/${src}`} width={_size} height={_size} alt={alt} />
   } else {
     return (
       <NextImage
@@ -20,7 +28,7 @@ export default function Image(props: Props) {
         src={imgCommdityPlaceholder}
         width={128}
         height={128}
-        style={{ width: 68, height: 68 }}
+        style={{ width: _size, height: _size }}
         alt={alt}
       />
     )

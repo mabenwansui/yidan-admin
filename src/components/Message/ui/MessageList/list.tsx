@@ -8,7 +8,6 @@ export default function MessageList() {
   const loadMore = useStore((state) => state.loadMore)
   const hasMore = useStore((state) => state.hasMore)
   const handleLoadMore = () => loadMore()
-  console.log('list:::::::::', list)
   const render = () => {
     if (!list) return null
     if (list.length === 0) {

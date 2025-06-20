@@ -24,7 +24,7 @@ function TableList(props: Props) {
   const renderName = (name: string, record: Store) => (
     <Link href={`${ROUTE_PATH.STORE_COMMODITY}/${record.id}`}>{name}</Link>
   )
-  const renderImage = (url: string, record: Store) => <Image imgUrl={url} alt={record.name} />
+  const renderImage = (url: string, record: Store) => <Image src={url} alt={record.name} />
   const renderOwner = (owner: User[]) => owner.map((item) => item.nickname).join()
   const renderOpen = (open: boolean) => (open ? '营业中' : '已停业')
   const renderAddress = (_: any, record: Store) => (

@@ -24,6 +24,7 @@
     "@tiptap/starter-kit": "^2.11.5",
     "antd": "^5.24.4",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
     "immer": "^10.1.1",
     "just-extend": "^6.2.0",
     "lucide-react": "^0.479.0",

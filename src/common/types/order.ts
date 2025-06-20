@@ -51,8 +51,13 @@ export const PAYMENT_STATUS = {
 } as const
 export type PAYMENT_STATUS = ValueOf<typeof PAYMENT_STATUS>
 
+export interface commodity {
+  branch: Branch
+  quantity: number
+}
+
 export interface Order {
-  id?: string // 订单ID
+  id: string // 订单ID
   orderId?: string // 订单编号
   store: Store // 店铺信息
   orderType: ORDER_TYPE // 订单类型
@@ -63,6 +68,7 @@ export interface Order {
   actualAmount: number // 实际支付金额
   table_number?: string // 桌号
   remark?: string
-  commoditys: { branch: Branch; quantity: number }[]
+  commoditys: commodity[]
+  payAt?: Date // 支付时间
   completedAt?: Date
 }

@@ -29,11 +29,7 @@ export default function Order(props: Props) {
                 return (
                   <li className="mr-2 w-24 text-center mb-2" key={item.branch.id}>
                     <div className="flex justify-center">
-                      <Image
-                        imgUrl={item.branch.commodity?.coverImageUrl}
-                        alt={item.branch.commodity?.name}
-                        size="small"
-                      />
+                      <Image src={item.branch.commodity?.coverImageUrl} alt={item.branch.commodity?.name} />
                     </div>
                     <div className="text-xs">
                       {item.branch.commodity?.name} × <span className="text-primary">{item.quantity}</span>

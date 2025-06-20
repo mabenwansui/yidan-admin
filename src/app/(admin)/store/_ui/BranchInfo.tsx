@@ -19,7 +19,7 @@ function BranchInfo(props: Props) {
   return (
     <section className="flex items-center rounded-lg bg-white border border-border p-4">
       <div className="img w-22">
-        <Image imgUrl={store?.coverImageUrl} alt={store?.name} />
+        <Image src={store?.coverImageUrl} alt={store?.name} />
       </div>
       <div className="flex-auto">
         {isLoading === false && (

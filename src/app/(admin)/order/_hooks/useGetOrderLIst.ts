@@ -8,7 +8,7 @@ export const url = '/api/order/list'
 interface Params {
   key?: string
   curPage?: number
-  orderId?: string
+  pageSize?: number
   storeId?: string
   orderType?: ORDER_TYPE
   orderStatus?: ORDER_STATUS
@@ -25,7 +25,16 @@ interface Response extends Page {
 const fetcher = async (params: FetcherArg) => {
   return await post<Response>(params.url, params.arg)
 }
+
 export default function useGetOrderLIst(params: Params) {
-  const { mutate, isLoading, data } = useSWR({ url, arg: params }, fetcher)
-  return { mutate, isLoading, data: data?.data }
+  const { storeId } = params
+  const { mutate, isLoading, data } = useSWR(storeId ? { url, arg: params } : null, fetcher)
+  return {
+    mutate,
+    isLoading,
+    list: data?.data?.list,
+    curPage: data?.data?.curPage || 1,
+    pageSize: data?.data?.pageSize || 0,
+    total: data?.data?.total || 0
+  }
 }
