@@ -1,10 +1,9 @@
+import dayjs from 'dayjs'
 import { Badge, Button } from 'antd'
 import { WechatOutlined, AlipayCircleOutlined } from '@ant-design/icons'
-import { Order, commodity } from '@/common/types/order'
+import { Order, commodity, PAYMENT_TYPE, ORDER_TYPE, ORDER_TYPE_MAPPING } from '@/common/types/order'
 import Table from '@/components/Table'
 import Image from '@/components/Image'
-import dayjs from 'dayjs'
-import { PAYMENT_TYPE } from '@/common/types/order'
 
 interface Props {
   list?: Order[]
@@ -12,7 +11,7 @@ interface Props {
   curPage: number
   pageSize: number
   total: number
-  onView?: (record: Order) => void
+  onView?: (id: string) => void
   onAcceptOrder?: (record: Order) => void
   onPageChange?: (curPage: number) => void
 }
@@ -29,7 +28,7 @@ export default function OrderTableList(props: Props) {
   }
   const renderOperate = (_: any, record: Order) => (
     <div className="space-x-4">
-      <a onClick={() => onView?.(record)}>查看</a>
+      <a onClick={() => onView?.(record.id)}>查看</a>
       <Button type="primary" onClick={() => onAcceptOrder?.(record)}>
         接单
       </Button>
@@ -65,6 +64,19 @@ export default function OrderTableList(props: Props) {
       </div>
     )
   }
+  const renderOrderType = (orderType: ORDER_TYPE, record: Order) => {
+    const { tableNumber } = record
+    let extension: string = ''
+    if (orderType === ORDER_TYPE.DINE_IN && tableNumber) {
+      extension = `桌号：${tableNumber}`
+    }
+    return (
+      <>
+        <div>{ORDER_TYPE_MAPPING[orderType]}</div>
+        <div>{extension}</div>
+      </>
+    )
+  }
   const renderPayAt = (payAt: Date) => dayjs(payAt).format('YY-MM-DD HH:mm')
   return (
     <section>
@@ -81,8 +93,9 @@ export default function OrderTableList(props: Props) {
         <Table.Column title="备注" width={150} dataIndex="remark" />
         <Table.Column title="支付金额" width={100} dataIndex="actualAmount" align="center" />
         <Table.Column title="支付类型" width={100} dataIndex="paymentType" align="center" render={renderPaymentType} />
-        <Table.Column title="桌号" width={100} dataIndex="table_number" align="center" />
-        <Table.Column title="支付时间" width={136} dataIndex="payAt" render={renderPayAt} />
+        <Table.Column title="配送方式" width={100} dataIndex="orderType" align="center" render={renderOrderType} />
+        {/* <Table.Column title="桌号" width={100} dataIndex="table_number" align="center" /> */}
+        <Table.Column title="支付时间" width={138} dataIndex="payAt" render={renderPayAt} />
         <Table.Column title="操作" width={140} key="operate" fixed="right" render={renderOperate} />
       </Table>
     </section>

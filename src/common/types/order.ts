@@ -2,14 +2,16 @@ import type { Store } from './store'
 import type { Branch } from './branch'
 
 export const ORDER_TYPE = {
-  /** 堂食 */
   DINE_IN: 'dine-in',
-  /** 外卖 */
   TAKE_OUT: 'takeout',
-  /** 配送 */
   DELIVERY: 'delivery'
 } as const
 export type ORDER_TYPE = ValueOf<typeof ORDER_TYPE>
+export const ORDER_TYPE_MAPPING = {
+  [ORDER_TYPE.DINE_IN]: '堂食',
+  [ORDER_TYPE.TAKE_OUT]: '外卖',
+  [ORDER_TYPE.DELIVERY]: '配送'
+} as const
 
 export const ORDER_STATUS = {
   /** 待支付 */
@@ -66,7 +68,7 @@ export interface Order {
   paymentStatus?: PAYMENT_STATUS // 支付状态
   originalAmount: number // 原价
   actualAmount: number // 实际支付金额
-  table_number?: string // 桌号
+  tableNumber?: string // 桌号
   remark?: string
   commoditys: commodity[]
   payAt?: Date // 支付时间

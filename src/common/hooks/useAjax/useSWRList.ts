@@ -4,7 +4,6 @@ import { post } from '@/common/utils/ajax'
 import { Page } from '@/common/types/page'
 
 interface ParamsObject extends Page {
-  key?: string
   [key: string]: any
 }
 
@@ -20,26 +19,17 @@ export default function useSWRList<Params extends ParamsObject, Response extends
   url: string,
   params: Params
 ) {
-  const fetcher = async ({ args }: { url: string; args: Params }) => await post<Response>(url, args)
-  const { key = '', ..._params } = params
   const [isFirstLoad, setIsFirstLoad] = useState(true)
-
-  const [args, setArgs] = useState<Omit<Params, 'key'>>({ ..._params })
-  const { mutate, data, isLoading } = useSWR(
-    {
-      url: `${url}${key}`,
-      args
-    },
-    fetcher,
-    { keepPreviousData: true }
-  )
+  const [args, setArgs] = useState<Params>({ ...params })
+  const { mutate, data, isLoading } = useSWR([url, args], async ([url, args]) => await post<Response>(url, args), {
+    keepPreviousData: true
+  })
   const refresh = useCallback(
     (params?: Partial<Params>) => {
-      if (params) setArgs({ ...args, ...params })
       setIsFirstLoad(false)
-      mutate()
+      if (params) setArgs({ ...args, ...params })
     },
-    [mutate, args]
+    [args]
   )
   return {
     isFirstLoad,
