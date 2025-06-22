@@ -27,10 +27,7 @@ export enum ROUTE_PATH {
   /** 订单 */
   ORDER_LIST = '/order/list',
   ORDER_DETAILS = '/order/details',
-  ORDER_PAID = '/order/paid', // 用户已支付，等待商家接单
-  ORDER_ACCEPTED = '/order/accepted', // 商家已确认并开始准备
-  ORDER_PROCESSING = '/order/processing', // 商家已确认并开始准备
-  ORDER_READY = '/order/ready', // 餐已备好, 待取
+  ORDER_COMPLETED = '/order/completed',
 
   /** 标签 */
   TAG_REMARK = '/tag/remark',

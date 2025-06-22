@@ -1,7 +1,15 @@
 import dayjs from 'dayjs'
 import { Badge, Button } from 'antd'
 import { WechatOutlined, AlipayCircleOutlined } from '@ant-design/icons'
-import { Order, commodity, PAYMENT_TYPE, ORDER_TYPE, ORDER_TYPE_MAPPING } from '@/common/types/order'
+import {
+  Order,
+  commodity,
+  PAYMENT_TYPE,
+  ORDER_TYPE,
+  ORDER_STATUS_MAPPING,
+  ORDER_STATUS,
+  ORDER_TYPE_MAPPING
+} from '@/common/types/order'
 import Table from '@/components/Table'
 import Image from '@/components/Image'
 
@@ -12,7 +20,7 @@ interface Props {
   pageSize: number
   total: number
   onView?: (id: string) => void
-  onAcceptOrder?: (record: Order) => void
+  onAcceptOrder?: (id: string) => void
   onPageChange?: (curPage: number) => void
 }
 
@@ -29,7 +37,7 @@ export default function OrderTableList(props: Props) {
   const renderOperate = (_: any, record: Order) => (
     <div className="space-x-4">
       <a onClick={() => onView?.(record.id)}>查看</a>
-      <Button type="primary" onClick={() => onAcceptOrder?.(record)}>
+      <Button type="primary" onClick={() => onAcceptOrder?.(record.id)}>
         接单
       </Button>
     </div>
@@ -77,6 +85,7 @@ export default function OrderTableList(props: Props) {
       </>
     )
   }
+  const renderOrderStatus = (orderStatus: ORDER_STATUS) => ORDER_STATUS_MAPPING[orderStatus]
   const renderPayAt = (payAt: Date) => dayjs(payAt).format('YY-MM-DD HH:mm')
   return (
     <section>
@@ -91,6 +100,7 @@ export default function OrderTableList(props: Props) {
       >
         <Table.Column title="下单商品" minWidth={240} dataIndex="commoditys" render={renderCommoditys} />
         <Table.Column title="备注" width={150} dataIndex="remark" />
+        <Table.Column title="订单状态" width={100} dataIndex="orderStatus" align="center" render={renderOrderStatus} />
         <Table.Column title="支付金额" width={100} dataIndex="actualAmount" align="center" />
         <Table.Column title="支付类型" width={100} dataIndex="paymentType" align="center" render={renderPaymentType} />
         <Table.Column title="配送方式" width={100} dataIndex="orderType" align="center" render={renderOrderType} />

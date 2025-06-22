@@ -2,7 +2,7 @@ import useSWRList from '@/common/hooks/useAjax/useSWRList'
 import { Page } from '@/common/types/page'
 import { Order, ORDER_STATUS, ORDER_TYPE } from '@/common/types/order'
 
-export const url = '/api/order/list'
+export const url = '/api/order/admin/list'
 
 interface Params {
   curPage?: number
@@ -16,10 +16,7 @@ interface Response extends Page {
 }
 
 export default function useGetOrderList(params: Params) {
-  const { mutate, isLoading, list, curPage, pageSize, total, refresh } = useSWRList<Params, Response>(
-    '/api/order/list',
-    params
-  )
+  const { mutate, isLoading, list, curPage, pageSize, total, refresh } = useSWRList<Params, Response>(url, params)
   return {
     mutate,
     isLoading,

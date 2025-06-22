@@ -7,6 +7,7 @@ interface Base {
   originalPrice?: number // 原价
   price?: number // 现价
   isOnShelf?: boolean // 上架
+  isOnShelfFormat?: string
 }
 
 export interface Branch extends Base {

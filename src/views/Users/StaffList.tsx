@@ -3,7 +3,7 @@ import '@ant-design/v5-patch-for-react-19'
 import { useMemo, useCallback } from 'react'
 import { Button, Tooltip } from 'antd'
 import { RightCircleOutlined } from '@ant-design/icons'
-import { useGetStaffList } from '@/common/hooks/useGetUserList'
+import { useGetStaffList } from '@/common/hooks/user/useGetUserList'
 import useDelete from './hooks/useDelete'
 import TableList from './ui/StaffTableList'
 

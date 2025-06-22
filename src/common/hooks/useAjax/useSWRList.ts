@@ -16,14 +16,18 @@ interface ResponseObject {
 
 /* 用于列表请求的通用ajax封装 */
 export default function useSWRList<Params extends ParamsObject, Response extends ResponseObject>(
-  url: string,
+  url: string | null,
   params: Params
 ) {
   const [isFirstLoad, setIsFirstLoad] = useState(true)
   const [args, setArgs] = useState<Params>({ ...params })
-  const { mutate, data, isLoading } = useSWR([url, args], async ([url, args]) => await post<Response>(url, args), {
-    keepPreviousData: true
-  })
+  const { mutate, data, isLoading } = useSWR(
+    url ? [url, args] : null,
+    async ([url, args]) => await post<Response>(url!, args),
+    {
+      keepPreviousData: true
+    }
+  )
   const refresh = useCallback(
     (params?: Partial<Params>) => {
       setIsFirstLoad(false)

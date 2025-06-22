@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { ROUTE_PATH } from '@/common/constants/routePath'
 import Link from 'next/link'
-import useGetUserInfo from '@/common/hooks/useGetUserInfo'
+import useGetUserInfo from '@/common/hooks/user/useGetUserInfo'
 import { ROLE } from '@/common/constants/role'
 import { MenuProps } from 'antd'
 
@@ -21,7 +21,7 @@ export default function useConfig() {
       role.includes(ROLE.SUPER_ADMIN) && {
         key: ROUTE_PATH.COMMODITY_LIST,
         label: <Link href={ROUTE_PATH.COMMODITY_LIST}>商品管理</Link>,
-        match: new RegExp(`^${ROUTE_PATH.COMMODITY}\\/.*`, 'gi')
+        match: [new RegExp(`^${ROUTE_PATH.COMMODITY}\\/.*`, 'gi')]
       },
       role.includes(ROLE.SUPER_ADMIN) && {
         key: 'project',
@@ -45,15 +45,15 @@ export default function useConfig() {
         children: [
           {
             key: ROUTE_PATH.ORDER_LIST,
-            label: <Link href={ROUTE_PATH.ORDER_LIST}>待接单</Link>
+            label: <Link href={ROUTE_PATH.ORDER_LIST}>订单列表</Link>,
+            match: [
+              new RegExp(`^${ROUTE_PATH.ORDER_LIST}\\/.*`, 'gi'),
+              new RegExp(`^${ROUTE_PATH.ORDER_DETAILS}\\/.*`, 'gi')
+            ]
           },
           {
-            key: ROUTE_PATH.ORDER_PROCESSING,
-            label: <Link href={ROUTE_PATH.ORDER_PROCESSING}>进行中</Link>
-          },
-          {
-            key: ROUTE_PATH.ORDER_READY,
-            label: <Link href={ROUTE_PATH.ORDER_READY}>已完成</Link>
+            key: ROUTE_PATH.ORDER_COMPLETED,
+            label: <Link href={ROUTE_PATH.ORDER_COMPLETED}>已完成</Link>
           }
         ]
       },

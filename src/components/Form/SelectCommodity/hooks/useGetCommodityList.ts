@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { SelectProps } from 'antd'
-import { useTriggerGetCommodityList } from '@/common/hooks/useGetCommodityList'
+import { useTriggerGetCommodityList } from '@/common/hooks/commodity/useGetCommodityList'
 
 interface FetchParams {
   categoryId?: string

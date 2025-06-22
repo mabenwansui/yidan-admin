@@ -16,6 +16,10 @@ export const ORDER_TYPE_MAPPING = {
 export const ORDER_STATUS = {
   /** 待支付 */
   PENDING: 'pending',
+  /** 用户已支付，等待商家接单 */
+  PAID: 'paid',
+  /** 商家已确认并开始准备 */
+  ACCEPTED: 'accepted',
   /** 处理中 */
   PROCESSING: 'processing',
   /** 待取餐 */
@@ -34,6 +38,19 @@ export const ORDER_STATUS = {
   COMPLETED: 'completed'
 } as const
 export type ORDER_STATUS = ValueOf<typeof ORDER_STATUS>
+export const ORDER_STATUS_MAPPING = {
+  [ORDER_STATUS.PENDING]: '待支付',
+  [ORDER_STATUS.PAID]: '已支付',
+  [ORDER_STATUS.ACCEPTED]: '已接单',
+  [ORDER_STATUS.PROCESSING]: '处理中',
+  [ORDER_STATUS.READY]: '待取餐',
+  [ORDER_STATUS.CANCELLED]: '已取消',
+  [ORDER_STATUS.REFUND_REQUESTED]: '申请退款',
+  [ORDER_STATUS.REFUNDING]: '退款中',
+  [ORDER_STATUS.REFUND_FAILED]: '退款失败',
+  [ORDER_STATUS.REFUNDED]: '退款完成',
+  [ORDER_STATUS.COMPLETED]: '已完成'
+} as const
 
 export const PAYMENT_TYPE = {
   /** 微信支付 */

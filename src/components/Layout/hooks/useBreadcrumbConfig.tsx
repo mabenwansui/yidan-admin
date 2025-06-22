@@ -38,6 +38,21 @@ function configFn() {
       render: [{ title: '用户管理' }]
     },
     {
+      path: ROUTE_PATH.ORDER_LIST,
+      match: new RegExp(`^${ROUTE_PATH.ORDER_LIST}\\/[0-9a-zA-Z]+$`, 'gi'),
+      render: [{ title: '订单列表' }]
+    },
+    {
+      path: ROUTE_PATH.ORDER_DETAILS,
+      match: new RegExp(`^${ROUTE_PATH.ORDER_DETAILS}\\/[0-9a-zA-Z]+$`, 'gi'),
+      render: [
+        {
+          title: <Link href={ROUTE_PATH.ORDER_LIST}>返回列表</Link>
+        },
+        { title: '订单详情' }
+      ]
+    },
+    {
       path: ROUTE_PATH.TAG_REMARK,
       render: [{ title: '订单备注' }]
     }

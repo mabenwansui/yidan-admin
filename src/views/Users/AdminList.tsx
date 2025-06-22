@@ -6,7 +6,7 @@ import { RightCircleOutlined } from '@ant-design/icons'
 import useDelete from './hooks/useDelete'
 import TableFilter, { FormValues } from './ui/AdminTableFilter'
 import TableList from './ui/AdminTableList'
-import { useGetListSuperAdmin } from '@/common/hooks/useGetUserList'
+import { useGetListSuperAdmin } from '@/common/hooks/user/useGetUserList'
 
 export default function UserList() {
   const { index, list, isLoading, refresh, curPage, pageSize, total } = useGetListSuperAdmin()

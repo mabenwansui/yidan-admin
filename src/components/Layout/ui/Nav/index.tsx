@@ -8,12 +8,25 @@ interface FindKey {
   key: string
   parentKey?: string
 }
+
+function matchPath(item: SubMenuType, path: string) {
+  const match = (item as any)?.match
+  const fn = (matchReg: RegExp) => matchReg.test(path)
+  if (match) {
+    if (Array.isArray(match)) {
+      return match.some(fn)
+    } else {
+      return fn(match)
+    }
+  }
+  return false
+}
+
 function findKey(items: MenuProps['items'], path: string, parentKey?: string): FindKey | false {
   if (!items) return false
   for (const item of items) {
     const _item = item as SubMenuType
-    const match = (_item as any)?.match as RegExp
-    if (path === _item?.key || (match && match.test(path))) {
+    if (path === _item?.key || matchPath(_item, path)) {
       return {
         key: _item.key,
         parentKey

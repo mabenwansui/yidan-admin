@@ -6,7 +6,7 @@ import { InfoCircleOutlined } from '@ant-design/icons'
 import { BranchForm } from '@/common/types/branch'
 import { Commodity } from '@/common/types/commodity'
 import { ROUTE_PATH } from '@/common/constants/routePath'
-import { useGetCommodityInfoMutation } from '@/common/hooks/useGetCommodityInfo'
+import { useGetCommodityInfoMutation } from '@/common/hooks/commodity/useGetCommodityInfo'
 import { WithCategory } from '@/components/Form/SelectCommodity'
 
 export interface RefMethods {

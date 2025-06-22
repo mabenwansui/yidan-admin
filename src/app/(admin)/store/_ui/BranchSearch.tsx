@@ -28,7 +28,7 @@ export interface Values {
 
 function BranchSearch(props: FormProps) {
   return (
-    <div className="mb-3">
+    <div className="mb-6">
       <Form {...props}>
         <Space>
           <span>筛选: </span>

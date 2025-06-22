@@ -6,7 +6,7 @@ import { Store, StoreForm } from '@/common/types/store'
 import { CreateBtn } from '@/components/Button'
 import { StoreToStoreForm } from '../_utils'
 import { useCreateStore, useUpdateStore, useDeleteStore } from '../_hooks/useUpsertStore'
-import useGetStoreList from '../_hooks/useGetStoreList'
+import useGetStoreList from '@/common/hooks/useGetStoreList'
 import StoreTableList from '../_ui/StoreTableList'
 import { Drawer, DrawerFormType } from '../_ui/StoreForm'
 

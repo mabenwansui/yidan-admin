@@ -2,7 +2,7 @@
 import '@ant-design/v5-patch-for-react-19'
 import { App } from 'antd'
 import Form, { FormValues } from './ui/Form'
-import useGetUserInfo from '@/common/hooks/useGetUserInfo'
+import useGetUserInfo from '@/common/hooks/user/useGetUserInfo'
 import useUpdateUserInfo from './hooks/updateUserInfo'
 
 export default function UserInfo() {

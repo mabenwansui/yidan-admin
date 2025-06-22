@@ -1,6 +1,6 @@
 import { useMemo, memo } from 'react'
 import { Select as AntSelect, SelectProps as AntSelectProps } from 'antd'
-import { useGetListSuperAdmin, SelectRoleType } from '@/common/hooks/useGetUserList'
+import { useGetListSuperAdmin, SelectRoleType } from '@/common/hooks/user/useGetUserList'
 
 interface Props extends AntSelectProps {
   role?: SelectRoleType[] | null
