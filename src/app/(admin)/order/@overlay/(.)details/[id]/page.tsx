@@ -11,7 +11,13 @@ export default function OrderDetailsDrawer() {
     if (open === false) router.back()
   }
   return (
-    <Drawer title="订单详情" open={open} onClose={() => setOpen(false)} afterOpenChange={handleAfterOpenChange}>
+    <Drawer
+      title="订单详情"
+      width={650}
+      open={open}
+      onClose={() => setOpen(false)}
+      afterOpenChange={handleAfterOpenChange}
+    >
       <OrderDetails />
     </Drawer>
   )

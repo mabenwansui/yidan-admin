@@ -1,4 +1,6 @@
 'use client'
-export default function OrderDetails() {
-  return <div>OrderDetails--22</div>
+import OrderDetails from '../../_ui/OrderDetails'
+
+export default function OrderDetailsPage() {
+  return <OrderDetails />
 }

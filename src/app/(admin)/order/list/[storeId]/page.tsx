@@ -1,32 +1,37 @@
 'use client'
-import useStore from '@/components/StoreNavLayout/store'
 import { useRouter } from 'next/navigation'
+import useStore from '@/components/StoreNavLayout/store'
+import { ORDER_STATUS } from '@/common/types/order'
 import { ROUTE_PATH } from '@/common/constants/routePath'
 import useGetOrderList from '../../_hooks/useGetOrderList'
-import { useAccepted } from '../../_hooks/useUpsertOrder'
+import { useUpdateStage } from '../../_hooks/useUpsertOrder'
 import OrderTableList from '../../_ui/OrderTableList'
-import OrderSearch from '../../_ui/OrderSearch'
+import OrderSearch, { Values } from '../../_ui/OrderSearch'
 
 export default function OrderPage() {
   const curStore = useStore((state) => state.curStore)
   const router = useRouter()
   const { curPage, pageSize, total, list, isLoading, refresh } = useGetOrderList({ storeId: curStore?.id })
-  const { trigger: acceptedTrigger } = useAccepted()
+  const { trigger: updateStageTrigger } = useUpdateStage()
   const handlePageChange = (curPage: number) => {
     refresh({ curPage })
   }
   const handleView = (id: string) => {
     router.push(`${ROUTE_PATH.ORDER_DETAILS}/${id}`)
   }
-  const handleAcceptOrder = (id: string) => {
-    acceptedTrigger({ orderId: id })
+  const handleUpdateStage = async (id: string, orderStatus: ORDER_STATUS) => {
+    const { flag } = await updateStageTrigger({ orderId: id, orderStatus })
+    if (flag === 1) refresh()
+  }
+  const handleValuesChange = async (_: any, values: Values) => {
+    refresh(values)
   }
   return (
     <div>
-      <OrderSearch />
+      <OrderSearch onValuesChange={handleValuesChange} />
       <OrderTableList
         onView={handleView}
-        onAcceptOrder={handleAcceptOrder}
+        onUpdateStage={handleUpdateStage}
         onPageChange={handlePageChange}
         list={list}
         curPage={curPage}

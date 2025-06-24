@@ -59,6 +59,10 @@ export const PAYMENT_TYPE = {
   ALIPAY: 'alipay'
 } as const
 export type PAYMENT_TYPE = ValueOf<typeof PAYMENT_TYPE> // 定义支付类型的类型别名，使用 ValueOf 函数获取枚举类型的所有值，并使用 as const 确保值是常量，这样 TypeScript 就可以正确推断类型了。
+export const PAYMENT_TYPE_MAPPING = {
+  [PAYMENT_TYPE.WECHAT]: '微信支付',
+  [PAYMENT_TYPE.ALIPAY]: '支付宝支付'
+} as const
 
 export const PAYMENT_STATUS = {
   /** 未支付 */
@@ -69,8 +73,13 @@ export const PAYMENT_STATUS = {
   FAILED: 'failed'
 } as const
 export type PAYMENT_STATUS = ValueOf<typeof PAYMENT_STATUS>
+export const PAYMENT_STATUS_MAPPING = {
+  [PAYMENT_STATUS.UNPAID]: '未支付',
+  [PAYMENT_STATUS.PAID]: '已支付',
+  [PAYMENT_STATUS.FAILED]: '支付失败'
+}
 
-export interface commodity {
+export interface Commodity {
   branch: Branch
   quantity: number
 }
@@ -87,7 +96,7 @@ export interface Order {
   actualAmount: number // 实际支付金额
   tableNumber?: string // 桌号
   remark?: string
-  commoditys: commodity[]
+  commoditys: Commodity[]
   payAt?: Date // 支付时间
   completedAt?: Date
 }

@@ -1,17 +1,35 @@
 import { memo } from 'react'
-import { Space, Form, FormProps } from 'antd'
-import { TreeSelect } from '@/components/Form/CommodityCategory'
-import SelectCommodity from '@/components/Form/SelectCommodity'
+import { Space, Form, FormProps, Select } from 'antd'
+import { ORDER_STATUS, ORDER_STATUS_MAPPING, ORDER_TYPE, ORDER_TYPE_MAPPING } from '@/common/types/order'
 
 export interface Values {
-  category: {
-    label: string
-    value: string
-  }
-  isOnShelf: boolean | 'all'
+  orderStatus: ORDER_STATUS
+  orderType: ORDER_TYPE
 }
 
 type Props = FormProps
+
+const orderStatusOptions = [
+  {
+    label: '全部',
+    value: ''
+  },
+  ...[ORDER_STATUS.PAID, ORDER_STATUS.PROCESSING, ORDER_STATUS.READY, ORDER_STATUS.COMPLETED].map((item) => ({
+    label: ORDER_STATUS_MAPPING[item],
+    value: item
+  }))
+]
+
+const orderTypeOptions = [
+  {
+    label: '全部',
+    value: ''
+  },
+  ...[ORDER_TYPE.DINE_IN, ORDER_TYPE.TAKE_OUT, ORDER_TYPE.DELIVERY].map((item) => ({
+    label: ORDER_TYPE_MAPPING[item],
+    value: item
+  }))
+]
 
 function OrderSearch(props: Props) {
   const { ...formProps } = props
@@ -20,11 +38,11 @@ function OrderSearch(props: Props) {
       <Form<Values> {...formProps}>
         <Space>
           <span>筛选: </span>
-          <Form.Item name="category" noStyle>
-            <TreeSelect placeholder="商品分类" className="w-50!" />
+          <Form.Item name="orderStatus" noStyle>
+            <Select placeholder="订单状态" allowClear={true} className="w-50!" options={orderStatusOptions} />
           </Form.Item>
-          <Form.Item name="category2" noStyle>
-            <SelectCommodity placeholder="商品名" className="w-60!" />
+          <Form.Item name="orderType" noStyle>
+            <Select placeholder="配送方式" allowClear={true} className="w-60!" options={orderTypeOptions} />
           </Form.Item>
         </Space>
       </Form>

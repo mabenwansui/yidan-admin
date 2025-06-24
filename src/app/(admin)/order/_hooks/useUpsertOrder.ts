@@ -7,6 +7,10 @@ interface Params {
 }
 export const url = '/api/order/update-stage'
 
+export function useUpdateStage() {
+  return useSWRTrigger<Params, Record<never, never>>(url)
+}
+
 export function useAccepted() {
   const formatArg = (arg: Params) => ({
     orderStatus: ORDER_STATUS.ACCEPTED,

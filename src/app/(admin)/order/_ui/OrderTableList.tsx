@@ -3,7 +3,7 @@ import { Badge, Button } from 'antd'
 import { WechatOutlined, AlipayCircleOutlined } from '@ant-design/icons'
 import {
   Order,
-  commodity,
+  Commodity,
   PAYMENT_TYPE,
   ORDER_TYPE,
   ORDER_STATUS_MAPPING,
@@ -20,12 +20,12 @@ interface Props {
   pageSize: number
   total: number
   onView?: (id: string) => void
-  onAcceptOrder?: (id: string) => void
+  onUpdateStage?: (id: string, orderStatus: ORDER_STATUS) => void
   onPageChange?: (curPage: number) => void
 }
 
 export default function OrderTableList(props: Props) {
-  const { list, isLoading, curPage = 1, pageSize, total, onView, onPageChange, onAcceptOrder } = props
+  const { list, isLoading, curPage = 1, pageSize, total, onView, onPageChange, onUpdateStage } = props
   const renderPaymentType = (paymentType: PAYMENT_TYPE) => {
     switch (paymentType) {
       case PAYMENT_TYPE.WECHAT:
@@ -34,42 +34,68 @@ export default function OrderTableList(props: Props) {
         return <AlipayCircleOutlined />
     }
   }
-  const renderOperate = (_: any, record: Order) => (
-    <div className="space-x-4">
-      <a onClick={() => onView?.(record.id)}>查看</a>
-      <Button type="primary" onClick={() => onAcceptOrder?.(record.id)}>
-        接单
-      </Button>
-    </div>
-  )
+  const renderOperate = (_: any, record: Order) => {
+    const renderBtn = () => {
+      switch (record.orderStatus) {
+        case ORDER_STATUS.PAID:
+          return (
+            <Button type="primary" onClick={() => onUpdateStage?.(record.id, ORDER_STATUS.ACCEPTED)}>
+              接单
+            </Button>
+          )
+        case ORDER_STATUS.PROCESSING:
+          return (
+            <Button
+              type="primary"
+              className="bg-success!"
+              onClick={() => onUpdateStage?.(record.id, ORDER_STATUS.READY)}
+            >
+              出餐
+            </Button>
+          )
+        case ORDER_STATUS.READY:
+          return (
+            <Button type="primary" onClick={() => onUpdateStage?.(record.id, ORDER_STATUS.COMPLETED)}>
+              完成
+            </Button>
+          )
+        case ORDER_STATUS.COMPLETED:
+          return <Button onClick={() => onUpdateStage?.(record.id, ORDER_STATUS.COMPLETED)}>归档</Button>
+      }
+    }
+    return (
+      <div className="space-x-4">
+        <a onClick={() => onView?.(record.id)}>查看</a>
+        {renderBtn()}
+      </div>
+    )
+  }
   const renderCommoditys = (commoditys: Order['commoditys']) => {
-    const renderImage = (item: commodity) => (
+    const renderImage = (item: Commodity) => (
       <Image src={item.branch.commodity?.coverImageUrl} alt={item.branch.commodity?.name} />
     )
     return (
-      <div>
-        <ul className="flex flex-wrap">
-          {commoditys.map((item: commodity) => {
-            const { id, commodity } = item.branch
-            const { quantity } = item
-            const Img = renderImage(item)
-            return (
-              <li className="mr-2 w-24 text-center mb-2" key={id}>
-                <div className="flex justify-center">
-                  {quantity > 0 ? (
-                    <Badge.Ribbon text={`× ${quantity}`} color="var(--color-success)">
-                      {Img}
-                    </Badge.Ribbon>
-                  ) : (
-                    Img
-                  )}
-                </div>
-                <div className="text-xs">{commodity?.name}</div>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
+      <ul className="flex flex-wrap">
+        {commoditys.map((item: Commodity) => {
+          const { id, commodity } = item.branch
+          const { quantity } = item
+          const Img = renderImage(item)
+          return (
+            <li className="mr-2 w-24 text-center mb-2" key={id}>
+              <div className="flex justify-center">
+                {quantity > 0 ? (
+                  <Badge.Ribbon text={`× ${quantity}`} color="var(--color-success)">
+                    {Img}
+                  </Badge.Ribbon>
+                ) : (
+                  Img
+                )}
+              </div>
+              <div className="text-xs">{commodity?.name}</div>
+            </li>
+          )
+        })}
+      </ul>
     )
   }
   const renderOrderType = (orderType: ORDER_TYPE, record: Order) => {
@@ -100,13 +126,12 @@ export default function OrderTableList(props: Props) {
       >
         <Table.Column title="下单商品" minWidth={240} dataIndex="commoditys" render={renderCommoditys} />
         <Table.Column title="备注" width={150} dataIndex="remark" />
-        <Table.Column title="订单状态" width={100} dataIndex="orderStatus" align="center" render={renderOrderStatus} />
         <Table.Column title="支付金额" width={100} dataIndex="actualAmount" align="center" />
+        <Table.Column title="订单状态" width={100} dataIndex="orderStatus" align="center" render={renderOrderStatus} />
         <Table.Column title="支付类型" width={100} dataIndex="paymentType" align="center" render={renderPaymentType} />
         <Table.Column title="配送方式" width={100} dataIndex="orderType" align="center" render={renderOrderType} />
-        {/* <Table.Column title="桌号" width={100} dataIndex="table_number" align="center" /> */}
         <Table.Column title="支付时间" width={138} dataIndex="payAt" render={renderPayAt} />
-        <Table.Column title="操作" width={140} key="operate" fixed="right" render={renderOperate} />
+        <Table.Column title="操作" width={144} key="operate" fixed="right" render={renderOperate} />
       </Table>
     </section>
   )

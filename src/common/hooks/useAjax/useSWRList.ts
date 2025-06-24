@@ -31,9 +31,13 @@ export default function useSWRList<Params extends ParamsObject, Response extends
   const refresh = useCallback(
     (params?: Partial<Params>) => {
       setIsFirstLoad(false)
-      if (params) setArgs({ ...args, ...params })
+      if (params) {
+        setArgs({ ...args, ...params })
+      } else {
+        mutate()
+      }
     },
-    [args]
+    [args, mutate]
   )
   return {
     isFirstLoad,
