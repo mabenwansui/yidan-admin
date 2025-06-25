@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { Menu, ConfigProvider, MenuProps } from 'antd'
 import { SubMenuType } from 'antd/es/menu/interface'
 import useConfig from '../../hooks/useNavConfig'
@@ -42,18 +43,19 @@ function findKey(items: MenuProps['items'], path: string, parentKey?: string): F
 
 export default function Nav() {
   const [open, setOpen] = useState<string[]>([])
+  const pathname = usePathname()
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
   const { config, isLoading } = useConfig()
   useEffect(() => {
-    const pathname = window.location.pathname
     if (isLoading === true || config?.length === 0) return
     const keys = findKey(config, pathname)
+    // if (config) console.log('pathname:::', pathname, keys, extend({}, config))
     if (keys) {
       const { key, parentKey } = keys
       if (key) setSelectedKeys([key])
       if (parentKey) setOpen([parentKey])
     }
-  }, [setSelectedKeys, setOpen, isLoading, config])
+  }, [setSelectedKeys, setOpen, isLoading, pathname, config])
   const handleOpenChange: MenuProps['onOpenChange'] = (openKeys) => setOpen(openKeys)
   const handleSelect: MenuProps['onSelect'] = ({ selectedKeys }) => setSelectedKeys(selectedKeys)
 

@@ -12,6 +12,7 @@ export default function StoreNavLayout(props: Props) {
   const list = useStore((state) => state.list)
   const curStore = useStore((state) => state.curStore)
   const setCurStore = useStore((state) => state.setCurStore)
+  const clear = useStore((state) => state.clear)
   useEffect(() => {
     if (!list || list.length === 0) return
     if (curStore) {
@@ -21,6 +22,7 @@ export default function StoreNavLayout(props: Props) {
       setCurStore(id)
     }
   }, [curStore, list, onChange, setCurStore])
+  useEffect(() => () => clear(), [clear])
   return (
     <div className="flex justify-between">
       <div className="w-34 min-w-34">{<StoreNav />}</div>

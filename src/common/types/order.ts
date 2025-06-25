@@ -35,7 +35,9 @@ export const ORDER_STATUS = {
   /** 退款完成 */
   REFUNDED: 'refunded',
   /** 已完成 */
-  COMPLETED: 'completed'
+  COMPLETED: 'completed',
+  /** 已归档 */
+  ARCHIVED: 'archived'
 } as const
 export type ORDER_STATUS = ValueOf<typeof ORDER_STATUS>
 export const ORDER_STATUS_MAPPING = {
@@ -49,7 +51,8 @@ export const ORDER_STATUS_MAPPING = {
   [ORDER_STATUS.REFUNDING]: '退款中',
   [ORDER_STATUS.REFUND_FAILED]: '退款失败',
   [ORDER_STATUS.REFUNDED]: '退款完成',
-  [ORDER_STATUS.COMPLETED]: '已完成'
+  [ORDER_STATUS.COMPLETED]: '已完成',
+  [ORDER_STATUS.ARCHIVED]: '已归档'
 } as const
 
 export const PAYMENT_TYPE = {
@@ -98,5 +101,6 @@ export interface Order {
   remark?: string
   commoditys: Commodity[]
   payAt?: Date // 支付时间
+  acceptedAt?: Date // 接单时间
   completedAt?: Date
 }

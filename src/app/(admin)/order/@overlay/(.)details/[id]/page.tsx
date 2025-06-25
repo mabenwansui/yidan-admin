@@ -1,4 +1,5 @@
 'use client'
+import '@ant-design/v5-patch-for-react-19'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Drawer } from 'antd'
@@ -10,6 +11,7 @@ export default function OrderDetailsDrawer() {
   const handleAfterOpenChange = (open: boolean) => {
     if (open === false) router.back()
   }
+
   return (
     <Drawer
       title="订单详情"

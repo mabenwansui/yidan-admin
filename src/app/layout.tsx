@@ -1,4 +1,4 @@
-import Frame from '@/components/Frame'
+import Frame from '@/components/Layout/Frame'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {

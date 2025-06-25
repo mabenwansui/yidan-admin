@@ -1,10 +1,12 @@
 'use client'
 import { Badge, Steps } from 'antd'
 import { useParams } from 'next/navigation'
-import Image from '@/components/Image'
-import useGetOrderInfo from '../_hooks/useGetOrderInfo'
-import { Commodity, ORDER_STATUS, ORDER_STATUS_MAPPING, ORDER_TYPE_MAPPING } from '@/common/types/order'
 import dayjs from 'dayjs'
+import { Commodity, ORDER_STATUS, ORDER_STATUS_MAPPING, ORDER_TYPE_MAPPING } from '@/common/types/order'
+import Image from '@/components/Image'
+import DetailsLayout from '@/components/Layout/DetailsLayout'
+import OrderOperateBtn from '../_ui/OrderOperateBtn'
+import useGetOrderInfo from '../_hooks/useGetOrderInfo'
 
 export default function OrderDetails() {
   const params = useParams()
@@ -15,34 +17,49 @@ export default function OrderDetails() {
     <Image src={item.branch.commodity?.coverImageUrl} alt={item.branch.commodity?.name} />
   )
   const payAt = data?.payAt && dayjs(data.payAt).format('YY-MM-DD HH:mm')
+  const acceptedAt = data?.acceptedAt && dayjs(data.acceptedAt).format('YY-MM-DD HH:mm')
+  const completedAt = data?.completedAt && dayjs(data.completedAt).format('YY-MM-DD HH:mm')
+  const stepsItems = [
+    {
+      key: ORDER_STATUS.PAID,
+      title: ORDER_STATUS_MAPPING[ORDER_STATUS.PAID],
+      description: payAt
+    },
+    {
+      key: ORDER_STATUS.PROCESSING,
+      title: ORDER_STATUS_MAPPING[ORDER_STATUS.PROCESSING],
+      description: acceptedAt
+    },
+    {
+      key: ORDER_STATUS.COMPLETED,
+      title: ORDER_STATUS_MAPPING[ORDER_STATUS.COMPLETED],
+      description: completedAt
+    }
+  ]
+  const curStep = stepsItems.findIndex((item) => item.key === data?.orderStatus)
+  const handleUpdateStage = (orderId: string, orderStatus: ORDER_STATUS) => {
+    console.log('xx:::', orderId, orderStatus)
+  }
   return (
-    <>
-      <section className="mb-10 max-w-4xl bg-white rounded-lg p-10 shadow-md">
-        <Steps
-          current={1}
-          items={[
-            {
-              title: ORDER_STATUS_MAPPING[ORDER_STATUS.PAID],
-              description: '用户已支付, 待接单',
-              subTitle: payAt
-            },
-            {
-              title: ORDER_STATUS_MAPPING[ORDER_STATUS.PROCESSING],
-              description: '出餐',
-              subTitle: 'Left 00:00:08'
-            },
-            {
-              title: ORDER_STATUS_MAPPING[ORDER_STATUS.COMPLETED],
-              description: ''
-            }
-          ]}
-        />
+    <DetailsLayout>
+      <section className="mb-12 p-12 bg-white border border-border rounded-lg shadow-md">
+        <Steps current={curStep} items={stepsItems} />
+        {data?.orderStatus !== ORDER_STATUS.ARCHIVED && (
+          <section className="text-center mt-8">
+            <OrderOperateBtn
+              className="w-28!"
+              buttonType={{ size: 'large' }}
+              order={data}
+              onUpdateStage={handleUpdateStage}
+            />
+          </section>
+        )}
       </section>
-      <section className="flex flex-wrap **:[dl]:w-100 **:[dl]:flex **:[dl]:mb-2 **:[dt]:w-24 **:[dt]:text-right **:[dt]:pr-4">
+      <section className="flex flex-wrap **:[dl]:w-1/2 **:[dl]:flex **:[dl]:mb-2 **:[dt]:w-24 **:[dt]:text-right **:[dt]:pr-4">
         <dl className="w-full! mb-6!">
           <dt>商品</dt>
           <dd>
-            <ul className="flex flex-wrap -ml-3">
+            <ul className="flex flex-wrap -ml-3 -mt-1">
               {data?.commoditys.map((item: Commodity) => {
                 const { id, commodity } = item.branch
                 const { quantity } = item
@@ -98,6 +115,6 @@ export default function OrderDetails() {
           <dd>{data?.remark}</dd>
         </dl>
       </section>
-    </>
+    </DetailsLayout>
   )
 }

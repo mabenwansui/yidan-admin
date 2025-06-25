@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { App } from 'antd'
 import { Branch, BranchForm } from '@/common/types/branch'
-import useStore from '@/components/StoreNavLayout/store'
+import useStore from '@/components/Layout/StoreNavLayout/store'
 import useGetBranchList from '../../_hooks/useGetBranchList'
 import { useCreateBranch } from '../../_hooks/useUpsertBranch'
 import { useUpdateBranch, useDeleteBranch } from '../../_hooks/useUpsertBranch'

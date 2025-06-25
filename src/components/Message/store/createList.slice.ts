@@ -5,11 +5,13 @@ import { Message } from '@/common/types/message'
 import type { MergeState } from './index'
 
 export interface ListState {
+  open: boolean
   curPage: number
   pageSize: number | null
   total: number | null
   list: Message[]
   hasMore: boolean
+  setOpen: (open: boolean) => void
   loadMore: () => void
   setCurPage: (curPage: number) => void
   setPageSize: (pageSize: number) => void
@@ -22,12 +24,14 @@ export interface ListState {
 }
 
 export const createListSlice: StateCreator<MergeState, [], [], ListState> = (set) => ({
+  open: false,
   curPage: 1,
   pageSize: 20,
   total: null,
   list: [],
   hasMore: true,
   loadMore: () => {},
+  setOpen: (open) => set(() => ({ open })),
   setCurPage: (curPage) => set(() => ({ curPage })),
   setPageSize: (pageSize) => set(() => ({ pageSize })),
   setTotal: (total) => set(() => ({ total })),

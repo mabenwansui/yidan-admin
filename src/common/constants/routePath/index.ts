@@ -27,7 +27,7 @@ export enum ROUTE_PATH {
   /** 订单 */
   ORDER_LIST = '/order/list',
   ORDER_DETAILS = '/order/details',
-  ORDER_COMPLETED = '/order/completed',
+  ORDER_ARCHIVED = '/order/list/archived',
 
   /** 标签 */
   TAG_REMARK = '/tag/remark',

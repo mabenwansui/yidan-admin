@@ -1,7 +1,7 @@
 'use client'
 import { Divider, Breadcrumb } from 'antd'
+import Message from '@/components/Message'
 import PersonalInfo from '../PersonalInfo'
-import Message from '../../../Message'
 import useBreadcrumbConfig from '../../hooks/useBreadcrumbConfig'
 
 export default function Header() {

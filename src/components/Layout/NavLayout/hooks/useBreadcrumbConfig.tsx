@@ -43,6 +43,11 @@ function configFn() {
       render: [{ title: '订单列表' }]
     },
     {
+      path: ROUTE_PATH.ORDER_ARCHIVED,
+      match: new RegExp(`^${ROUTE_PATH.ORDER_ARCHIVED}\\/[0-9a-zA-Z]+$`, 'gi'),
+      render: [{ title: '订单列表 - 已归档' }]
+    },
+    {
       path: ROUTE_PATH.ORDER_DETAILS,
       match: new RegExp(`^${ROUTE_PATH.ORDER_DETAILS}\\/[0-9a-zA-Z]+$`, 'gi'),
       render: [

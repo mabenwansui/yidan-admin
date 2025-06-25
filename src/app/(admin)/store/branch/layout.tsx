@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { ROUTE_PATH } from '@/common/constants/routePath'
-import StoreNavLayout from '@/components/StoreNavLayout'
+import StoreNavLayout from '@/components/Layout/StoreNavLayout'
 
 interface Props {
   children: React.ReactNode

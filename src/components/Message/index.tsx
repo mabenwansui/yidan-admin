@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Badge } from 'antd'
 import Icon from '@/components/Icons'
 import useStore from './store/index'
@@ -7,14 +6,14 @@ import Notification from './ui/Notification'
 import MessageList from './ui/MessageList'
 
 export default function Message() {
-  const [open, setOpen] = useState(false)
-  useInitStore(open)
+  useInitStore()
+  const setOpen = useStore((state) => state.setOpen)
   const unReadTotal = useStore((state) => state.unReadTotal)
   const handleTriggerOpen = (open: boolean) => setOpen(open)
   return (
     <>
       <Notification />
-      <MessageList open={open} onClose={() => handleTriggerOpen(false)} />
+      <MessageList onClose={() => handleTriggerOpen(false)} />
       <div
         onClick={() => handleTriggerOpen(true)}
         className="cursor-pointer hover:bg-gray-100 p-2 pt-1.5 pb-0 rounded-md"

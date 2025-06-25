@@ -47,13 +47,14 @@ export default function useConfig() {
             key: ROUTE_PATH.ORDER_LIST,
             label: <Link href={ROUTE_PATH.ORDER_LIST}>订单列表</Link>,
             match: [
-              new RegExp(`^${ROUTE_PATH.ORDER_LIST}\\/.*`, 'gi'),
-              new RegExp(`^${ROUTE_PATH.ORDER_DETAILS}\\/.*`, 'gi')
+              new RegExp(`^${ROUTE_PATH.ORDER_LIST}\\/(?!archived).*`, 'i'),
+              new RegExp(`^${ROUTE_PATH.ORDER_DETAILS}\\/.*`, 'i')
             ]
           },
           {
-            key: ROUTE_PATH.ORDER_COMPLETED,
-            label: <Link href={ROUTE_PATH.ORDER_COMPLETED}>已完成</Link>
+            key: ROUTE_PATH.ORDER_ARCHIVED,
+            match: [new RegExp(`^${ROUTE_PATH.ORDER_ARCHIVED}\\/.*`, 'i')],
+            label: <Link href={ROUTE_PATH.ORDER_ARCHIVED}>已归档</Link>
           }
         ]
       },

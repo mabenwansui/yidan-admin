@@ -3,6 +3,7 @@ import { Page } from '@/common/types/page'
 import { Order, ORDER_STATUS, ORDER_TYPE } from '@/common/types/order'
 
 export const url = '/api/order/admin/list'
+export const archivedUrl = '/api/order/admin/list-archived'
 
 interface Params {
   curPage?: number
@@ -15,8 +16,25 @@ interface Response extends Page {
   list: Order[]
 }
 
-export default function useGetOrderList(params: Params) {
+export function useGetOrderList(params: Params) {
   const { mutate, isLoading, list, curPage, pageSize, total, refresh } = useSWRList<Params, Response>(url, params)
+  return {
+    mutate,
+    isLoading,
+    list,
+    curPage,
+    pageSize,
+    total,
+    refresh
+  }
+}
+
+type ArchivedParams = Omit<Params, 'orderStatus'>
+export function useGetArchivedOrderList(params: ArchivedParams) {
+  const { mutate, isLoading, list, curPage, pageSize, total, refresh } = useSWRList<Params, Response>(
+    archivedUrl,
+    params
+  )
   return {
     mutate,
     isLoading,

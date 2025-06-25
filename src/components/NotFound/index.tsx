@@ -1,5 +1,5 @@
 import { Result } from 'antd'
-import Frame from '@/components/Frame'
+import Frame from '@/components/Layout/Frame'
 import Button from './Button'
 
 export default function NotFound() {

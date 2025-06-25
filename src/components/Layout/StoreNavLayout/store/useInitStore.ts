@@ -11,9 +11,10 @@ export default function useInitStore() {
   const setList = useStore((state) => state.setList)
   const setCurStore = useStore((state) => state.setCurStore)
   useEffect(() => {
-    if (pathname === ROUTE_PATH.ORDER_LIST) {
-      setCurStore(params.storeId)
-    }
+    // if (pathname === ROUTE_PATH.ORDER_LIST) {
+    // if (params.storeId) {
+    setCurStore(params.storeId)
+    // }
   }, [params.storeId, setCurStore, pathname])
   useEffect(() => {
     if (list?.length) {

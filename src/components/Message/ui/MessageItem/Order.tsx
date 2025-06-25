@@ -1,7 +1,9 @@
 import { Button } from 'antd'
-import useGetOrderInfo from '@/common/hooks/useGetOrderInfo'
 import { useRouter } from 'next/navigation'
+import useGetOrderInfo from '@/common/hooks/useGetOrderInfo'
+import { ROUTE_PATH } from '@/common/constants/routePath'
 import Image from '@/components/Image'
+import useStore from '../../store'
 
 interface Props {
   orderId: string
@@ -11,8 +13,11 @@ export default function Order(props: Props) {
   const { orderId } = props
   const { data } = useGetOrderInfo(orderId)
   const router = useRouter()
+  const setOpen = useStore((state) => state.setOpen)
   const handleView = () => {
-    router.push('/')
+    location.href = `${ROUTE_PATH.ORDER_DETAILS}/${orderId}`
+    // router.push(`${ROUTE_PATH.ORDER_DETAILS}/${orderId}`)
+    setOpen(false)
   }
   return (
     <div className="relative flex items-center">

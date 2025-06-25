@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { Badge, Button } from 'antd'
+import { Badge } from 'antd'
 import { WechatOutlined, AlipayCircleOutlined } from '@ant-design/icons'
 import {
   Order,
@@ -12,6 +12,7 @@ import {
 } from '@/common/types/order'
 import Table from '@/components/Table'
 import Image from '@/components/Image'
+import OrderOperateBtn from '../_ui/OrderOperateBtn'
 
 interface Props {
   list?: Order[]
@@ -35,38 +36,10 @@ export default function OrderTableList(props: Props) {
     }
   }
   const renderOperate = (_: any, record: Order) => {
-    const renderBtn = () => {
-      switch (record.orderStatus) {
-        case ORDER_STATUS.PAID:
-          return (
-            <Button type="primary" onClick={() => onUpdateStage?.(record.id, ORDER_STATUS.ACCEPTED)}>
-              接单
-            </Button>
-          )
-        case ORDER_STATUS.PROCESSING:
-          return (
-            <Button
-              type="primary"
-              className="bg-success!"
-              onClick={() => onUpdateStage?.(record.id, ORDER_STATUS.READY)}
-            >
-              出餐
-            </Button>
-          )
-        case ORDER_STATUS.READY:
-          return (
-            <Button type="primary" onClick={() => onUpdateStage?.(record.id, ORDER_STATUS.COMPLETED)}>
-              完成
-            </Button>
-          )
-        case ORDER_STATUS.COMPLETED:
-          return <Button onClick={() => onUpdateStage?.(record.id, ORDER_STATUS.COMPLETED)}>归档</Button>
-      }
-    }
     return (
       <div className="space-x-4">
         <a onClick={() => onView?.(record.id)}>查看</a>
-        {renderBtn()}
+        <OrderOperateBtn order={record} onUpdateStage={onUpdateStage} />
       </div>
     )
   }

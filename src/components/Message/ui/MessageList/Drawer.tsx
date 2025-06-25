@@ -5,11 +5,10 @@ import useRead from '../../hooks/useRead'
 import useDelete from '../../hooks/useDelete'
 import MessageList from './list'
 
-interface Props extends Omit<DrawerProps, 'open'> {
-  open: boolean
-}
+type Props = Omit<DrawerProps, 'open'>
 
 export default function CustomDrawer(props: Props) {
+  const open = useStore((state) => state.open)
   const unReadTotal = useStore((state) => state.unReadTotal)
   const read = useStore((state) => state.read)
   const deleteList = useStore((state) => state.deleteList)
@@ -43,6 +42,7 @@ export default function CustomDrawer(props: Props) {
           消息中心 <Badge count={unReadTotal} className="ml-1! -mt-px!" />
         </div>
       }
+      open={open}
       {...props}
       extra={renderExtra()}
     >
